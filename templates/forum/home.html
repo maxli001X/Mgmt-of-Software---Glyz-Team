@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Tree Hole Yale{% endblock title %}
+
+{% block content %}
+<section>
+    <h1>Share Your Thoughts</h1>
+    {% if user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Post anonymously</button>
+        </form>
+    {% else %}
+        <p><a href="{% url 'accounts:login' %}">Log in with your Yale account</a> to post.</p>
+    {% endif %}
+</section>
+
+<section>
+    <h2>Tags</h2>
+    <ul>
+        <li><a href="{% url 'forum:home' %}">All</a></li>
+        {% for tag in tags %}
+            <li>
+                <a href="{% url 'forum:home' %}?tag={{ tag.slug }}"
+                   {% if tag.slug == active_tag %}aria-current="true"{% endif %}>
+                    {{ tag.name }}
+                </a>
+            </li>
+        {% empty %}
+            <li>No tags yet.</li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section>
+    <h2>Recent Posts</h2>
+    {% for post in posts %}
+        <article>
+            <header>
+                <h3>{{ post.title }}</h3>
+                <p>
+                    Posted by
+                    {% if post.is_anonymous %}
+                        Anonymous
+                    {% else %}
+                        {{ post.author.get_full_name|default:post.author.username }}
+                    {% endif %}
+                    on {{ post.created_at|date:"M d, Y H:i" }}
+                </p>
+                {% if post.is_flagged %}
+                    <p>⚠️ Flagged for moderator review</p>
+                {% endif %}
+            </header>
+            <p>{{ post.body|linebreaks }}</p>
+            <p>
+                Tags:
+                {% for tag in post.tags.all %}
+                    <span>{{ tag.name }}</span>{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    <span>None</span>
+                {% endfor %}
+            </p>
+            <footer>
+                <form method="post" action="{% url 'forum:upvote' post.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">▲ Upvote ({{ post.votes.count }})</button>
+                </form>
+                <form method="post" action="{% url 'forum:flag' post.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">Flag</button>
+                </form>
+            </footer>
+        </article>
+    {% empty %}
+        <p>No posts yet. Be the first to share something!</p>
+    {% endfor %}
+</section>
+{% endblock content %}
+

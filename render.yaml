@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: treehole-web
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn treehole.wsgi:application
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DJANGO_ALLOWED_HOSTS
+        value: treehole-web.onrender.com
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DB_SSL_REQUIRE
+        value: "True"
+      - key: ALLOWED_EMAIL_DOMAINS
+        value: yale.edu
+      - key: DATABASE_URL
+        fromDatabase:
+          name: treehole-db
+          property: connectionString
+    autoDeploy: true
+databases:
+  - name: treehole-db
+    plan: free
+
