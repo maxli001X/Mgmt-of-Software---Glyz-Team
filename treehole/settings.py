@@ -77,6 +77,28 @@ else:
 CSRF_TRUSTED_ORIGINS = sorted(_csrf_origin_set)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+SESSION_COOKIE_SAMESITE = config('DJANGO_SESSION_COOKIE_SAMESITE', default='Lax')
+CSRF_COOKIE_SAMESITE = config('DJANGO_CSRF_COOKIE_SAMESITE', default='Lax')
+SESSION_COOKIE_HTTPONLY = config('DJANGO_SESSION_COOKIE_HTTPONLY', default=True, cast=bool)
+CSRF_COOKIE_HTTPONLY = config('DJANGO_CSRF_COOKIE_HTTPONLY', default=True, cast=bool)
+SESSION_COOKIE_SECURE = config('DJANGO_SESSION_COOKIE_SECURE', default=not DEBUG, cast=bool)
+CSRF_COOKIE_SECURE = config('DJANGO_CSRF_COOKIE_SECURE', default=not DEBUG, cast=bool)
+SECURE_SSL_REDIRECT = config('DJANGO_SECURE_SSL_REDIRECT', default=not DEBUG, cast=bool)
+_hsts_default = 0 if DEBUG or not SECURE_SSL_REDIRECT else 31536000
+SECURE_HSTS_SECONDS = config('DJANGO_HSTS_SECONDS', default=_hsts_default, cast=int)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config(
+    'DJANGO_HSTS_INCLUDE_SUBDOMAINS',
+    default=SECURE_HSTS_SECONDS > 0,
+    cast=bool,
+)
+SECURE_HSTS_PRELOAD = config(
+    'DJANGO_HSTS_PRELOAD',
+    default=SECURE_HSTS_SECONDS >= 31536000,
+    cast=bool,
+)
+SECURE_REFERRER_POLICY = config('DJANGO_SECURE_REFERRER_POLICY', default='strict-origin')
+X_FRAME_OPTIONS = config('DJANGO_X_FRAME_OPTIONS', default='DENY')
+
 
 # Application definition
 
