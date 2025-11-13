@@ -12,11 +12,20 @@ class YaleSignUpForm(UserCreationForm):
     email = forms.EmailField(
         label=_("Yale email address"),
         help_text=_("Use your @yale.edu address to register."),
+        widget=forms.EmailInput(attrs={'class': 'form-input'}),
     )
 
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ("username", "email")
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-input'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].widget.attrs.update({'class': 'form-input'})
+        self.fields['password2'].widget.attrs.update({'class': 'form-input'})
 
     def clean_email(self):
         email = self.cleaned_data.get("email", "")

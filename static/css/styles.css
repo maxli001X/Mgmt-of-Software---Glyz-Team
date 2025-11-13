@@ -93,3 +93,122 @@ article footer {
     margin-top: 1rem;
 }
 
+/* Authentication Pages */
+.auth-container {
+    max-width: 450px;
+    margin: 3rem auto;
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.auth-container h1 {
+    margin: 0 0 1.5rem 0;
+    font-size: 1.75rem;
+    color: #00356b;
+    text-align: center;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #1b1b1b;
+    font-size: 0.95rem;
+}
+
+.form-input {
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #00356b;
+    box-shadow: 0 0 0 3px rgba(0, 53, 107, 0.1);
+}
+
+.form-help {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+.errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #dc2626;
+    font-size: 0.875rem;
+}
+
+.errorlist li {
+    padding: 0.5rem 0.75rem;
+    background: #fef2f2;
+    border-left: 3px solid #dc2626;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.auth-submit {
+    background: #00356b;
+    color: #fff;
+    border: none;
+    padding: 0.875rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 0.5rem;
+}
+
+.auth-submit:hover {
+    background: #28527a;
+}
+
+.auth-submit:active {
+    transform: translateY(1px);
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    color: #6b7280;
+}
+
+.auth-footer a {
+    color: #00356b;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+    .auth-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+}
+

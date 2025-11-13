@@ -3,11 +3,20 @@
 {% block title %}Log Out · Tree Hole Yale{% endblock title %}
 
 {% block content %}
-<h1>Log out</h1>
-<form method="post">
-    {% csrf_token %}
-    <p>Are you sure you want to log out?</p>
-    <button type="submit">Log out</button>
-</form>
+<div class="auth-container">
+    <h1>Log out</h1>
+    
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        <p style="text-align: center; color: #6b7280; margin-bottom: 1.5rem;">
+            Are you sure you want to log out of Tree Hole Yale?
+        </p>
+        <button type="submit" class="auth-submit">Log out</button>
+    </form>
+    
+    <div class="auth-footer">
+        <p><a href="{% url 'posting:home' %}">Cancel and return to home</a></p>
+    </div>
+</div>
 {% endblock content %}
 
