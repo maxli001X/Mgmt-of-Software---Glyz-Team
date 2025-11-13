@@ -3,13 +3,15 @@ services:
     name: treehole-web
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
     startCommand: gunicorn treehole.wsgi:application
     envVars:
       - key: DJANGO_SECRET_KEY
         sync: false
       - key: DJANGO_ALLOWED_HOSTS
-        value: treehole-web.onrender.com
+        value: treehole-web.onrender.com,glyz-team.onrender.com
+      - key: DJANGO_CSRF_TRUSTED_ORIGINS
+        value: https://treehole-web.onrender.com,https://glyz-team.onrender.com
       - key: DJANGO_DEBUG
         value: "False"
       - key: DB_SSL_REQUIRE

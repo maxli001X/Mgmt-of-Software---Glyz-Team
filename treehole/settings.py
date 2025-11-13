@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from urllib.parse import urlparse
 
 import dj_database_url
 from decouple import Csv, config
@@ -28,7 +29,53 @@ SECRET_KEY = config('DJANGO_SECRET_KEY', default='django-insecure-change-me')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DJANGO_DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+def _clean_host_values(raw_hosts: str) -> list[str]:
+    hosts: list[str] = []
+    for raw_host in raw_hosts.replace(';', ',').split(','):
+        host = raw_host.strip()
+        if not host:
+            continue
+        if '://' in host:
+            parsed = urlparse(host)
+            host = parsed.netloc or parsed.path
+        host = host.split('/')[0].strip()
+        if host:
+            hosts.append(host)
+    return hosts
+
+
+def _host_to_origins(host: str) -> set[str]:
+    host = host.strip()
+    if not host:
+        return set()
+    if host.startswith('.'):
+        return {f'https://*{host}'}
+    if host in {'localhost', '127.0.0.1', '[::1]'}:
+        return {f'http://{host}', f'https://{host}'}
+    return {f'https://{host}'}
+
+
+_raw_allowed_hosts = config(
+    'DJANGO_ALLOWED_HOSTS',
+    default='localhost,127.0.0.1,.onrender.com',
+)
+ALLOWED_HOSTS = _clean_host_values(_raw_allowed_hosts)
+if not ALLOWED_HOSTS:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+_raw_csrf_trusted = config('DJANGO_CSRF_TRUSTED_ORIGINS', default='')
+_csrf_hosts = _clean_host_values(_raw_csrf_trusted)
+_csrf_origin_set: set[str] = set()
+
+if _csrf_hosts:
+    for host in _csrf_hosts:
+        _csrf_origin_set.update(_host_to_origins(host))
+else:
+    for host in ALLOWED_HOSTS:
+        _csrf_origin_set.update(_host_to_origins(host))
+
+CSRF_TRUSTED_ORIGINS = sorted(_csrf_origin_set)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Application definition
@@ -143,7 +190,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+
+STATICFILES_DIRS = []
+if (BASE_DIR / 'static').exists():
+    STATICFILES_DIRS.append(BASE_DIR / 'static')
+
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -163,3 +214,30 @@ ALLOWED_EMAIL_DOMAINS = config('ALLOWED_EMAIL_DOMAINS', default='yale.edu', cast
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
