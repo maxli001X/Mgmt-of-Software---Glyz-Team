@@ -31,23 +31,62 @@ Plain-English map of the important files and what they do. Skim this whenever yo
 
 ## Posting App (`posting/`)
 
-- `posting/models.py` — Post/Tag/Vote models backing the feed.
-- `posting/forms.py` — Anonymous post form.
-- `posting/views.py` — Feed, tag filtering, upvote/flag handlers.
+**Feature-based structure for parallel development:**
+
+- `posting/models/` — Models organized by feature:
+  - `tag.py` — Tag model
+  - `post.py` — Post model
+  - `vote.py` — Vote model
+  - `__init__.py` — Exports all models for backward compatibility
+- `posting/forms/` — Forms organized by feature:
+  - `post_form.py` — PostForm for creating posts
+  - `__init__.py` — Exports all forms
+- `posting/views/` — Views organized by feature:
+  - `feed.py` — Home feed view with tag filtering
+  - `post_actions.py` — Upvote and flag actions
+  - `__init__.py` — Exports all views
+- `posting/tests/` — Tests organized by feature:
+  - `test_models.py` — Model tests
+  - `test_forms.py` — Form submission tests
+  - `test_feed.py` — Feed view tests
+  - `test_post_actions.py` — Voting/flagging tests
+  - `__init__.py` — Test discovery
 - `posting/urls.py` — Feed + action routes (`/`, `/posts/<id>/...`).
 - `posting/admin.py` — Admin configuration for moderator review.
-- `posting/tests.py` — View + form smoke tests.
-- Templates live under `templates/posting/`.
+- Templates live under `templates/posting/` with:
+  - `home.html` — Main feed page
+  - `components/` — Reusable components (for future refactoring)
+  - `includes/` — Template includes
 
 ## Moderation Ranking App (`moderation_ranking/`)
 
-- Placeholder screen for future moderation tooling (story #50).
-- `moderation_ranking/views.py`, `urls.py`, `tests.py`, and template `templates/moderation_ranking/dashboard.html`.
+**Structured for moderation features (story #50):**
+
+- `moderation_ranking/views/` — Moderation views:
+  - `dashboard.py` — Moderation dashboard view
+  - `__init__.py` — Exports all views
+- `moderation_ranking/urls.py` — Moderation routes
+- `moderation_ranking/tests.py` — Moderation tests
+- Templates live under `templates/moderation_ranking/`:
+  - `dashboard.html` — Main moderation dashboard
+  - `components/` — Reusable moderation components (for future)
 
 ## Profile Settings App (`profile_settings/`)
 
-- Placeholder screen for profile and settings stories (#43–#45).
-- `profile_settings/views.py`, `urls.py`, `tests.py`, and template `templates/profile_settings/dashboard.html`.
+**Structured for profile features (stories #43–#45):**
+
+- `profile_settings/models/` — Profile models (placeholders):
+  - `user_profile.py` — UserProfile model (to be implemented)
+  - `__init__.py` — Model exports
+- `profile_settings/views/` — Profile views:
+  - `profile.py` — Profile dashboard view
+  - `__init__.py` — Exports all views
+- `profile_settings/forms/` — Profile forms (placeholders):
+  - `profile_form.py` — Profile forms (to be implemented)
+  - `__init__.py` — Form exports
+- `profile_settings/urls.py` — Profile routes
+- `profile_settings/tests.py` — Profile tests
+- Templates live under `templates/profile_settings/dashboard.html`
 
 ## Templates (`templates/`)
 

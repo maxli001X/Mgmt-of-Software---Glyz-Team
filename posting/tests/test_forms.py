@@ -2,10 +2,10 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Post, Tag
+from ..models import Post, Tag
 
 
-class PostingViewTests(TestCase):
+class PostFormTests(TestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(
             username="poster",
@@ -13,11 +13,6 @@ class PostingViewTests(TestCase):
             password="password123",
         )
         self.tag = Tag.objects.create(name="General", slug="general")
-
-    def test_home_page_renders(self):
-        response = self.client.get(reverse("posting:home"))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Share Your Thoughts")
 
     def test_post_requires_authentication(self):
         response = self.client.post(
@@ -46,3 +41,4 @@ class PostingViewTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertTrue(Post.objects.filter(title="Hello").exists())
+
