@@ -4,8 +4,7 @@ services:
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
-    startCommand: gunicorn treehole.wsgi:application
-    postDeployCommand: python manage.py migrate --noinput
+    startCommand: python manage.py migrate --noinput && gunicorn treehole.wsgi:application
     envVars:
       - key: DJANGO_SECRET_KEY
         sync: false
