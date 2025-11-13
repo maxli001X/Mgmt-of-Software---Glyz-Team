@@ -102,45 +102,62 @@ Tree Hole Yale is an anonymous, Yale-only campus forum inspired by SideChat. Stu
 
 ## 4. Deployment (Render)
 
-### Option A: Blueprint (recommended)
+**📘 For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md)**
+
+### Quick Start with Blueprint (Recommended)
 
 The repository includes a Render blueprint (`render.yaml`) that provisions a web service and a managed PostgreSQL database in one click.
 
-1. In Render, go to **Blueprints > New Blueprint Instance** and select this repo/branch.
-2. Review the plan (web service on the free plan + free Postgres) and click **Apply**.
-3. When prompted, add secrets tagged `sync: false`:
-   - `DJANGO_SECRET_KEY` – paste a long random string.
-4. Optionally adjust:
-   - `DJANGO_ALLOWED_HOSTS` – include additional custom domains if you add them later.
-   - `DJANGO_CSRF_TRUSTED_ORIGINS` – include the same hosts prefixed with `https://`.
-5. Deploy. The blueprint runs these stages automatically:
-   - `pip install -r requirements.txt`
-   - `python manage.py collectstatic --noinput`
-   - `python manage.py migrate --noinput`
-   - `gunicorn treehole.wsgi:application`
-6. Once live, visit the Render dashboard → **Shell** if you need to create a Django superuser.
-
-### Option B: Manual Web Service (fallback)
-
-1. **Local git commit & push**
+1. Push your code to GitHub:
    ```bash
    git add .
-   git commit -m "Initial Django project scaffolding"
+   git commit -m "Prepare for Render deployment"
    git push origin main
    ```
 
-2. **Render Web Service Setup**
-   - Click **New > Web Service**.
-   - Connect your GitHub account and choose the `Mgmt-of-Software---Glyz-Team` repo.
-   - Build command: `pip install -r requirements.txt`
-   - (Optional) Pre-deploy command: `python manage.py collectstatic --noinput && python manage.py migrate --noinput`
-   - Start command: `gunicorn treehole.wsgi:application`
-   - Environment: `Python 3` (Render auto-detects Django).
-   - Add environment variables (`DJANGO_SECRET_KEY`, `DATABASE_URL`, `DJANGO_ALLOWED_HOSTS`, `DB_SSL_REQUIRE=True`).
-   - If you skip the pre-deploy command, open the Render shell after each deploy and run `python manage.py migrate`.
+2. In Render Dashboard:
+   - Go to **New > Blueprint**
+   - Connect your GitHub repository
+   - Select this repository
+   - Review the configuration
+   - Click **Apply**
 
-3. **Static files**
-   - WhiteNoise is preconfigured; no extra Render storage needed.
+3. Render will automatically:
+   - Create PostgreSQL database (`glyz-team-db`)
+   - Deploy web service (`glyz-team`)
+   - Generate a secure `DJANGO_SECRET_KEY`
+   - Configure all environment variables
+   - Run migrations and collect static files
+   - Start the application
+
+4. Your app will be live at: `https://glyz-team.onrender.com`
+
+5. Create a superuser (via Render Dashboard → Shell):
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+### Key Configuration Files
+
+- `render.yaml` - Blueprint specification (web service + database)
+- `runtime.txt` - Python version (3.12.0)
+- `.renderignore` - Files to exclude from deployment
+- `build.sh` - Optional build script
+- `Procfile` - Process type definition
+
+### Environment Variables (Auto-Configured)
+
+All required environment variables are defined in `render.yaml`:
+- `DJANGO_SECRET_KEY` (auto-generated)
+- `DJANGO_ALLOWED_HOSTS`
+- `DJANGO_CSRF_TRUSTED_ORIGINS`
+- `DJANGO_DEBUG=False`
+- `DATABASE_URL` (from managed PostgreSQL)
+- `ALLOWED_EMAIL_DOMAINS=yale.edu`
+
+### Static Files
+
+WhiteNoise is preconfigured; no extra Render storage needed.
 
 ## 5. Project Structure
 
