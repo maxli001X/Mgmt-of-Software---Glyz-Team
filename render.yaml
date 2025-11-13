@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: treehole-web-blueprint
+    name: glyz-team
     env: python
     plan: free
     pythonVersion: 3.12
@@ -12,9 +12,9 @@ services:
       - key: DJANGO_SECRET_KEY
         sync: false
       - key: DJANGO_ALLOWED_HOSTS
-        value: treehole-web-blueprint.onrender.com,glyz-team.onrender.com
+        value: glyz-team.onrender.com
       - key: DJANGO_CSRF_TRUSTED_ORIGINS
-        value: https://treehole-web-blueprint.onrender.com,https://glyz-team.onrender.com
+        value: https://glyz-team.onrender.com
       - key: DJANGO_DEBUG
         value: "False"
       - key: DB_SSL_REQUIRE
