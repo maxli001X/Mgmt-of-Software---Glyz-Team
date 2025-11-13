@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: treehole-web
+    name: treehole-web-blueprint
     env: python
     plan: free
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
@@ -10,9 +10,9 @@ services:
       - key: DJANGO_SECRET_KEY
         sync: false
       - key: DJANGO_ALLOWED_HOSTS
-        value: treehole-web.onrender.com,glyz-team.onrender.com
+        value: treehole-web-blueprint.onrender.com,glyz-team.onrender.com
       - key: DJANGO_CSRF_TRUSTED_ORIGINS
-        value: https://treehole-web.onrender.com,https://glyz-team.onrender.com
+        value: https://treehole-web-blueprint.onrender.com,https://glyz-team.onrender.com
       - key: DJANGO_DEBUG
         value: "False"
       - key: DB_SSL_REQUIRE
@@ -21,10 +21,10 @@ services:
         value: yale.edu
       - key: DATABASE_URL
         fromDatabase:
-          name: treehole-db
+          name: treehole-db-blueprint
           property: connectionString
     autoDeploy: true
 databases:
-  - name: treehole-db
+  - name: treehole-db-blueprint
     plan: free
 
