@@ -21,8 +21,10 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls', namespace='accounts')),
-    path('', include('forum.urls', namespace='forum')),
+    path('auth/', include('auth_landing.urls', namespace='auth_landing')),
+    path('', include('posting.urls', namespace='posting')),
+    path('moderation/', include('moderation_ranking.urls', namespace='moderation_ranking')),
+    path('profile/', include('profile_settings.urls', namespace='profile_settings')),
 ]
 
 if settings.DEBUG:

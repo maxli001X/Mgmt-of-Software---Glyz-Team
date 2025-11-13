@@ -9,6 +9,6 @@
     {{ form.as_p }}
     <button type="submit">Create account</button>
 </form>
-<p>Already have an account? <a href="{% url 'accounts:login' %}">Log in</a>.</p>
+<p>Already have an account? <a href="{% url 'auth_landing:login' %}">Log in</a>.</p>
 {% endblock content %}
 

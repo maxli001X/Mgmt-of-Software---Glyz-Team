@@ -12,17 +12,17 @@
             <button type="submit">Post anonymously</button>
         </form>
     {% else %}
-        <p><a href="{% url 'accounts:login' %}">Log in with your Yale account</a> to post.</p>
+        <p><a href="{% url 'auth_landing:login' %}">Log in with your Yale account</a> to post.</p>
     {% endif %}
 </section>
 
 <section>
     <h2>Tags</h2>
     <ul>
-        <li><a href="{% url 'forum:home' %}">All</a></li>
+        <li><a href="{% url 'posting:home' %}">All</a></li>
         {% for tag in tags %}
             <li>
-                <a href="{% url 'forum:home' %}?tag={{ tag.slug }}"
+                <a href="{% url 'posting:home' %}?tag={{ tag.slug }}"
                    {% if tag.slug == active_tag %}aria-current="true"{% endif %}>
                     {{ tag.name }}
                 </a>
@@ -62,11 +62,11 @@
                 {% endfor %}
             </p>
             <footer>
-                <form method="post" action="{% url 'forum:upvote' post.pk %}">
+                <form method="post" action="{% url 'posting:upvote' post.pk %}">
                     {% csrf_token %}
                     <button type="submit">▲ Upvote ({{ post.votes.count }})</button>
                 </form>
-                <form method="post" action="{% url 'forum:flag' post.pk %}">
+                <form method="post" action="{% url 'posting:flag' post.pk %}">
                     {% csrf_token %}
                     <button type="submit">Flag</button>
                 </form>

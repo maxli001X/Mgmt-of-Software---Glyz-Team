@@ -2,8 +2,7 @@ from django.urls import path
 
 from . import views
 
-
-app_name = "forum"
+app_name = "posting"
 
 urlpatterns = [
     path("", views.home, name="home"),

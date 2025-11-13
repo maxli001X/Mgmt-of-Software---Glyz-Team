@@ -2,8 +2,7 @@ from django.urls import path
 
 from .views import SignUpView, YaleLoginView, YaleLogoutView
 
-
-app_name = "accounts"
+app_name = "auth_landing"
 
 urlpatterns = [
     path("signup/", SignUpView.as_view(), name="signup"),

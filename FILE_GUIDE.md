@@ -21,29 +21,41 @@ Plain-English map of the important files and what they do. Skim this whenever yo
 - `treehole/asgi.py` — ASGI entry point (future-proofing for async/websockets).
 - `treehole/__init__.py` — Marks this folder as a Python package.
 
-## Forum App (`forum/`)
+## Auth Landing App (`auth_landing/`)
 
-- `forum/models.py` — Database tables defined in Python (`Post`, `Tag`, `Vote`).
-- `forum/forms.py` — HTML form logic for creating posts.
-- `forum/views.py` — Functions that handle page requests (home feed, upvote, flag).
-- `forum/urls.py` — URL patterns for forum features (`/`, `/posts/<id>/upvote/`, etc.).
-- `forum/admin.py` — Registers models so staff can manage them via `/admin/`.
-- `forum/migrations/` — Auto-generated files that build the database schema for the forum.
+- `auth_landing/forms.py` — Yale-only signup form validation.
+- `auth_landing/views.py` — Signup, login, logout views.
+- `auth_landing/urls.py` — Routes `/auth/signup/`, `/auth/login/`, `/auth/logout/`.
+- `auth_landing/tests.py` — Smoke tests covering the signup flow.
+- Templates live under `templates/auth_landing/`.
 
-## Accounts App (`accounts/`)
+## Posting App (`posting/`)
 
-- `accounts/forms.py` — Signup form that enforces `@yale.edu` email addresses.
-- `accounts/views.py` — Login, logout, signup page logic.
-- `accounts/urls.py` — Routes `/accounts/login/`, `/accounts/signup/`, `/accounts/logout/`.
-- `accounts/admin.py`, `accounts/models.py`, etc. — Defaults from Django; currently minimal but ready for customization.
+- `posting/models.py` — Post/Tag/Vote models backing the feed.
+- `posting/forms.py` — Anonymous post form.
+- `posting/views.py` — Feed, tag filtering, upvote/flag handlers.
+- `posting/urls.py` — Feed + action routes (`/`, `/posts/<id>/...`).
+- `posting/admin.py` — Admin configuration for moderator review.
+- `posting/tests.py` — View + form smoke tests.
+- Templates live under `templates/posting/`.
+
+## Moderation Ranking App (`moderation_ranking/`)
+
+- Placeholder screen for future moderation tooling (story #50).
+- `moderation_ranking/views.py`, `urls.py`, `tests.py`, and template `templates/moderation_ranking/dashboard.html`.
+
+## Profile Settings App (`profile_settings/`)
+
+- Placeholder screen for profile and settings stories (#43–#45).
+- `profile_settings/views.py`, `urls.py`, `tests.py`, and template `templates/profile_settings/dashboard.html`.
 
 ## Templates (`templates/`)
 
-- `templates/base.html` — Master layout (nav bar, messages, loads CSS); all other templates extend this.
-- `templates/forum/home.html` — Homepage feed, post submission form, filtering by tags.
-- `templates/accounts/login.html` — Login page.
-- `templates/accounts/signup.html` — Signup page.
-- `templates/accounts/logout.html` — Logout confirmation page.
+- `templates/base.html` — Master layout, navigation, shared messages.
+- `templates/auth_landing/` — Login, signup, logout screens.
+- `templates/posting/home.html` — Posting feed with composer, tags, upvote/flag buttons.
+- `templates/moderation_ranking/dashboard.html` — Moderator placeholder.
+- `templates/profile_settings/dashboard.html` — Profile/settings placeholder.
 
 ## Static Assets (`static/`)
 
@@ -57,4 +69,10 @@ Plain-English map of the important files and what they do. Skim this whenever yo
 ## Virtual Environment (`venv/`)
 
 - Python interpreter + installed packages for local development. Not checked into git but kept locally.
+
+---
+
+## Issue Mapping
+
+- `ISSUE_STORY_MAPPING.md` — Cross-reference between GitHub issues (#39–#50) and the files that satisfy each story/epic.
 

@@ -9,20 +9,20 @@ from .forms import YaleSignUpForm
 
 
 class YaleLoginView(LoginView):
-    template_name = "accounts/login.html"
+    template_name = "auth_landing/login.html"
 
 
 class YaleLogoutView(LogoutView):
-    template_name = "accounts/logout.html"
+    template_name = "auth_landing/logout.html"
 
 
 class SignUpView(CreateView):
     form_class = YaleSignUpForm
-    template_name = "accounts/signup.html"
-    success_url = reverse_lazy("forum:home")
+    template_name = "auth_landing/signup.html"
+    success_url = reverse_lazy("posting:home")
 
     def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
+        self.object = form.save()
+        login(self.request, self.object)
         messages.success(self.request, "Welcome to Tree Hole Yale!")
         return redirect(self.get_success_url())

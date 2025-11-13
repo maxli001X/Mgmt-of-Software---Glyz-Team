@@ -10,18 +10,20 @@
 <body>
 <header>
     <nav>
-        <a href="{% url 'forum:home' %}">Tree Hole Yale</a>
+        <a href="{% url 'posting:home' %}">Tree Hole Yale</a>
         <ul>
             {% if user.is_authenticated %}
+                <li><a href="{% url 'profile_settings:dashboard' %}">Profile & Settings</a></li>
+                <li><a href="{% url 'moderation_ranking:dashboard' %}">Moderation</a></li>
                 <li>
-                    <form method="post" action="{% url 'accounts:logout' %}">
+                    <form method="post" action="{% url 'auth_landing:logout' %}">
                         {% csrf_token %}
                         <button type="submit">Log out</button>
                     </form>
                 </li>
             {% else %}
-                <li><a href="{% url 'accounts:login' %}">Log in</a></li>
-                <li><a href="{% url 'accounts:signup' %}">Sign up</a></li>
+                <li><a href="{% url 'auth_landing:login' %}">Log in</a></li>
+                <li><a href="{% url 'auth_landing:signup' %}">Sign up</a></li>
             {% endif %}
         </ul>
     </nav>

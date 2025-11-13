@@ -2,6 +2,10 @@
 
 Tree Hole Yale is an anonymous, Yale-only campus forum inspired by SideChat. Students can speak freely, react to posts, and flag content for moderation while keeping their identity private.
 
+- Repository: https://github.com/doriru89/Mgmt-of-Software---Glyz-Team
+- Render ready: `Procfile`, `render.yaml`, and pip-based build are configured; connect the repo in Render to deploy.
+- Story ↔ code reference: see `ISSUE_STORY_MAPPING.md` for how each GitHub story maps to files.
+
 ## Tech Stack
 
 - Django 5 + Python 3.14 (virtualenv already provisioned in `venv/`)
@@ -90,9 +94,9 @@ Tree Hole Yale is an anonymous, Yale-only campus forum inspired by SideChat. Stu
 
 ### Yale-specific signup flow
 
-- Users register via `/accounts/signup/`. Only emails ending with `@yale.edu` (configurable via `ALLOWED_EMAIL_DOMAINS` in your `.env`) are accepted.
-- Successful signups are automatically logged in and redirected to the home feed.
-- The `accounts` app uses Django's built-in auth views (`/accounts/login/`, `/accounts/logout/`).
+- Users register via `/auth/signup/`. Only emails ending with `@yale.edu` (configurable via `ALLOWED_EMAIL_DOMAINS` in your `.env`) are accepted.
+- Successful signups are automatically logged in and redirected to the posting feed.
+- Auth screens now live in the `auth_landing` app (`auth_landing/forms.py`, `auth_landing/views.py`, templates under `templates/auth_landing/`).
 
 ---
 
@@ -129,9 +133,12 @@ Tree Hole Yale is an anonymous, Yale-only campus forum inspired by SideChat. Stu
 Tree Hole Yale/
 ├── env.example
 ├── manage.py
-├── forum/               # Django app with models, admin, views
+├── auth_landing/        # Authentication landing screens (Sign in/up/out)
+├── posting/             # Posting feed, tag filtering, upvotes/flags (forum epic)
+├── moderation_ranking/  # Placeholder app for moderator ranking dashboards
+├── profile_settings/    # Placeholder app for profile & settings stories
 ├── treehole/            # Project settings, URLs, ASGI/WSGI
-├── templates/           # Base templates (placeholder home page)
+├── templates/           # Base templates + per-app screen templates
 ├── static/              # Static assets (add CSS/JS here)
 ├── media/               # User-uploaded media (optional)
 ├── requirements.txt
@@ -142,11 +149,10 @@ Tree Hole Yale/
 
 ## 6. Next Steps
 
-- Finish the anonymous post flow (forms, views, templates).
-- Add upvote/flag endpoints and UI.
-- Integrate Yale-only authentication (email domain check or SSO).
-- Write tests for posting, voting, and flagging.
-- Prepare `render.yaml` for Infrastructure-as-Code deployment (outlined later).
+- Populate the moderation dashboard (`moderation_ranking`) and profile/settings screens (`profile_settings`) to complete stories #43–#50.
+- Harden anonymous posting (rate limiting, deletion, admin tooling).
+- Integrate Yale SSO once requirements/policies are finalized.
+- Expand automated tests (see `posting/tests.py`, `auth_landing/tests.py`, etc. for starting points).
 
 ## 7. Testing & QA
 
@@ -154,4 +160,6 @@ Tree Hole Yale/
 - Use `python manage.py runserver` locally and navigate to `http://127.0.0.1:8000/` to test the posting flow.
 - For integration testing, seed sample tags via the Django admin and ensure filtering works.
 - Before each Render deploy, run `python manage.py collectstatic` locally to verify assets build.
+
+> **Heads up:** if you previously migrated the old `forum`/`accounts` apps, clear your local database (`rm db.sqlite3 && python manage.py migrate`) to sync with the new app layout.
 

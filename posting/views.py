@@ -24,19 +24,19 @@ def home(request):
     if request.method == "POST":
         if not request.user.is_authenticated:
             messages.error(request, "You must log in with your Yale account to post.")
-            return redirect("accounts:login")
+            return redirect("auth_landing:login")
 
         form = PostForm(request.POST)
         if form.is_valid():
             form.save(author=request.user)
             messages.success(request, "Post submitted successfully!")
-            return redirect(reverse("forum:home"))
+            return redirect(reverse("posting:home"))
 
     tags = Tag.objects.all()
 
     return render(
         request,
-        "forum/home.html",
+        "posting/home.html",
         {
             "form": form,
             "posts": posts,
@@ -59,7 +59,7 @@ def upvote_post(request, pk):
     else:
         messages.info(request, "You already upvoted this post.")
 
-    return redirect(request.META.get("HTTP_REFERER", reverse("forum:home")))
+    return redirect(request.META.get("HTTP_REFERER", reverse("posting:home")))
 
 
 @login_required
@@ -72,4 +72,4 @@ def flag_post(request, pk):
     else:
         messages.info(request, "This post is already flagged for review.")
 
-    return redirect(request.META.get("HTTP_REFERER", reverse("forum:home")))
+    return redirect(request.META.get("HTTP_REFERER", reverse("posting:home")))

@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
-    'forum',
+    'auth_landing',
+    'posting',
+    'moderation_ranking',
+    'profile_settings',
 ]
 
 MIDDLEWARE = [
@@ -148,9 +150,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-LOGIN_REDIRECT_URL = 'forum:home'
-LOGOUT_REDIRECT_URL = 'forum:home'
-LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'posting:home'
+LOGOUT_REDIRECT_URL = 'posting:home'
+LOGIN_URL = 'auth_landing:login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'treehole@yale.edu'
