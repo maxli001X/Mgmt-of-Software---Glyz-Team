@@ -26,6 +26,7 @@ services:
           name: glyz-team-db
           property: connectionString
     autoDeploy: true
+
 databases:
   - name: glyz-team-db
     plan: free
