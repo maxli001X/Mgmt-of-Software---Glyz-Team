@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}My Stats · Tree Hole Yale{% endblock title %}
+
+{% block content %}
+<section>
+    <h1>My Statistics</h1>
+    <p>View your activity on Tree Hole Yale</p>
+</section>
+
+<section>
+    <h2>Overview</h2>
+    <dl>
+        <dt>Total Posts</dt>
+        <dd>{{ post_count }}</dd>
+        
+        <dt>Total Votes Given</dt>
+        <dd>{{ vote_count }}</dd>
+        
+        <dt>Flagged Posts</dt>
+        <dd>{{ flagged_count }}</dd>
+        
+        {% if first_post_date %}
+        <dt>First Post</dt>
+        <dd>{{ first_post_date|date:"M d, Y" }}</dd>
+        {% endif %}
+        
+        {% if last_activity %}
+        <dt>Last Activity</dt>
+        <dd>{{ last_activity|date:"M d, Y H:i" }}</dd>
+        {% endif %}
+    </dl>
+</section>
+
+{% if most_used_tags %}
+<section>
+    <h2>Most Used Tags</h2>
+    <ul>
+        {% for tag in most_used_tags %}
+        <li>{{ tag.name }} ({{ tag.usage_count }} posts)</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
+{% if recent_posts %}
+<section>
+    <h2>Recent Posts</h2>
+    <ul>
+        {% for post in recent_posts %}
+        <li>
+            <a href="{% url 'posting:home' %}">{{ post.title }}</a>
+            <span> - {{ post.created_at|date:"M d, Y" }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
+<section>
+    <p><a href="{% url 'posting:home' %}">← Back to Home</a></p>
+    <p><a href="{% url 'posting:aggregated_stats' %}">View Platform Statistics</a></p>
+</section>
+{% endblock content %}
+
