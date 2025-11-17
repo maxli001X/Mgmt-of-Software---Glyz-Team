@@ -357,3 +357,130 @@ article footer {
     }
 }
 
+/* Sort Buttons */
+.sort-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #1b1b1b;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.sort-button:hover {
+    background: #f6f7fb;
+    border-color: #00356b;
+}
+
+.sort-button.active {
+    background: #00356b;
+    color: #fff;
+    border-color: #00356b;
+}
+
+/* Post Actions */
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.vote-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.vote-form {
+    margin: 0;
+    display: inline-block;
+}
+
+.vote-button {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #1b1b1b;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 90px;
+}
+
+.vote-button:hover {
+    background: #f6f7fb;
+    border-color: #00356b;
+}
+
+.upvote-button.active {
+    background: #10b981;
+    color: #fff;
+    border-color: #10b981;
+}
+
+.downvote-button.active {
+    background: #ef4444;
+    color: #fff;
+    border-color: #ef4444;
+}
+
+.net-votes {
+    font-weight: 600;
+    font-size: 1rem;
+    min-width: 40px;
+    text-align: center;
+    padding: 0.25rem 0.5rem;
+}
+
+.net-votes.positive {
+    color: #10b981;
+}
+
+.net-votes.negative {
+    color: #ef4444;
+}
+
+.flag-form {
+    margin: 0;
+    display: inline-block;
+}
+
+.flag-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #6b7280;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.flag-button:hover {
+    background: #fef2f2;
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+/* Responsive adjustments for post actions */
+@media (max-width: 600px) {
+    .post-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .vote-section {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+

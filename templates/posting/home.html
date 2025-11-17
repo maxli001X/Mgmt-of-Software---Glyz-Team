@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load posting_tags %}
 
 {% block title %}Tree Hole Yale{% endblock title %}
 
@@ -34,7 +35,21 @@
 </section>
 
 <section>
-    <h2>Recent Posts</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2 style="margin: 0;">
+            {% if sort == "popular" %}Popular Posts{% else %}Recent Posts{% endif %}
+        </h2>
+        <div style="display: flex; gap: 0.5rem;">
+            <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}" 
+               class="sort-button {% if sort == 'recent' %}active{% endif %}">
+                Recent
+            </a>
+            <a href="{% url 'posting:home' %}?sort=popular{% if active_tag %}&tag={{ active_tag }}{% endif %}" 
+               class="sort-button {% if sort == 'popular' %}active{% endif %}">
+                Popular
+            </a>
+        </div>
+    </div>
     {% for post in posts %}
         <article>
             <header>
@@ -61,14 +76,29 @@
                     <span>None</span>
                 {% endfor %}
             </p>
-            <footer>
-                <form method="post" action="{% url 'posting:upvote' post.pk %}">
+            <footer class="post-actions">
+                <div class="vote-section">
+                    {% with vote=user_votes|get_item:post.pk %}
+                        <form method="post" action="{% url 'posting:upvote' post.pk %}" class="vote-form">
+                            {% csrf_token %}
+                            <button type="submit" class="vote-button upvote-button {% if vote and vote.vote_type == 'UPVOTE' %}active{% endif %}">
+                                ▲ Upvote
+                            </button>
+                        </form>
+                        <span class="net-votes {% if post.get_net_votes > 0 %}positive{% elif post.get_net_votes < 0 %}negative{% endif %}">
+                            {{ post.get_net_votes|default:0 }}
+                        </span>
+                        <form method="post" action="{% url 'posting:downvote' post.pk %}" class="vote-form">
+                            {% csrf_token %}
+                            <button type="submit" class="vote-button downvote-button {% if vote and vote.vote_type == 'DOWNVOTE' %}active{% endif %}">
+                                ▼ Downvote
+                            </button>
+                        </form>
+                    {% endwith %}
+                </div>
+                <form method="post" action="{% url 'posting:flag' post.pk %}" class="flag-form">
                     {% csrf_token %}
-                    <button type="submit">▲ Upvote ({{ post.votes.count }})</button>
-                </form>
-                <form method="post" action="{% url 'posting:flag' post.pk %}">
-                    {% csrf_token %}
-                    <button type="submit">Flag</button>
+                    <button type="submit" class="flag-button">Flag</button>
                 </form>
             </footer>
         </article>

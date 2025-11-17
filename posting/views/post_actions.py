@@ -8,16 +8,46 @@ from ..models import Post, Vote
 
 @login_required
 def upvote_post(request, pk):
+    """Handle upvote with toggle behavior."""
     post = get_object_or_404(Post, pk=pk)
-    created = False
-    if not post.votes.filter(voter=request.user).exists():
-        Vote.objects.create(post=post, voter=request.user)
-        created = True
+    existing_vote = post.get_user_vote(request.user)
 
-    if created:
+    if existing_vote is None:
+        # No vote exists, create upvote
+        Vote.objects.create(post=post, voter=request.user, vote_type=Vote.UPVOTE)
         messages.success(request, "Thanks for upvoting!")
+    elif existing_vote.vote_type == Vote.DOWNVOTE:
+        # User has downvoted, change to upvote
+        existing_vote.vote_type = Vote.UPVOTE
+        existing_vote.save(update_fields=["vote_type"])
+        messages.success(request, "Changed to upvote!")
     else:
-        messages.info(request, "You already upvoted this post.")
+        # User has upvoted, remove vote (toggle off)
+        existing_vote.delete()
+        messages.info(request, "Upvote removed.")
+
+    return redirect(request.META.get("HTTP_REFERER", reverse("posting:home")))
+
+
+@login_required
+def downvote_post(request, pk):
+    """Handle downvote with toggle behavior."""
+    post = get_object_or_404(Post, pk=pk)
+    existing_vote = post.get_user_vote(request.user)
+
+    if existing_vote is None:
+        # No vote exists, create downvote
+        Vote.objects.create(post=post, voter=request.user, vote_type=Vote.DOWNVOTE)
+        messages.success(request, "Downvote recorded.")
+    elif existing_vote.vote_type == Vote.UPVOTE:
+        # User has upvoted, change to downvote
+        existing_vote.vote_type = Vote.DOWNVOTE
+        existing_vote.save(update_fields=["vote_type"])
+        messages.success(request, "Changed to downvote.")
+    else:
+        # User has downvoted, remove vote (toggle off)
+        existing_vote.delete()
+        messages.info(request, "Downvote removed.")
 
     return redirect(request.META.get("HTTP_REFERER", reverse("posting:home")))
 
