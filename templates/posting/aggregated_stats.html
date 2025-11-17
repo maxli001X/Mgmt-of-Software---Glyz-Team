@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Platform Statistics · Tree Hole Yale{% endblock title %}
+
+{% block content %}
+<section>
+    <h1>Platform Statistics</h1>
+    <p>Anonymized aggregate data about Tree Hole Yale</p>
+</section>
+
+<section>
+    <h2>Overview</h2>
+    <dl>
+        <dt>Total Users</dt>
+        <dd>{{ total_users }}</dd>
+        
+        <dt>Active Users</dt>
+        <dd>{{ active_users }}</dd>
+        
+        <dt>Total Posts</dt>
+        <dd>{{ total_posts }}</dd>
+        
+        <dt>Total Votes</dt>
+        <dd>{{ total_votes }}</dd>
+        
+        <dt>Flagged Posts</dt>
+        <dd>{{ total_flagged }}</dd>
+        
+        <dt>Average Posts per User</dt>
+        <dd>{{ avg_posts_per_user }}</dd>
+    </dl>
+</section>
+
+<section>
+    <h2>Active Users</h2>
+    <dl>
+        <dt>Daily Active Users (DAU)</dt>
+        <dd>{{ dau }}</dd>
+        
+        <dt>Weekly Active Users (WAU)</dt>
+        <dd>{{ wau }}</dd>
+        
+        <dt>Monthly Active Users (MAU)</dt>
+        <dd>{{ mau }}</dd>
+    </dl>
+</section>
+
+{% if posts_per_day %}
+<section>
+    <h2>Posts Per Day (Last 7 Days)</h2>
+    <ul>
+        {% for day in posts_per_day %}
+        <li>{{ day.date|date:"M d, Y" }}: {{ day.count }} posts</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
+{% if popular_tags %}
+<section>
+    <h2>Most Popular Tags</h2>
+    <ul>
+        {% for tag in popular_tags %}
+        <li>{{ tag.name }} ({{ tag.post_count }} posts)</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
+<section>
+    <p><a href="{% url 'posting:home' %}">← Back to Home</a></p>
+    {% if user.is_authenticated %}
+    <p><a href="{% url 'posting:my_stats' %}">View My Statistics</a></p>
+    {% endif %}
+</section>
+{% endblock content %}
+
