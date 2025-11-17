@@ -4,6 +4,59 @@
 {% block title %}Tree Hole Yale{% endblock title %}
 
 {% block content %}
+<!-- Search Bar -->
+<section class="search-section">
+    <form method="get" action="{% url 'posting:home' %}" class="search-form">
+        <input 
+            type="search" 
+            name="q" 
+            value="{{ search_query }}" 
+            placeholder="Search posts..." 
+            class="search-input"
+            aria-label="Search posts"
+            id="search-input"
+        >
+        {% if active_tag %}
+            <input type="hidden" name="tag" value="{{ active_tag }}">
+        {% endif %}
+        {% if sort == "popular" %}
+            <input type="hidden" name="sort" value="{{ sort }}">
+        {% endif %}
+        <button type="submit" class="search-button" aria-label="Search">🔍</button>
+        {% if search_query %}
+            <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}{% if sort == 'popular' %}{% if active_tag %}&{% else %}?{% endif %}sort=popular{% endif %}" 
+               class="clear-search" 
+               aria-label="Clear search">
+                ✕
+            </a>
+        {% endif %}
+    </form>
+</section>
+
+<!-- Tag Filter Chips -->
+<section class="tag-filter-section">
+    <h2 class="visually-hidden">Filter by Tag</h2>
+    <div class="tag-chips">
+        <a href="{% url 'posting:home' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}{% if search_query %}&{% else %}?{% endif %}sort=popular{% endif %}" 
+           class="tag-chip {% if not active_tag %}active{% endif %}" 
+           aria-label="Show all posts">
+            All Posts
+        </a>
+        {% for tag in tags %}
+            <a href="{% url 'posting:home' %}?tag={{ tag.slug }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}&sort=popular{% endif %}" 
+               class="tag-chip tag-{{ tag.slug|lower|slugify }} {% if tag.slug == active_tag %}active{% endif %}" 
+               aria-label="{{ tag.name }} ({{ tag.post_count }} posts)"
+               title="{{ tag.name }} ({{ tag.post_count }} posts)">
+                <span class="tag-icon">{{ tag.name|slice:":1" }}</span>
+                <span class="tag-name">{{ tag.name }}</span>
+                <span class="tag-count">({{ tag.post_count }})</span>
+            </a>
+        {% empty %}
+            <p class="no-tags">No tags available yet.</p>
+        {% endfor %}
+    </div>
+</section>
+
 <section>
     <h1>Share Your Thoughts</h1>
     {% if user.is_authenticated %}
@@ -18,39 +71,39 @@
 </section>
 
 <section>
-    <h2>Tags</h2>
-    <ul>
-        <li><a href="{% url 'posting:home' %}">All</a></li>
-        {% for tag in tags %}
-            <li>
-                <a href="{% url 'posting:home' %}?tag={{ tag.slug }}"
-                   {% if tag.slug == active_tag %}aria-current="true"{% endif %}>
-                    {{ tag.name }}
-                </a>
-            </li>
-        {% empty %}
-            <li>No tags yet.</li>
-        {% endfor %}
-    </ul>
-</section>
-
-<section>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h2 style="margin: 0;">
-            {% if sort == "popular" %}Popular Posts{% else %}Recent Posts{% endif %}
-        </h2>
-        <div style="display: flex; gap: 0.5rem;">
-            <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}" 
+    <div class="posts-header">
+        <div>
+            <h2 style="margin: 0;">
+                {% if search_query %}
+                    Search Results
+                {% elif sort == "popular" %}
+                    Popular Posts
+                {% else %}
+                    Recent Posts
+                {% endif %}
+            </h2>
+            {% if search_query or active_tag %}
+                <p class="results-count" role="status" aria-live="polite">
+                    Found {{ posts_count }} post{{ posts_count|pluralize }}
+                    {% if search_query %}matching "{{ search_query }}"{% endif %}
+                    {% if active_tag %}in {{ active_tag|title }}{% endif %}
+                </p>
+            {% endif %}
+        </div>
+        <div class="sort-controls">
+            <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}{% if search_query %}{% if active_tag %}&{% else %}?{% endif %}q={{ search_query|urlencode }}{% endif %}" 
                class="sort-button {% if sort == 'recent' %}active{% endif %}">
                 Recent
             </a>
-            <a href="{% url 'posting:home' %}?sort=popular{% if active_tag %}&tag={{ active_tag }}{% endif %}" 
+            <a href="{% url 'posting:home' %}?sort=popular{% if active_tag %}&tag={{ active_tag }}{% endif %}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}" 
                class="sort-button {% if sort == 'popular' %}active{% endif %}">
                 Popular
             </a>
         </div>
     </div>
-    {% for post in posts %}
+    
+    {% if posts %}
+        {% for post in posts %}
         <article>
             <header>
                 <h3>{{ post.title }}</h3>
@@ -102,9 +155,60 @@
                 </form>
             </footer>
         </article>
-    {% empty %}
-        <p>No posts yet. Be the first to share something!</p>
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            {% if search_query %}
+                <p class="empty-state-icon">🔍</p>
+                <h3>No posts found</h3>
+                <p>No posts match your search for "{{ search_query }}".</p>
+                <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}" class="clear-filter-button">
+                    Clear search
+                </a>
+            {% elif active_tag %}
+                <p class="empty-state-icon">🏷️</p>
+                <h3>No posts in this category</h3>
+                <p>There are no posts tagged with "{{ active_tag|title }}" yet.</p>
+                <a href="{% url 'posting:home' %}" class="clear-filter-button">
+                    View all posts
+                </a>
+            {% else %}
+                <p class="empty-state-icon">📝</p>
+                <h3>No posts yet</h3>
+                <p>Be the first to share something!</p>
+            {% endif %}
+        </div>
+    {% endif %}
 </section>
+
+<script>
+    // Debounced search functionality
+    (function() {
+        const searchInput = document.getElementById('search-input');
+        const searchForm = document.querySelector('.search-form');
+        let debounceTimer;
+
+        if (searchInput && searchForm) {
+            // Auto-submit on input with debounce (500ms delay)
+            searchInput.addEventListener('input', function() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(function() {
+                    // Only auto-submit if there's a value or if clearing
+                    if (searchInput.value.length >= 2 || searchInput.value.length === 0) {
+                        searchForm.submit();
+                    }
+                }, 500);
+            });
+
+            // Submit on Enter key
+            searchInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    clearTimeout(debounceTimer);
+                    searchForm.submit();
+                }
+            });
+        }
+    })();
+</script>
 {% endblock content %}
 

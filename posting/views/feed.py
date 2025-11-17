@@ -9,10 +9,11 @@ from ..models import Post, Tag
 
 @login_required(login_url='auth_landing:landing')
 def home(request):
-    """Homepage showing recent posts with optional tag filtering and submission form."""
+    """Homepage showing recent posts with optional tag filtering, search, and submission form."""
     from django.db.models import Count, Q
     
     tag_slug = request.GET.get("tag")
+    search_query = request.GET.get("q", "").strip()
     sort = request.GET.get("sort", "recent")  # Default to recent
     
     # Base queryset with optimizations
@@ -25,6 +26,13 @@ def home(request):
         )
     )
 
+    # Apply search filter
+    if search_query:
+        posts = posts.filter(
+            Q(title__icontains=search_query) | Q(body__icontains=search_query)
+        )
+
+    # Apply tag filter
     if tag_slug:
         posts = posts.filter(tags__slug=tag_slug)
 
@@ -46,7 +54,8 @@ def home(request):
             messages.success(request, "Post submitted successfully!")
             return redirect(reverse("posting:home"))
 
-    tags = Tag.objects.all()
+    # Get all tags with post counts
+    tags = Tag.objects.annotate(post_count=Count("posts")).order_by("name")
 
     # Get user votes for all posts to check vote state in template
     user_votes = {}
@@ -58,6 +67,9 @@ def home(request):
         ).select_related("post")
         user_votes = {vote.post_id: vote for vote in votes}
 
+    # Count results for screen reader announcement
+    posts_count = posts.count()
+
     return render(
         request,
         "posting/home.html",
@@ -66,8 +78,10 @@ def home(request):
             "posts": posts,
             "tags": tags,
             "active_tag": tag_slug,
+            "search_query": search_query,
             "sort": sort,
             "user_votes": user_votes,
+            "posts_count": posts_count,
         },
     )
 
