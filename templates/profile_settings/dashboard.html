@@ -5,7 +5,142 @@
 {% block content %}
 <section>
     <h1>Profile & Settings</h1>
-    <p>Future stories (#43–#45) will populate this page with user preferences, profile info, and API endpoints.</p>
+    
+    <div class="profile-header">
+        <div class="profile-info">
+            <h2>{{ user.get_full_name|default:user.username }}</h2>
+            <p class="profile-email">{{ user.email }}</p>
+            <p class="profile-school">Yale University</p>
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{% url 'profile_settings:my_posts' %}" class="profile-action-card">
+            <span class="action-icon">📝</span>
+            <div class="action-content">
+                <h3>My Posts</h3>
+                <p>View all your posts and contributions</p>
+            </div>
+            <span class="action-arrow">→</span>
+        </a>
+        
+        <a href="{% url 'profile_settings:settings' %}" class="profile-action-card">
+            <span class="action-icon">⚙️</span>
+            <div class="action-content">
+                <h3>Settings</h3>
+                <p>Manage your account and preferences</p>
+            </div>
+            <span class="action-arrow">→</span>
+        </a>
+    </div>
+
+    <div class="profile-note">
+        <p><strong>About Anonymity:</strong> When you post anonymously, your identity is hidden from other users. However, you can always see your own anonymous posts in "My Posts".</p>
+    </div>
 </section>
+
+<style>
+.profile-header {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+}
+
+.profile-info h2 {
+    margin: 0 0 0.5rem 0;
+    color: #1b1b1b;
+    font-size: 1.75rem;
+}
+
+.profile-email {
+    color: #6b7280;
+    margin: 0.25rem 0;
+    font-size: 1rem;
+}
+
+.profile-school {
+    color: #00356b;
+    font-weight: 600;
+    margin: 0.5rem 0 0 0;
+    font-size: 0.95rem;
+}
+
+.profile-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.profile-action-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    color: #1b1b1b;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.profile-action-card:hover {
+    border-color: #00356b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.action-icon {
+    font-size: 2rem;
+}
+
+.action-content {
+    flex: 1;
+}
+
+.action-content h3 {
+    margin: 0 0 0.25rem 0;
+    color: #1b1b1b;
+    font-size: 1.1rem;
+}
+
+.action-content p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.action-arrow {
+    color: #6b7280;
+    font-size: 1.5rem;
+}
+
+.profile-note {
+    background: #e6f7ff;
+    border-left: 4px solid #00356b;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    color: #1b1b1b;
+}
+
+.profile-note p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+    .profile-actions {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-action-card {
+        padding: 1.25rem;
+    }
+}
+</style>
 {% endblock content %}
 

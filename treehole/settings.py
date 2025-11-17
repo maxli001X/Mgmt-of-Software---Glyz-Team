@@ -230,7 +230,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_REDIRECT_URL = 'posting:home'
-LOGOUT_REDIRECT_URL = 'posting:home'
+LOGOUT_REDIRECT_URL = 'auth_landing:landing'
 LOGIN_URL = 'auth_landing:login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

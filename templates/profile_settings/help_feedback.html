@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block title %}Help & Feedback · Tree Hole Yale{% endblock title %}
+
+{% block content %}
+<section>
+    <h1>Help & Feedback</h1>
+    
+    <div class="help-content">
+        <div class="help-section">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <h3>How do I post anonymously?</h3>
+                <p>When creating a post, the "Post anonymously" option is selected by default. Your identity will be hidden from other users, but you can still see your own posts in "My Posts".</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Can I edit or delete my posts?</h3>
+                <p>Currently, posts cannot be edited after submission. If you need to remove a post, please contact us through the feedback form below.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>How do I report inappropriate content?</h3>
+                <p>You can flag any post by clicking the "Flag" button. Our moderators will review flagged content and take appropriate action.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Who can use Tree Hole Yale?</h3>
+                <p>Tree Hole Yale is exclusively for current Yale University students, faculty, and staff. You must use a @yale.edu email address to register.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>How do I change my email preferences?</h3>
+                <p>Go to Settings → Email Preferences to manage which notifications you receive.</p>
+            </div>
+        </div>
+        
+        <div class="feedback-section">
+            <h2>Send Us Feedback</h2>
+            <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                Have a question, suggestion, or found a bug? We'd love to hear from you!
+            </p>
+            
+            <form method="post" class="feedback-form">
+                {% csrf_token %}
+                
+                <div class="form-field">
+                    <label for="{{ form.feedback_type.id_for_label }}">{{ form.feedback_type.label }}</label>
+                    {{ form.feedback_type }}
+                    {% if form.feedback_type.errors %}
+                        <div class="form-error">{{ form.feedback_type.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-field">
+                    <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
+                    {{ form.subject }}
+                    {% if form.subject.errors %}
+                        <div class="form-error">{{ form.subject.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-field">
+                    <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+                    {{ form.message }}
+                    {% if form.message.errors %}
+                        <div class="form-error">{{ form.message.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="button-primary">Send Feedback</button>
+                    <a href="{% url 'profile_settings:settings' %}" class="button-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<style>
+.help-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.help-section,
+.feedback-section {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.help-section h2,
+.feedback-section h2 {
+    color: #00356b;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.faq-item {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.faq-item h3 {
+    color: #1b1b1b;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.faq-item p {
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.feedback-form {
+    margin-top: 1rem;
+}
+
+.form-field {
+    margin-bottom: 1.5rem;
+}
+
+.form-field label {
+    display: block;
+    font-weight: 600;
+    color: #1b1b1b;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-field select,
+.form-field input[type="text"],
+.form-field textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.form-field select:focus,
+.form-field input[type="text"]:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-color: #00356b;
+    box-shadow: 0 0 0 3px rgba(0, 53, 107, 0.1);
+}
+
+.form-field textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-error {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.button-primary {
+    background: #00356b;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s;
+}
+
+.button-primary:hover {
+    background: #002a55;
+}
+
+.button-secondary {
+    background: #f3f4f6;
+    color: #1b1b1b;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s;
+}
+
+.button-secondary:hover {
+    background: #e5e7eb;
+}
+
+@media (max-width: 900px) {
+    .help-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .help-section,
+    .feedback-section {
+        padding: 1.5rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .button-primary,
+    .button-secondary {
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>
+{% endblock content %}
+

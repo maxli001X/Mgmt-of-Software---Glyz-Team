@@ -13,6 +13,7 @@
         <a href="{% url 'posting:home' %}">Tree Hole Yale</a>
         <ul>
             {% if user.is_authenticated %}
+                <li><a href="{% url 'profile_settings:my_posts' %}">My Posts</a></li>
                 <li><a href="{% url 'profile_settings:dashboard' %}">Profile & Settings</a></li>
                 <li><a href="{% url 'moderation_ranking:dashboard' %}">Moderation</a></li>
                 <li>

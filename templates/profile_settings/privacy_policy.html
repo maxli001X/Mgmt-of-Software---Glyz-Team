@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy · Tree Hole Yale{% endblock title %}
+
+{% block content %}
+<section>
+    <h1>Privacy Policy</h1>
+    
+    <div class="legal-content">
+        <p class="last-updated">Last updated: {{ "now"|date:"F d, Y" }}</p>
+        
+        <h2>1. Introduction</h2>
+        <p>
+            Tree Hole Yale ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service.
+        </p>
+        
+        <h2>2. Information We Collect</h2>
+        <h3>2.1 Account Information</h3>
+        <p>When you create an account, we collect:</p>
+        <ul>
+            <li>Username</li>
+            <li>Yale email address</li>
+            <li>Password (encrypted)</li>
+        </ul>
+        
+        <h3>2.2 Content You Post</h3>
+        <p>We collect and store:</p>
+        <ul>
+            <li>Posts and comments you create</li>
+            <li>Tags and categories you assign</li>
+            <li>Votes and interactions</li>
+        </ul>
+        
+        <h3>2.3 Usage Information</h3>
+        <p>We automatically collect:</p>
+        <ul>
+            <li>IP address</li>
+            <li>Browser type and version</li>
+            <li>Pages visited and time spent</li>
+            <li>Device information</li>
+        </ul>
+        
+        <h2>3. How We Use Your Information</h2>
+        <p>We use the information we collect to:</p>
+        <ul>
+            <li>Provide and maintain the Service</li>
+            <li>Authenticate your identity as a Yale community member</li>
+            <li>Moderate content and ensure compliance with policies</li>
+            <li>Send you important notifications (if enabled)</li>
+            <li>Improve and optimize the Service</li>
+            <li>Respond to your feedback and support requests</li>
+        </ul>
+        
+        <h2>4. Anonymity and Privacy</h2>
+        <h3>4.1 Anonymous Posts</h3>
+        <p>
+            When you post anonymously, your identity is hidden from other users. However:
+        </p>
+        <ul>
+            <li>Administrators can see the author of anonymous posts for moderation purposes</li>
+            <li>You can always see your own anonymous posts in "My Posts"</li>
+            <li>Anonymous posts may be traced if necessary for legal or policy compliance</li>
+        </ul>
+        
+        <h3>4.2 Non-Anonymous Posts</h3>
+        <p>
+            If you choose to post non-anonymously, your username (or full name if provided) will be visible to other users.
+        </p>
+        
+        <h2>5. Information Sharing and Disclosure</h2>
+        <p>We do not sell your personal information. We may share your information only in the following circumstances:</p>
+        <ul>
+            <li><strong>With Yale University:</strong> We may share information with Yale University administrators for policy compliance and safety</li>
+            <li><strong>Legal Requirements:</strong> We may disclose information if required by law or to protect rights and safety</li>
+            <li><strong>Service Providers:</strong> We may share information with trusted service providers who assist in operating the Service</li>
+        </ul>
+        
+        <h2>6. Data Security</h2>
+        <p>
+            We implement appropriate technical and organizational measures to protect your personal information. However, no method of transmission over the Internet or electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your information, we cannot guarantee absolute security.
+        </p>
+        
+        <h2>7. Your Rights</h2>
+        <p>You have the right to:</p>
+        <ul>
+            <li>Access your personal information</li>
+            <li>Correct inaccurate information</li>
+            <li>Delete your account and associated data</li>
+            <li>Opt-out of email notifications</li>
+            <li>Request a copy of your data</li>
+        </ul>
+        <p>To exercise these rights, please contact us through the Help & Feedback page.</p>
+        
+        <h2>8. Data Retention</h2>
+        <p>
+            We retain your information for as long as your account is active or as needed to provide the Service. If you delete your account, we will delete or anonymize your personal information, except where we are required to retain it for legal or policy compliance.
+        </p>
+        
+        <h2>9. Children's Privacy</h2>
+        <p>
+            Tree Hole Yale is intended for use by Yale University community members who are at least 18 years old. We do not knowingly collect information from children under 18.
+        </p>
+        
+        <h2>10. Changes to This Privacy Policy</h2>
+        <p>
+            We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date.
+        </p>
+        
+        <h2>11. Contact Us</h2>
+        <p>
+            If you have questions about this Privacy Policy, please contact us through the Help & Feedback page in Settings.
+        </p>
+        
+        <div class="legal-actions">
+            <a href="{% url 'profile_settings:settings' %}" class="button-secondary">Back to Settings</a>
+        </div>
+    </div>
+</section>
+
+<style>
+.legal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    max-width: 800px;
+    line-height: 1.8;
+}
+
+.last-updated {
+    color: #6b7280;
+    font-style: italic;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.legal-content h2 {
+    color: #00356b;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.legal-content h2:first-of-type {
+    margin-top: 0;
+}
+
+.legal-content h3 {
+    color: #1b1b1b;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
+}
+
+.legal-content p {
+    margin-bottom: 1rem;
+    color: #1b1b1b;
+}
+
+.legal-content ul {
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+    color: #1b1b1b;
+}
+
+.legal-content li {
+    margin-bottom: 0.5rem;
+}
+
+.legal-content strong {
+    color: #00356b;
+}
+
+.legal-actions {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.button-secondary {
+    background: #f3f4f6;
+    color: #1b1b1b;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s;
+}
+
+.button-secondary:hover {
+    background: #e5e7eb;
+}
+
+@media (max-width: 600px) {
+    .legal-content {
+        padding: 1.5rem;
+    }
+}
+</style>
+{% endblock content %}
+

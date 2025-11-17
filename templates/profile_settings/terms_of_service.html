@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Terms of Service · Tree Hole Yale{% endblock title %}
+
+{% block content %}
+<section>
+    <h1>Terms of Service</h1>
+    
+    <div class="legal-content">
+        <p class="last-updated">Last updated: {{ "now"|date:"F d, Y" }}</p>
+        
+        <h2>1. Acceptance of Terms</h2>
+        <p>
+            By accessing and using Tree Hole Yale ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+        </p>
+        
+        <h2>2. Use License</h2>
+        <p>
+            Permission is granted to temporarily use Tree Hole Yale for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+        </p>
+        <ul>
+            <li>Modify or copy the materials</li>
+            <li>Use the materials for any commercial purpose or for any public display</li>
+            <li>Attempt to reverse engineer any software contained on Tree Hole Yale</li>
+            <li>Remove any copyright or other proprietary notations from the materials</li>
+        </ul>
+        
+        <h2>3. User Accounts</h2>
+        <p>
+            You are responsible for maintaining the confidentiality of your account and password. You agree to accept responsibility for all activities that occur under your account. You must be a current student, faculty, or staff member of Yale University to use this service.
+        </p>
+        
+        <h2>4. User Conduct</h2>
+        <p>
+            You agree to use Tree Hole Yale in a manner consistent with Yale University's policies and applicable laws. You agree not to:
+        </p>
+        <ul>
+            <li>Post content that is illegal, harmful, threatening, abusive, or discriminatory</li>
+            <li>Harass, intimidate, or harm other users</li>
+            <li>Impersonate any person or entity</li>
+            <li>Post spam, advertisements, or solicitations</li>
+            <li>Violate any applicable local, state, national, or international law</li>
+        </ul>
+        
+        <h2>5. Content Ownership</h2>
+        <p>
+            You retain ownership of any content you post on Tree Hole Yale. By posting content, you grant Tree Hole Yale a non-exclusive, royalty-free license to use, display, and distribute your content on the Service.
+        </p>
+        
+        <h2>6. Anonymity</h2>
+        <p>
+            While Tree Hole Yale allows anonymous posting, you are still responsible for your content. Anonymous posts are not truly anonymous to administrators and may be traced if necessary for legal or policy compliance.
+        </p>
+        
+        <h2>7. Moderation</h2>
+        <p>
+            Tree Hole Yale reserves the right to remove any content that violates these terms or Yale University policies. We may suspend or terminate accounts that repeatedly violate these terms.
+        </p>
+        
+        <h2>8. Disclaimer</h2>
+        <p>
+            The materials on Tree Hole Yale are provided on an 'as is' basis. Tree Hole Yale makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+        </p>
+        
+        <h2>9. Limitations</h2>
+        <p>
+            In no event shall Tree Hole Yale or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Tree Hole Yale.
+        </p>
+        
+        <h2>10. Revisions</h2>
+        <p>
+            Tree Hole Yale may revise these terms of service at any time without notice. By using this service, you are agreeing to be bound by the then current version of these terms of service.
+        </p>
+        
+        <h2>11. Governing Law</h2>
+        <p>
+            These terms and conditions are governed by and construed in accordance with the laws of Connecticut, United States, and you irrevocably submit to the exclusive jurisdiction of the courts in that state or location.
+        </p>
+        
+        <div class="legal-actions">
+            <a href="{% url 'profile_settings:settings' %}" class="button-secondary">Back to Settings</a>
+        </div>
+    </div>
+</section>
+
+<style>
+.legal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    max-width: 800px;
+    line-height: 1.8;
+}
+
+.last-updated {
+    color: #6b7280;
+    font-style: italic;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.legal-content h2 {
+    color: #00356b;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.legal-content h2:first-of-type {
+    margin-top: 0;
+}
+
+.legal-content p {
+    margin-bottom: 1rem;
+    color: #1b1b1b;
+}
+
+.legal-content ul {
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+    color: #1b1b1b;
+}
+
+.legal-content li {
+    margin-bottom: 0.5rem;
+}
+
+.legal-actions {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.button-secondary {
+    background: #f3f4f6;
+    color: #1b1b1b;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s;
+}
+
+.button-secondary:hover {
+    background: #e5e7eb;
+}
+
+@media (max-width: 600px) {
+    .legal-content {
+        padding: 1.5rem;
+    }
+}
+</style>
+{% endblock content %}
+

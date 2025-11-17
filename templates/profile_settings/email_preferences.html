@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}Email Preferences · Tree Hole Yale{% endblock title %}
+
+{% block content %}
+<section>
+    <h1>Email Preferences</h1>
+    
+    <p style="color: #6b7280; margin-bottom: 2rem;">
+        Manage your email notification preferences. You can control which types of emails you receive from Tree Hole Yale.
+    </p>
+    
+    <form method="post" class="form-container">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <h2>Notification Settings</h2>
+            
+            <div class="form-field">
+                <label class="checkbox-label">
+                    {{ form.email_notifications_enabled }}
+                    <div class="checkbox-content">
+                        <span class="checkbox-title">{{ form.email_notifications_enabled.label }}</span>
+                        <span class="checkbox-help">{{ form.email_notifications_enabled.help_text }}</span>
+                    </div>
+                </label>
+            </div>
+            
+            <div class="form-subsection" id="email-subsection">
+                <div class="form-field">
+                    <label class="checkbox-label">
+                        {{ form.email_on_replies }}
+                        <div class="checkbox-content">
+                            <span class="checkbox-title">{{ form.email_on_replies.label }}</span>
+                            <span class="checkbox-help">{{ form.email_on_replies.help_text }}</span>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="form-field">
+                    <label class="checkbox-label">
+                        {{ form.email_on_upvotes }}
+                        <div class="checkbox-content">
+                            <span class="checkbox-title">{{ form.email_on_upvotes.label }}</span>
+                            <span class="checkbox-help">{{ form.email_on_upvotes.help_text }}</span>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="form-field">
+                    <label class="checkbox-label">
+                        {{ form.email_on_mentions }}
+                        <div class="checkbox-content">
+                            <span class="checkbox-title">{{ form.email_on_mentions.label }}</span>
+                            <span class="checkbox-help">{{ form.email_on_mentions.help_text }}</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="button-primary">Save Preferences</button>
+            <a href="{% url 'profile_settings:settings' %}" class="button-secondary">Cancel</a>
+        </div>
+    </form>
+</section>
+
+<style>
+.form-container {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    max-width: 600px;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section h2 {
+    font-size: 1.25rem;
+    color: #00356b;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.form-subsection {
+    margin-left: 1.5rem;
+    margin-top: 1rem;
+    padding-left: 1.5rem;
+    border-left: 2px solid #e0e0e0;
+}
+
+.form-field {
+    margin-bottom: 1.5rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    cursor: pointer;
+}
+
+.checkbox-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.checkbox-title {
+    font-weight: 600;
+    color: #1b1b1b;
+    font-size: 1rem;
+}
+
+.checkbox-help {
+    font-size: 0.875rem;
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.button-primary {
+    background: #00356b;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s;
+}
+
+.button-primary:hover {
+    background: #002a55;
+}
+
+.button-secondary {
+    background: #f3f4f6;
+    color: #1b1b1b;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s;
+}
+
+.button-secondary:hover {
+    background: #e5e7eb;
+}
+
+@media (max-width: 600px) {
+    .form-container {
+        padding: 1.5rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .button-primary,
+    .button-secondary {
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>
+
+<script>
+// Show/hide subsection based on master toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const masterToggle = document.querySelector('#id_email_notifications_enabled');
+    const subsection = document.querySelector('#email-subsection');
+    
+    function toggleSubsection() {
+        if (masterToggle && subsection) {
+            if (masterToggle.checked) {
+                subsection.style.display = 'block';
+            } else {
+                subsection.style.display = 'none';
+            }
+        }
+    }
+    
+    if (masterToggle) {
+        masterToggle.addEventListener('change', toggleSubsection);
+        toggleSubsection(); // Initial state
+    }
+});
+</script>
+{% endblock content %}
+

@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Settings · Tree Hole Yale{% endblock title %}
+
+{% block content %}
+<section>
+    <h1>Settings</h1>
+    
+    <div class="settings-section">
+        <h2>Account</h2>
+        <ul class="settings-list">
+            <li>
+                <a href="{% url 'profile_settings:change_password' %}" class="settings-item">
+                    <span class="settings-icon">🔒</span>
+                    <div class="settings-content">
+                        <span class="settings-title">Change Password</span>
+                        <span class="settings-description">Update your account password</span>
+                    </div>
+                    <span class="settings-arrow">→</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'profile_settings:email_preferences' %}" class="settings-item">
+                    <span class="settings-icon">📧</span>
+                    <div class="settings-content">
+                        <span class="settings-title">Email Preferences</span>
+                        <span class="settings-description">Manage email notifications</span>
+                    </div>
+                    <span class="settings-arrow">→</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="settings-section">
+        <h2>Legal</h2>
+        <ul class="settings-list">
+            <li>
+                <a href="{% url 'profile_settings:terms_of_service' %}" class="settings-item">
+                    <span class="settings-icon">📄</span>
+                    <div class="settings-content">
+                        <span class="settings-title">Terms of Service</span>
+                        <span class="settings-description">Read our terms of service</span>
+                    </div>
+                    <span class="settings-arrow">→</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'profile_settings:privacy_policy' %}" class="settings-item">
+                    <span class="settings-icon">🔐</span>
+                    <div class="settings-content">
+                        <span class="settings-title">Privacy Policy</span>
+                        <span class="settings-description">Read our privacy policy</span>
+                    </div>
+                    <span class="settings-arrow">→</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="settings-section">
+        <h2>Support</h2>
+        <ul class="settings-list">
+            <li>
+                <a href="{% url 'profile_settings:help_feedback' %}" class="settings-item">
+                    <span class="settings-icon">💬</span>
+                    <div class="settings-content">
+                        <span class="settings-title">Help & Feedback</span>
+                        <span class="settings-description">Get help or send feedback</span>
+                    </div>
+                    <span class="settings-arrow">→</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="settings-section">
+        <h2>About</h2>
+        <ul class="settings-list">
+            <li>
+                <div class="settings-item">
+                    <span class="settings-icon">ℹ️</span>
+                    <div class="settings-content">
+                        <span class="settings-title">App Version</span>
+                        <span class="settings-description">Tree Hole Yale v1.0</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<style>
+.settings-section {
+    margin-bottom: 2rem;
+}
+
+.settings-section h2 {
+    font-size: 1.25rem;
+    color: #00356b;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.settings-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.settings-list li {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.settings-list li:last-child {
+    border-bottom: none;
+}
+
+.settings-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    text-decoration: none;
+    color: #1b1b1b;
+    transition: background-color 0.2s;
+}
+
+.settings-item:hover:not(.settings-item-disabled) {
+    background: #f6f7fb;
+}
+
+.settings-item-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.settings-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    text-align: center;
+}
+
+.settings-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.settings-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1b1b1b;
+}
+
+.settings-description {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.settings-arrow {
+    color: #6b7280;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 600px) {
+    .settings-item {
+        padding: 1rem;
+    }
+    
+    .settings-icon {
+        font-size: 1.25rem;
+        width: 32px;
+    }
+}
+</style>
+{% endblock content %}
+
