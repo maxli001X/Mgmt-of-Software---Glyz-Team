@@ -1,11 +1,19 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from .forms import YaleSignUpForm
+
+
+def landing_page(request):
+    """Landing page for unauthenticated users."""
+    # Redirect authenticated users to home
+    if request.user.is_authenticated:
+        return redirect("posting:home")
+    return render(request, "auth_landing/landing.html")
 
 
 class YaleLoginView(LoginView):

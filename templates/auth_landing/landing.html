@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <title>Tree Hole Yale - Welcome</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Loading State -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Landing Page Content -->
+    <div class="landing-page">
+        <div class="landing-content">
+            <div class="landing-logo">🌳</div>
+            <h1 class="landing-app-name">Tree Hole Yale</h1>
+            <p class="landing-tagline">
+                Anonymous Yale-only campus forum
+            </p>
+            <div class="landing-buttons">
+                <a href="{% url 'auth_landing:signup' %}" class="landing-button">Sign Up</a>
+                <a href="{% url 'auth_landing:login' %}" class="landing-button secondary">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle loading state - hide after page loads
+        window.addEventListener('load', function() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            // Small delay to ensure smooth transition
+            setTimeout(function() {
+                loadingOverlay.classList.add('hidden');
+                // Remove from DOM after animation
+                setTimeout(function() {
+                    loadingOverlay.style.display = 'none';
+                }, 300);
+            }, 100);
+        });
+
+        // Show loading state when navigating away
+        document.querySelectorAll('.landing-button').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                const loadingOverlay = document.getElementById('loading-overlay');
+                loadingOverlay.classList.remove('hidden');
+                loadingOverlay.style.display = 'flex';
+            });
+        });
+    </script>
+</body>
+</html>
+
