@@ -2,7 +2,7 @@
 
 **Anonymous Yale-only campus forum** - Students speak freely, react to posts, and flag content for moderation.
 
-🔗 **Live**: `https://glyz-team.onrender.com`  
+🔗 **Live**: `https://glyz-team-tlug.onrender.com`  
 🔗 **Repo**: [github.com/doriru89/Mgmt-of-Software---Glyz-Team](https://github.com/doriru89/Mgmt-of-Software---Glyz-Team)
 
 ---
