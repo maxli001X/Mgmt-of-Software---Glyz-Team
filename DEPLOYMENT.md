@@ -2,7 +2,7 @@
 
 Quick reference for managing Tree Hole Yale in production.
 
-**Live**: `https://glyz-team.onrender.com`
+**Live**: `https://glyz-team-tlug.onrender.com`
 
 ---
 
@@ -11,7 +11,7 @@ Quick reference for managing Tree Hole Yale in production.
 - **Render Dashboard**: https://dashboard.render.com
 - **Service**: `glyz-team` (web)
 - **Database**: `glyz-team-db` (PostgreSQL)
-- **Admin Panel**: https://glyz-team.onrender.com/admin/
+- **Admin Panel**: https://glyz-team-tlug.onrender.com/admin/
 
 ---
 
@@ -24,7 +24,7 @@ Open Shell in Render Dashboard:
 python manage.py createsuperuser
 ```
 
-Use @yale.edu email. Then access: https://glyz-team.onrender.com/admin/
+Use @yale.edu email. Then access: https://glyz-team-tlug.onrender.com/admin/
 
 ### View Logs
 
@@ -129,7 +129,7 @@ Hard refresh browser: Ctrl+Shift+R
 ### CSRF Error on Forms
 Update in Render Dashboard → Environment:
 ```
-DJANGO_CSRF_TRUSTED_ORIGINS=https://glyz-team.onrender.com
+DJANGO_CSRF_TRUSTED_ORIGINS=https://glyz-team-tlug.onrender.com
 ```
 
 ### Slow First Load (30-60s)
