@@ -48,7 +48,17 @@ class PostForm(forms.ModelForm):
     def clean_tags_input(self):
         """Clean and normalize tag input."""
         tags_input = self.cleaned_data.get("tags_input", "").strip()
-        # Return the string as-is; we'll parse it in save()
+        
+        if tags_input:
+            # Validate individual tags
+            for tag in tags_input.split(","):
+                tag = tag.strip().lstrip("#").strip()
+                if tag:
+                    if len(tag) < 2:
+                        raise forms.ValidationError(f"Tag '{tag}' is too short (min 2 characters).")
+                    if len(tag) > 50:
+                        raise forms.ValidationError(f"Tag '{tag}' is too long (max 50 characters).")
+        
         return tags_input
     
     def extract_hashtags(self, text):
@@ -62,7 +72,13 @@ class PostForm(forms.ModelForm):
         matches = re.findall(hashtag_pattern, text)
         
         # Normalize: lowercase and remove duplicates
-        hashtags = [match.lower().strip() for match in matches if match.strip()]
+        hashtags = []
+        for match in matches:
+            tag = match.lower().strip()
+            # Only include valid length tags
+            if tag and 2 <= len(tag) <= 50:
+                hashtags.append(tag)
+                
         return list(set(hashtags))  # Remove duplicates
     
     def get_or_create_tag(self, tag_name):

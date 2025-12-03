@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('posting.urls', namespace='posting')),
     path('moderation/', include('moderation_ranking.urls', namespace='moderation_ranking')),
     path('profile/', include('profile_settings.urls', namespace='profile_settings')),
+    path('972b69d/', include('analytics.urls')),
 ]
 
 if settings.DEBUG:

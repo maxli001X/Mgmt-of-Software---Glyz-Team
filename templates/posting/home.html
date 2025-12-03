@@ -7,28 +7,20 @@
 <!-- Search Bar -->
 <section class="search-section">
     <form method="get" action="{% url 'posting:home' %}" class="search-form">
-        <input 
-            type="search" 
-            name="q" 
-            value="{{ search_query }}" 
-            placeholder="Search posts..." 
-            class="search-input"
-            aria-label="Search posts"
-            id="search-input"
-        >
+        <input type="search" name="q" value="{{ search_query }}" placeholder="Search posts..." class="search-input"
+            aria-label="Search posts" id="search-input">
         {% if active_tag %}
-            <input type="hidden" name="tag" value="{{ active_tag }}">
+        <input type="hidden" name="tag" value="{{ active_tag }}">
         {% endif %}
         {% if sort == "popular" %}
-            <input type="hidden" name="sort" value="{{ sort }}">
+        <input type="hidden" name="sort" value="{{ sort }}">
         {% endif %}
         <button type="submit" class="search-button" aria-label="Search">🔍</button>
         {% if search_query %}
-            <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}{% if sort == 'popular' %}{% if active_tag %}&{% else %}?{% endif %}sort=popular{% endif %}" 
-               class="clear-search" 
-               aria-label="Clear search">
-                ✕
-            </a>
+        <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}{% if sort == 'popular' %}{% if active_tag %}&{% else %}?{% endif %}sort=popular{% endif %}"
+            class="clear-search" aria-label="Clear search">
+            ✕
+        </a>
         {% endif %}
     </form>
 </section>
@@ -37,22 +29,21 @@
 <section class="tag-filter-section">
     <h2 class="visually-hidden">Filter by Tag</h2>
     <div class="tag-chips">
-        <a href="{% url 'posting:home' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}{% if search_query %}&{% else %}?{% endif %}sort=popular{% endif %}" 
-           class="tag-chip {% if not active_tag %}active{% endif %}" 
-           aria-label="Show all posts">
+        <a href="{% url 'posting:home' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}{% if search_query %}&{% else %}?{% endif %}sort=popular{% endif %}"
+            class="tag-chip {% if not active_tag %}active{% endif %}" aria-label="Show all posts">
             All Posts
         </a>
         {% for tag in tags %}
-            <a href="{% url 'posting:home' %}?tag={{ tag.slug }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}&sort=popular{% endif %}" 
-               class="tag-chip tag-{{ tag.slug|lower|slugify }} {% if tag.slug == active_tag %}active{% endif %}" 
-               aria-label="{{ tag.name }} ({{ tag.post_count }} posts)"
-               title="{{ tag.name }} ({{ tag.post_count }} posts)">
-                <span class="tag-icon">{{ tag.name|slice:":1" }}</span>
-                <span class="tag-name">{{ tag.name }}</span>
-                <span class="tag-count">({{ tag.post_count }})</span>
-            </a>
+        <a href="{% url 'posting:home' %}?tag={{ tag.slug }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}&sort=popular{% endif %}"
+            class="tag-chip tag-{{ tag.slug|lower|slugify }} {% if tag.slug == active_tag %}active{% endif %}"
+            aria-label="{{ tag.name }} ({{ tag.post_count }} posts)"
+            title="{{ tag.name }} ({{ tag.post_count }} posts)">
+            <span class="tag-icon">{{ tag.name|slice:":1" }}</span>
+            <span class="tag-name">{{ tag.name }}</span>
+            <span class="tag-count">({{ tag.post_count }})</span>
+        </a>
         {% empty %}
-            <p class="no-tags">No tags available yet.</p>
+        <p class="no-tags">No tags available yet.</p>
         {% endfor %}
     </div>
 </section>
@@ -60,57 +51,57 @@
 <section class="post-form-section">
     <h1>Share Your Thoughts</h1>
     {% if user.is_authenticated %}
-        <form method="post" class="post-form" id="post-form">
-            {% csrf_token %}
-            
-            <div class="form-field">
-                <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
-                {{ form.title }}
-                {% if form.title.errors %}
-                    <div class="form-error">{{ form.title.errors }}</div>
-                {% endif %}
+    <form method="post" class="post-form" id="post-form">
+        {% csrf_token %}
+
+        <div class="form-field">
+            <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+            <div class="form-error">{{ form.title.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label for="{{ form.body.id_for_label }}">{{ form.body.label }}</label>
+            {{ form.body }}
+            {% if form.body.errors %}
+            <div class="form-error">{{ form.body.errors }}</div>
+            {% endif %}
+            <div id="hashtag-preview" class="hashtag-preview" style="display: none;">
+                <span class="hashtag-preview-label">Detected tags:</span>
+                <span id="hashtag-list" class="hashtag-list"></span>
             </div>
-            
-            <div class="form-field">
-                <label for="{{ form.body.id_for_label }}">{{ form.body.label }}</label>
-                {{ form.body }}
-                {% if form.body.errors %}
-                    <div class="form-error">{{ form.body.errors }}</div>
-                {% endif %}
-                <div id="hashtag-preview" class="hashtag-preview" style="display: none;">
-                    <span class="hashtag-preview-label">Detected tags:</span>
-                    <span id="hashtag-list" class="hashtag-list"></span>
-                </div>
-                <p class="form-help">💡 Tip: Use #hashtag in your post to automatically add tags!</p>
-            </div>
-            
-            <div class="form-field">
-                <label for="{{ form.tags_input.id_for_label }}">{{ form.tags_input.label }}</label>
-                {{ form.tags_input }}
-                {% if form.tags_input.errors %}
-                    <div class="form-error">{{ form.tags_input.errors }}</div>
-                {% endif %}
-                {% if form.tags_input.help_text %}
-                    <p class="form-help">{{ form.tags_input.help_text }}</p>
-                {% endif %}
-            </div>
-            
-            <div class="form-field">
-                <label class="checkbox-label">
-                    {{ form.is_anonymous }}
-                    <span>{{ form.is_anonymous.label }}</span>
-                </label>
-                {% if form.is_anonymous.errors %}
-                    <div class="form-error">{{ form.is_anonymous.errors }}</div>
-                {% endif %}
-            </div>
-            
-            <div class="form-actions">
-                <button type="submit" class="submit-button" id="submit-button">Post anonymously</button>
-            </div>
-        </form>
+            <p class="form-help">💡 Tip: Use #hashtag in your post to automatically add tags!</p>
+        </div>
+
+        <div class="form-field">
+            <label for="{{ form.tags_input.id_for_label }}">{{ form.tags_input.label }}</label>
+            {{ form.tags_input }}
+            {% if form.tags_input.errors %}
+            <div class="form-error">{{ form.tags_input.errors }}</div>
+            {% endif %}
+            {% if form.tags_input.help_text %}
+            <p class="form-help">{{ form.tags_input.help_text }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-field">
+            <label class="checkbox-label">
+                {{ form.is_anonymous }}
+                <span>{{ form.is_anonymous.label }}</span>
+            </label>
+            {% if form.is_anonymous.errors %}
+            <div class="form-error">{{ form.is_anonymous.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="submit-button" id="submit-button">Post anonymously</button>
+        </div>
+    </form>
     {% else %}
-        <p><a href="{% url 'auth_landing:login' %}">Log in with your Yale account</a> to post.</p>
+    <p><a href="{% url 'auth_landing:login' %}">Log in with your Yale account</a> to post.</p>
     {% endif %}
 </section>
 
@@ -119,124 +110,130 @@
         <div>
             <h2 style="margin: 0;">
                 {% if search_query %}
-                    Search Results
+                Search Results
                 {% elif sort == "popular" %}
-                    Popular Posts
+                Popular Posts
                 {% else %}
-                    Recent Posts
+                Recent Posts
                 {% endif %}
             </h2>
             {% if search_query or active_tag %}
-                <p class="results-count" role="status" aria-live="polite">
-                    Found {{ posts_count }} post{{ posts_count|pluralize }}
-                    {% if search_query %}matching "{{ search_query }}"{% endif %}
-                    {% if active_tag %}in {{ active_tag|title }}{% endif %}
-                </p>
+            <p class="results-count" role="status" aria-live="polite">
+                Found {{ posts_count }} post{{ posts_count|pluralize }}
+                {% if search_query %}matching "{{ search_query }}"{% endif %}
+                {% if active_tag %}in {{ active_tag|title }}{% endif %}
+            </p>
             {% endif %}
         </div>
         <div class="sort-controls">
-            <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}{% if search_query %}{% if active_tag %}&{% else %}?{% endif %}q={{ search_query|urlencode }}{% endif %}" 
-               class="sort-button {% if sort == 'recent' %}active{% endif %}">
+            <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}{% if search_query %}{% if active_tag %}&{% else %}?{% endif %}q={{ search_query|urlencode }}{% endif %}"
+                class="sort-button {% if sort == 'recent' %}active{% endif %}">
                 Recent
             </a>
-            <a href="{% url 'posting:home' %}?sort=popular{% if active_tag %}&tag={{ active_tag }}{% endif %}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}" 
-               class="sort-button {% if sort == 'popular' %}active{% endif %}">
+            <a href="{% url 'posting:home' %}?sort=popular{% if active_tag %}&tag={{ active_tag }}{% endif %}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}"
+                class="sort-button {% if sort == 'popular' %}active{% endif %}">
                 Popular
             </a>
         </div>
     </div>
-    
+
     {% if posts %}
-        {% for post in posts %}
-        <article>
-            <header>
-                <h3>{{ post.title }}</h3>
-                <p>
-                    Posted by
-                    {% if post.is_anonymous %}
-                        Anonymous
-                    {% else %}
-                        {{ post.author.get_full_name|default:post.author.username }}
-                    {% endif %}
-                    on {{ post.created_at|date:"M d, Y H:i" }}
-                </p>
-                {% if post.is_flagged %}
-                    <p>⚠️ Flagged for moderator review</p>
-                {% endif %}
-            </header>
-            <p>{{ post.body|linebreaks }}</p>
+    {% for post in posts %}
+    <article>
+        <header>
+            <h3>{{ post.title }}</h3>
             <p>
-                Tags:
-                {% for tag in post.tags.all %}
-                    <span>{{ tag.name }}</span>{% if not forloop.last %}, {% endif %}
-                {% empty %}
-                    <span>None</span>
-                {% endfor %}
+                Posted by
+                {% if post.is_anonymous %}
+                Anonymous
+                {% else %}
+                {{ post.author.get_full_name|default:post.author.username }}
+                {% endif %}
+                on {{ post.created_at|date:"M d, Y H:i" }}
             </p>
-            <footer class="post-actions">
-                <div class="vote-section">
-                    {% with vote=user_votes|get_item:post.pk %}
-                        <form method="post" action="{% url 'posting:upvote' post.pk %}" class="vote-form">
-                            {% csrf_token %}
-                            <button type="submit" class="vote-button upvote-button {% if vote and vote.vote_type == 'UPVOTE' %}active{% endif %}">
-                                ▲ Upvote
-                            </button>
-                        </form>
-                        <span class="net-votes {% if post.get_net_votes > 0 %}positive{% elif post.get_net_votes < 0 %}negative{% endif %}">
-                            {{ post.get_net_votes|default:0 }}
-                        </span>
-                        <form method="post" action="{% url 'posting:downvote' post.pk %}" class="vote-form">
-                            {% csrf_token %}
-                            <button type="submit" class="vote-button downvote-button {% if vote and vote.vote_type == 'DOWNVOTE' %}active{% endif %}">
-                                ▼ Downvote
-                            </button>
-                        </form>
-                    {% endwith %}
-                </div>
-                <form method="post" action="{% url 'posting:flag' post.pk %}" class="flag-form">
-                    {% csrf_token %}
-                    <button type="submit" class="flag-button">Flag</button>
-                </form>
-            </footer>
-        </article>
-        {% endfor %}
-    {% else %}
-        <div class="empty-state">
-            {% if search_query %}
-                <p class="empty-state-icon">🔍</p>
-                <h3>No posts found</h3>
-                <p>No posts match your search for "{{ search_query }}".</p>
-                <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}" class="clear-filter-button">
-                    Clear search
-                </a>
-            {% elif active_tag %}
-                <p class="empty-state-icon">🏷️</p>
-                <h3>No posts in this category</h3>
-                <p>There are no posts tagged with "{{ active_tag|title }}" yet.</p>
-                <a href="{% url 'posting:home' %}" class="clear-filter-button">
-                    View all posts
-                </a>
-            {% else %}
-                <p class="empty-state-icon">📝</p>
-                <h3>No posts yet</h3>
-                <p>Be the first to share something!</p>
+            {% if post.is_flagged %}
+            <p>⚠️ Flagged for moderator review</p>
             {% endif %}
+        </header>
+        <div class="post-body-content" data-collapsed="true">
+            {{ post.body|linebreaks }}
         </div>
+        <p>
+            Tags:
+            {% for tag in post.tags.all %}
+            <span>{{ tag.name }}</span>{% if not forloop.last %}, {% endif %}
+            {% empty %}
+            <span>None</span>
+            {% endfor %}
+        </p>
+        <footer class="post-actions">
+            <div class="vote-section">
+                {% with vote=user_votes|get_item:post.pk %}
+                <form method="post" action="{% url 'posting:upvote' post.pk %}" class="vote-form">
+                    {% csrf_token %}
+                    <button type="submit"
+                        class="vote-button upvote-button {% if vote and vote.vote_type == 'UPVOTE' %}active{% endif %}">
+                        ▲ Upvote
+                    </button>
+                </form>
+                <span
+                    class="net-votes {% if post.get_net_votes > 0 %}positive{% elif post.get_net_votes < 0 %}negative{% endif %}">
+                    {{ post.get_net_votes|default:0 }}
+                </span>
+                <form method="post" action="{% url 'posting:downvote' post.pk %}" class="vote-form">
+                    {% csrf_token %}
+                    <button type="submit"
+                        class="vote-button downvote-button {% if vote and vote.vote_type == 'DOWNVOTE' %}active{% endif %}">
+                        ▼ Downvote
+                    </button>
+                </form>
+                {% endwith %}
+            </div>
+            <form method="post" action="{% url 'posting:flag' post.pk %}" class="flag-form">
+                {% csrf_token %}
+                <button type="submit" class="flag-button">Flag</button>
+            </form>
+        </footer>
+    </article>
+    {% endfor %}
+    {% else %}
+    <div class="empty-state">
+        {% if search_query %}
+        <p class="empty-state-icon">🔍</p>
+        <h3>No posts found</h3>
+        <p>No posts match your search for "{{ search_query }}".</p>
+        <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}"
+            class="clear-filter-button">
+            Clear search
+        </a>
+        {% elif active_tag %}
+        <p class="empty-state-icon">🏷️</p>
+        <h3>No posts in this category</h3>
+        <p>There are no posts tagged with "{{ active_tag|title }}" yet.</p>
+        <a href="{% url 'posting:home' %}" class="clear-filter-button">
+            View all posts
+        </a>
+        {% else %}
+        <p class="empty-state-icon">📝</p>
+        <h3>No posts yet</h3>
+        <p>Be the first to share something!</p>
+        {% endif %}
+    </div>
     {% endif %}
 </section>
 
 <script>
     // Debounced search functionality
-    (function() {
+    (function () {
         const searchInput = document.getElementById('search-input');
         const searchForm = document.querySelector('.search-form');
         let debounceTimer;
 
         if (searchInput && searchForm) {
             // Auto-submit on input with debounce (500ms delay)
-            searchInput.addEventListener('input', function() {
+            searchInput.addEventListener('input', function () {
                 clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(function() {
+                debounceTimer = setTimeout(function () {
                     // Only auto-submit if there's a value or if clearing
                     if (searchInput.value.length >= 2 || searchInput.value.length === 0) {
                         searchForm.submit();
@@ -245,7 +242,7 @@
             });
 
             // Submit on Enter key
-            searchInput.addEventListener('keydown', function(e) {
+            searchInput.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter') {
                     clearTimeout(debounceTimer);
                     searchForm.submit();
@@ -253,13 +250,13 @@
             });
         }
     })();
-    
+
     // Hashtag detection and preview
-    (function() {
+    (function () {
         const bodyTextarea = document.getElementById('id_body');
         const hashtagPreview = document.getElementById('hashtag-preview');
         const hashtagList = document.getElementById('hashtag-list');
-        
+
         if (bodyTextarea && hashtagPreview && hashtagList) {
             function extractHashtags(text) {
                 if (!text) return [];
@@ -267,23 +264,23 @@
                 const hashtagPattern = /#([a-zA-Z0-9_-]+)/g;
                 const matches = [];
                 let match;
-                
+
                 while ((match = hashtagPattern.exec(text)) !== null) {
                     const tag = match[1].toLowerCase().trim();
                     if (tag && !matches.includes(tag)) {
                         matches.push(tag);
                     }
                 }
-                
+
                 return matches;
             }
-            
+
             function updateHashtagPreview() {
                 const text = bodyTextarea.value;
                 const hashtags = extractHashtags(text);
-                
+
                 if (hashtags.length > 0) {
-                    hashtagList.innerHTML = hashtags.map(tag => 
+                    hashtagList.innerHTML = hashtags.map(tag =>
                         '<span class="hashtag-badge">#' + tag + '</span>'
                     ).join('');
                     hashtagPreview.style.display = 'block';
@@ -291,23 +288,23 @@
                     hashtagPreview.style.display = 'none';
                 }
             }
-            
+
             // Update on input
             bodyTextarea.addEventListener('input', updateHashtagPreview);
-            bodyTextarea.addEventListener('paste', function() {
+            bodyTextarea.addEventListener('paste', function () {
                 setTimeout(updateHashtagPreview, 10);
             });
-            
+
             // Initial check
             updateHashtagPreview();
         }
     })();
-    
+
     // Update submit button text based on anonymous checkbox
-    (function() {
+    (function () {
         const anonymousCheckbox = document.getElementById('id_is_anonymous');
         const submitButton = document.getElementById('submit-button');
-        
+
         if (anonymousCheckbox && submitButton) {
             function updateButtonText() {
                 if (anonymousCheckbox.checked) {
@@ -316,146 +313,195 @@
                     submitButton.textContent = 'Post';
                 }
             }
-            
+
             anonymousCheckbox.addEventListener('change', updateButtonText);
             updateButtonText(); // Initial state
         }
     })();
+    // Auto-collapse long posts
+    (function () {
+        const WORD_LIMIT = 250;
+        const posts = document.querySelectorAll('.post-body-content');
+
+        posts.forEach(post => {
+            const text = post.innerText;
+            const wordCount = text.trim().split(/\s+/).length;
+
+            if (wordCount > WORD_LIMIT) {
+                // Create read more link
+                const readMoreBtn = document.createElement('button');
+                readMoreBtn.className = 'read-more-btn';
+                readMoreBtn.innerText = 'Read more';
+                readMoreBtn.onclick = function () {
+                    post.classList.remove('collapsed');
+                    readMoreBtn.style.display = 'none';
+                };
+
+                // Add collapsed class
+                post.classList.add('collapsed');
+                post.parentNode.insertBefore(readMoreBtn, post.nextSibling);
+            }
+        });
+    })();
 </script>
 
 <style>
-.post-form-section {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    margin-bottom: 2rem;
-}
-
-.post-form {
-    max-width: 100%;
-}
-
-.form-field {
-    margin-bottom: 1.5rem;
-}
-
-.form-field label {
-    display: block;
-    font-weight: 600;
-    color: #1b1b1b;
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
-}
-
-.form-input,
-.form-textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: border-color 0.2s;
-    box-sizing: border-box;
-}
-
-.form-textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.form-input:focus,
-.form-textarea:focus {
-    outline: none;
-    border-color: #00356b;
-    box-shadow: 0 0 0 3px rgba(0, 53, 107, 0.1);
-}
-
-.form-help {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-top: 0.5rem;
-    margin-bottom: 0;
-}
-
-.form-error {
-    color: #dc2626;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    font-weight: normal;
-}
-
-.form-checkbox {
-    width: auto;
-    margin: 0;
-}
-
-.hashtag-preview {
-    margin-top: 0.75rem;
-    padding: 0.75rem;
-    background: #f6f7fb;
-    border-radius: 6px;
-    border-left: 3px solid #00356b;
-}
-
-.hashtag-preview-label {
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-right: 0.5rem;
-    font-weight: 600;
-}
-
-.hashtag-list {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.hashtag-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background: #00356b;
-    color: #fff;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.form-actions {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #e0e0e0;
-}
-
-.submit-button {
-    background: #00356b;
-    color: #fff;
-    padding: 0.875rem 2rem;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.submit-button:hover {
-    background: #002a55;
-}
-
-@media (max-width: 600px) {
-    .post-form-section {
-        padding: 1.5rem;
+    .post-body-content.collapsed {
+        max-height: 300px;
+        overflow: hidden;
+        position: relative;
+        mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
     }
-}
+
+    .read-more-btn {
+        background: none;
+        border: none;
+        color: #00356b;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .read-more-btn:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<style>
+    .post-form-section {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        margin-bottom: 2rem;
+    }
+
+    .post-form {
+        max-width: 100%;
+    }
+
+    .form-field {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-field label {
+        display: block;
+        font-weight: 600;
+        color: #1b1b1b;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+    }
+
+    .form-textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+        outline: none;
+        border-color: #00356b;
+        box-shadow: 0 0 0 3px rgba(0, 53, 107, 0.1);
+    }
+
+    .form-help {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+    }
+
+    .form-error {
+        color: #dc2626;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        font-weight: normal;
+    }
+
+    .form-checkbox {
+        width: auto;
+        margin: 0;
+    }
+
+    .hashtag-preview {
+        margin-top: 0.75rem;
+        padding: 0.75rem;
+        background: #f6f7fb;
+        border-radius: 6px;
+        border-left: 3px solid #00356b;
+    }
+
+    .hashtag-preview-label {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-right: 0.5rem;
+        font-weight: 600;
+    }
+
+    .hashtag-list {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .hashtag-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background: #00356b;
+        color: #fff;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .form-actions {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .submit-button {
+        background: #00356b;
+        color: #fff;
+        padding: 0.875rem 2rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .submit-button:hover {
+        background: #002a55;
+    }
+
+    @media (max-width: 600px) {
+        .post-form-section {
+            padding: 1.5rem;
+        }
+    }
 </style>
 {% endblock content %}
-

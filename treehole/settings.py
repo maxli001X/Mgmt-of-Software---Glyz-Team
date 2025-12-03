@@ -119,6 +119,7 @@ INSTALLED_APPS = [
     'posting',
     'moderation_ranking',
     'profile_settings',
+    'analytics',
 ]
 
 MIDDLEWARE = [

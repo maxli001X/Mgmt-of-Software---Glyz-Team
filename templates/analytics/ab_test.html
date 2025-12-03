@@ -1,0 +1,244 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tree Hole Yale - Team Roster</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            background-color: #f5f5f7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        h1 {
+            color: #1d1d1f;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #86868b;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .roster-card {
+            background: #fbfbfd;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #e5e5e5;
+        }
+
+        .roster-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #86868b;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .team-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .team-member {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: #1d1d1f;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f0f0f0;
+        }
+
+        .action-button {
+            background-color: #0071e3;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 980px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            min-width: 160px;
+        }
+
+        .action-button:hover:not(:disabled) {
+            background-color: #0077ed;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+        }
+
+        .action-button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .action-button:disabled {
+            background-color: #e5e5e5;
+            color: #86868b;
+            cursor: default;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .success-message {
+            margin-top: 1.5rem;
+            color: #008800;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .success-message.visible {
+            opacity: 1;
+            height: auto;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">🌳</div>
+        <h1>Tree Hole Yale</h1>
+        <p class="subtitle">Team Roster & A/B Test</p>
+
+        <div class="roster-card">
+            <div class="roster-title">Glyz-Team Members</div>
+            <ul class="team-list">
+                {% for member in team_members %}
+                <li class="team-member">{{ member }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <button id="abtest" class="action-button" onclick="trackClick()">
+            {{ button_text }}
+        </button>
+
+        <div id="success-msg" class="success-message">
+            Thank you for your feedback! 🎉
+        </div>
+    </div>
+
+    <script>
+        function trackClick() {
+            const btn = document.getElementById('abtest');
+            const msg = document.getElementById('success-msg');
+
+            // Disable button immediately
+            btn.disabled = true;
+            const originalText = btn.innerText;
+            btn.innerText = 'Sending...';
+
+            fetch('/972b69d/click/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        btn.innerText = 'Sent!';
+                        msg.classList.add('visible');
+                    } else {
+                        // Re-enable if it was a server error (optional, but maybe better to leave disabled if it's a "already clicked" error)
+                        if (data.message === 'Already clicked') {
+                            btn.innerText = 'Already Voted';
+                            msg.innerText = 'You have already voted in this session.';
+                            msg.classList.add('visible');
+                        } else {
+                            btn.disabled = false;
+                            btn.innerText = originalText;
+                            alert('Something went wrong. Please try again.');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    btn.disabled = false;
+                    btn.innerText = originalText;
+                });
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+
+</html>

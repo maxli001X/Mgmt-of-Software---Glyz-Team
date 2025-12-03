@@ -123,3 +123,13 @@ Django 5.2.8 + Python 3.12 | PostgreSQL | WhiteNoise | Deployed on Render
 
 - **Django Docs**: https://docs.djangoproject.com
 - **Render Dashboard**: https://dashboard.render.com
+
+---
+
+## A/B Test Endpoint
+
+The A/B test endpoint is available at `/{hash}` where hash is the first 7 characters of the SHA1 hash of our team nickname "Glyz-Team".
+
+- **URL**: `/972b69d/`
+- **Features**: Displays team roster and an A/B tested button ("kudos" vs "thanks").
+- **Analytics**: Tracks page views and button clicks.
