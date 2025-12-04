@@ -1,28 +1,38 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count, Prefetch, Q
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from ..forms import PostForm
-from ..models import Post, Tag
+from ..models import Comment, CommentVote, Post, Tag, Vote
 
 
 @login_required(login_url='auth_landing:landing')
 def home(request):
     """Homepage showing recent posts with optional tag filtering, search, and submission form."""
-    from django.db.models import Count, Q
-    
     tag_slug = request.GET.get("tag")
     search_query = request.GET.get("q", "").strip()
     sort = request.GET.get("sort", "recent")  # Default to recent
-    
-    # Base queryset with optimizations
+    view_mode = request.GET.get("view", "home")  # 'home' or 'posts'
+
+    # Prefetch for nested comments (top-level only, replies handled via related_name)
+    # Only prefetch non-deleted comments for display
+    comments_prefetch = Prefetch(
+        "comments",
+        queryset=Comment.objects.filter(is_deleted=False).select_related("author").prefetch_related("votes", "replies__author", "replies__votes"),
+    )
+
+    # Base queryset with optimizations - exclude hidden posts
+    # Annotate with non-deleted comment count to avoid N+1 query
     posts = (
-        Post.objects.select_related("author")
-        .prefetch_related("tags", "votes")
+        Post.objects.filter(is_hidden=False)
+        .select_related("author")
+        .prefetch_related("tags", "votes", comments_prefetch)
         .annotate(
-            upvotes_count=Count("votes", filter=Q(votes__vote_type="UPVOTE")),
-            downvotes_count=Count("votes", filter=Q(votes__vote_type="DOWNVOTE")),
+            upvotes_count=Count("votes", filter=Q(votes__vote_type=Vote.UPVOTE)),
+            downvotes_count=Count("votes", filter=Q(votes__vote_type=Vote.DOWNVOTE)),
+            visible_comments_count=Count("comments", filter=Q(comments__is_deleted=False)),
         )
     )
 
@@ -57,15 +67,23 @@ def home(request):
     # Get all tags with post counts
     tags = Tag.objects.annotate(post_count=Count("posts")).order_by("name")
 
-    # Get user votes for all posts to check vote state in template
+    # Get user votes for all posts and comments to check vote state in template
     user_votes = {}
+    user_comment_votes = {}
     if request.user.is_authenticated:
-        from ..models import Vote
-        votes = Vote.objects.filter(
+        # Post votes
+        post_votes = Vote.objects.filter(
             post__in=posts,
             voter=request.user
         ).select_related("post")
-        user_votes = {vote.post_id: vote for vote in votes}
+        user_votes = {vote.post_id: vote for vote in post_votes}
+
+        # Comment votes - get all comments from these posts
+        comment_votes = CommentVote.objects.filter(
+            comment__post__in=posts,
+            voter=request.user
+        ).select_related("comment")
+        user_comment_votes = {vote.comment_id: vote for vote in comment_votes}
 
     # Count results for screen reader announcement
     posts_count = posts.count()
@@ -80,7 +98,9 @@ def home(request):
             "active_tag": tag_slug,
             "search_query": search_query,
             "sort": sort,
+            "view_mode": view_mode,
             "user_votes": user_votes,
+            "user_comment_votes": user_comment_votes,
             "posts_count": posts_count,
         },
     )

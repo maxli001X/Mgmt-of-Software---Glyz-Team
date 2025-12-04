@@ -46,19 +46,32 @@ class PostForm(forms.ModelForm):
             self.fields["tags_input"].initial = ", ".join(tag_names)
     
     def clean_tags_input(self):
-        """Clean and normalize tag input."""
+        """Clean and normalize tag input.
+
+        Validates that tags:
+        - Are between 2-50 characters
+        - Do not contain '#' symbols (except leading one which is stripped)
+        - Do not contain spaces
+        """
         tags_input = self.cleaned_data.get("tags_input", "").strip()
-        
+
         if tags_input:
             # Validate individual tags
             for tag in tags_input.split(","):
+                # Remove leading # and whitespace
                 tag = tag.strip().lstrip("#").strip()
                 if tag:
+                    # Check for embedded # symbols
+                    if '#' in tag:
+                        raise forms.ValidationError(f"Tag '{tag}' cannot contain '#' symbol.")
+                    # Check for spaces
+                    if ' ' in tag:
+                        raise forms.ValidationError(f"Tag '{tag}' cannot contain spaces. Use hyphens instead.")
                     if len(tag) < 2:
                         raise forms.ValidationError(f"Tag '{tag}' is too short (min 2 characters).")
                     if len(tag) > 50:
                         raise forms.ValidationError(f"Tag '{tag}' is too long (max 50 characters).")
-        
+
         return tags_input
     
     def extract_hashtags(self, text):
@@ -82,16 +95,35 @@ class PostForm(forms.ModelForm):
         return list(set(hashtags))  # Remove duplicates
     
     def get_or_create_tag(self, tag_name):
-        """Get or create a tag by name."""
+        """Get or create a tag by name.
+
+        Sanitizes the tag name by:
+        - Removing any '#' symbols
+        - Rejecting tags with spaces
+        - Enforcing length limits (2-50 chars)
+
+        Returns None if tag is invalid.
+        """
         tag_name = tag_name.strip().lower()
         if not tag_name:
             return None
-        
+
+        # Remove any # symbols
+        tag_name = tag_name.replace('#', '')
+
+        # Reject if contains spaces
+        if ' ' in tag_name:
+            return None
+
+        # Validate length after cleaning
+        if not (2 <= len(tag_name) <= 50):
+            return None
+
         # Create slug from tag name
         tag_slug = slugify(tag_name)
         if not tag_slug:
             return None
-        
+
         # Get or create tag
         tag, created = Tag.objects.get_or_create(
             slug=tag_slug,
@@ -104,7 +136,10 @@ class PostForm(forms.ModelForm):
         post = super().save(commit=False)
         if author is not None:
             post.author = author
-        
+
+        # Run AI content moderation before saving
+        self._run_ai_moderation(post)
+
         if commit:
             post.save()
             
@@ -143,5 +178,31 @@ class PostForm(forms.ModelForm):
             
             # Set tags on post
             post.tags.set(unique_tags)
-        
+
         return post
+
+    def _run_ai_moderation(self, post):
+        """
+        Run AI content moderation on the post.
+
+        Sets ai_flagged, ai_severity_score, ai_categories, and show_crisis_resources.
+        """
+        try:
+            from ..utils.ai_moderator import get_moderator
+
+            moderator = get_moderator()
+            text = f"{post.title}\n\n{post.body}"
+            result = moderator.check_content(text)
+
+            post.ai_flagged = result.get("flagged", False)
+            post.ai_severity_score = result.get("severity_score")
+            post.ai_categories = result.get("category_scores")
+            post.show_crisis_resources = result.get("is_crisis", False)
+
+            # Auto-flag for human review if AI flags it
+            if post.ai_flagged:
+                post.is_flagged = True
+
+        except Exception:
+            # If AI moderation fails, continue without it
+            pass

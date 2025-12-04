@@ -239,6 +239,9 @@ DEFAULT_FROM_EMAIL = 'treehole@yale.edu'
 
 ALLOWED_EMAIL_DOMAINS = config('ALLOWED_EMAIL_DOMAINS', default='yale.edu', cast=Csv())
 
+# OpenAI API Configuration (for content moderation)
+OPENAI_API_KEY = config('OPENAI_API_KEY', default=None)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

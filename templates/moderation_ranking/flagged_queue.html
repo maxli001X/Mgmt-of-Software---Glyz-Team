@@ -1,0 +1,487 @@
+{% extends "base.html" %}
+
+{% block title %}Flagged Content Queue · Tree Hole Yale{% endblock title %}
+
+{% block content %}
+<section class="moderation-queue-section">
+    <h1>Moderation Queue</h1>
+    <p class="queue-description">
+        Review flagged posts and comments. You can unflag (mark as reviewed), hide (soft-delete), or permanently delete content.
+    </p>
+
+    <div class="queue-stats">
+        <div class="stat-box">
+            <span class="stat-number">{{ flagged_posts_count }}</span>
+            <span class="stat-label">Flagged Posts</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-number">{{ flagged_comments_count }}</span>
+            <span class="stat-label">Flagged Comments</span>
+        </div>
+        {% if ai_flagged_posts or ai_flagged_comments %}
+        <div class="stat-box ai-stat">
+            <span class="stat-number">{{ ai_flagged_posts|add:ai_flagged_comments }}</span>
+            <span class="stat-label">AI Detected</span>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Flagged Posts -->
+    <section class="flagged-section">
+        <h2>Flagged Posts ({{ flagged_posts_count }})</h2>
+
+        {% if flagged_posts %}
+        <div class="flagged-items-list">
+            {% for post in flagged_posts %}
+            <article class="flagged-item post-item">
+                <div class="flagged-item-header">
+                    <h3>{{ post.title }}</h3>
+                    <div class="badge-group">
+                        {% if post.ai_flagged %}
+                        <span class="ai-badge" title="AI severity: {{ post.ai_severity_score|floatformat:2 }}">
+                            AI {{ post.ai_severity_score|floatformat:1 }}
+                        </span>
+                        {% endif %}
+                        <span class="flagged-badge">Flagged</span>
+                    </div>
+                </div>
+
+                <div class="flagged-item-meta">
+                    <span>Posted by
+                        {% if post.is_anonymous %}
+                        Anonymous
+                        {% else %}
+                        {{ post.author.get_full_name|default:post.author.username }}
+                        {% endif %}
+                    </span>
+                    <span>{{ post.created_at|date:"M d, Y H:i" }}</span>
+                    <span class="vote-display">Net votes: {{ post.get_net_votes }}</span>
+                    {% if post.is_hidden %}
+                    <span class="hidden-badge">Hidden</span>
+                    {% endif %}
+                    {% if post.show_crisis_resources %}
+                    <span class="crisis-badge">Crisis Content</span>
+                    {% endif %}
+                </div>
+
+                <div class="flagged-item-content">
+                    {{ post.body|linebreaks|truncatewords:100 }}
+                </div>
+
+                <div class="flagged-item-tags">
+                    Tags:
+                    {% for tag in post.tags.all %}
+                        <span class="tag-badge">{{ tag.name }}</span>
+                    {% empty %}
+                        <span>None</span>
+                    {% endfor %}
+                </div>
+
+                <div class="moderation-actions">
+                    <form method="post" action="{% url 'moderation_ranking:unflag_post' post.pk %}" class="mod-form">
+                        {% csrf_token %}
+                        <button type="submit" class="mod-btn unflag-btn" title="Mark as reviewed, keep visible">
+                            Unflag
+                        </button>
+                    </form>
+
+                    {% if post.is_hidden %}
+                    <form method="post" action="{% url 'moderation_ranking:unhide_post' post.pk %}" class="mod-form">
+                        {% csrf_token %}
+                        <button type="submit" class="mod-btn unhide-btn" title="Restore to public view">
+                            Unhide
+                        </button>
+                    </form>
+                    {% else %}
+                    <form method="post" action="{% url 'moderation_ranking:hide_post' post.pk %}" class="mod-form">
+                        {% csrf_token %}
+                        <button type="submit" class="mod-btn hide-btn" title="Hide from public view" onclick="return confirm('Hide this post from public view?')">
+                            Hide
+                        </button>
+                    </form>
+                    {% endif %}
+
+                    <form method="post" action="{% url 'moderation_ranking:delete_post' post.pk %}" class="mod-form">
+                        {% csrf_token %}
+                        <button type="submit" class="mod-btn delete-btn" title="Permanently delete" onclick="return confirm('PERMANENTLY delete this post? This cannot be undone.')">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>No flagged posts. Nice work!</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- Flagged Comments -->
+    <section class="flagged-section">
+        <h2>Flagged Comments ({{ flagged_comments_count }})</h2>
+
+        {% if flagged_comments %}
+        <div class="flagged-items-list">
+            {% for comment in flagged_comments %}
+            <article class="flagged-item comment-item">
+                <div class="flagged-item-header">
+                    <h3>Comment on "{{ comment.post.title }}"</h3>
+                    <div class="badge-group">
+                        {% if comment.ai_flagged %}
+                        <span class="ai-badge" title="AI severity: {{ comment.ai_severity_score|floatformat:2 }}">
+                            AI {{ comment.ai_severity_score|floatformat:1 }}
+                        </span>
+                        {% endif %}
+                        <span class="flagged-badge">Flagged</span>
+                    </div>
+                </div>
+
+                <div class="flagged-item-meta">
+                    <span>Comment by
+                        {% if comment.is_anonymous %}
+                        Anonymous
+                        {% else %}
+                        {{ comment.author.get_full_name|default:comment.author.username }}
+                        {% endif %}
+                    </span>
+                    <span>{{ comment.created_at|date:"M d, Y H:i" }}</span>
+                    <span class="vote-display">Net votes: {{ comment.get_net_votes }}</span>
+                    {% if comment.parent_comment %}
+                    <span class="reply-badge">Reply to comment #{{ comment.parent_comment.pk }}</span>
+                    {% endif %}
+                    {% if comment.show_crisis_resources %}
+                    <span class="crisis-badge">Crisis Content</span>
+                    {% endif %}
+                </div>
+
+                <div class="flagged-item-content">
+                    {{ comment.body|linebreaks|truncatewords:75 }}
+                </div>
+
+                <div class="moderation-actions">
+                    <form method="post" action="{% url 'moderation_ranking:unflag_comment' comment.pk %}" class="mod-form">
+                        {% csrf_token %}
+                        <button type="submit" class="mod-btn unflag-btn" title="Mark as reviewed, keep visible">
+                            Unflag
+                        </button>
+                    </form>
+
+                    <form method="post" action="{% url 'moderation_ranking:hide_comment' comment.pk %}" class="mod-form">
+                        {% csrf_token %}
+                        <button type="submit" class="mod-btn hide-btn" title="Hide from view" onclick="return confirm('Hide this comment?')">
+                            Hide
+                        </button>
+                    </form>
+
+                    <form method="post" action="{% url 'moderation_ranking:delete_comment' comment.pk %}" class="mod-form">
+                        {% csrf_token %}
+                        <button type="submit" class="mod-btn delete-btn" title="Permanently delete" onclick="return confirm('PERMANENTLY delete this comment? This cannot be undone.')">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>No flagged comments. Nice work!</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <div class="back-link">
+        <a href="{% url 'moderation_ranking:dashboard' %}">Back to Dashboard</a>
+    </div>
+</section>
+
+<style>
+    .moderation-queue-section {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .queue-description {
+        color: #6b7280;
+        margin-bottom: 2rem;
+    }
+
+    .queue-stats {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-box {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        min-width: 150px;
+    }
+
+    .stat-box.ai-stat {
+        border: 2px solid #8b5cf6;
+    }
+
+    .stat-box.ai-stat .stat-number {
+        color: #8b5cf6;
+    }
+
+    .stat-number {
+        display: block;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #dc2626;
+    }
+
+    .stat-label {
+        display: block;
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-top: 0.5rem;
+    }
+
+    .flagged-section {
+        margin-bottom: 3rem;
+    }
+
+    .flagged-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #00356b;
+        padding-bottom: 0.5rem;
+    }
+
+    .flagged-items-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .flagged-item {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid #dc2626;
+    }
+
+    .flagged-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 0.75rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .flagged-item-header h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        color: #1b1b1b;
+        flex: 1;
+    }
+
+    .flagged-badge {
+        background: #fef2f2;
+        color: #dc2626;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .hidden-badge {
+        background: #fef3c7;
+        color: #d97706;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .badge-group {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .ai-badge {
+        background: linear-gradient(135deg, #8b5cf6, #6366f1);
+        color: #fff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .crisis-badge {
+        background: #7f1d1d;
+        color: #fff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+
+    .flagged-item-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 1rem;
+    }
+
+    .vote-display {
+        font-weight: 600;
+        color: #1b1b1b;
+    }
+
+    .reply-badge {
+        background: #eff6ff;
+        color: #1e40af;
+        padding: 0.125rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+    }
+
+    .flagged-item-content {
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: #f9fafb;
+        border-radius: 6px;
+        line-height: 1.6;
+    }
+
+    .flagged-item-tags {
+        margin-bottom: 1rem;
+        font-size: 0.875rem;
+        color: #6b7280;
+    }
+
+    .tag-badge {
+        display: inline-block;
+        background: #eff6ff;
+        color: #1e40af;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        margin-right: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .moderation-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        align-items: center;
+        padding-top: 1rem;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .mod-form {
+        display: inline;
+    }
+
+    .mod-btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .unflag-btn {
+        background: #10b981;
+        color: #fff;
+    }
+
+    .unflag-btn:hover {
+        background: #059669;
+    }
+
+    .hide-btn {
+        background: #f59e0b;
+        color: #fff;
+    }
+
+    .hide-btn:hover {
+        background: #d97706;
+    }
+
+    .unhide-btn {
+        background: #3b82f6;
+        color: #fff;
+    }
+
+    .unhide-btn:hover {
+        background: #2563eb;
+    }
+
+    .delete-btn {
+        background: #dc2626;
+        color: #fff;
+    }
+
+    .delete-btn:hover {
+        background: #b91c1c;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #6b7280;
+        background: #f9fafb;
+        border-radius: 8px;
+    }
+
+    .back-link {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .back-link a {
+        color: #00356b;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .back-link a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .queue-stats {
+            flex-direction: column;
+        }
+
+        .stat-box {
+            width: 100%;
+        }
+
+        .moderation-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .mod-btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock content %}

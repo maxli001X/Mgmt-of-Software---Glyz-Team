@@ -3,7 +3,48 @@
 
 {% block title %}Tree Hole Yale{% endblock title %}
 
+{% block floating_button %}
+{% if user.is_authenticated %}
+<div id="fab-container" class="fab-container">
+    <button class="fab-button" onclick="scrollToPostForm()" aria-label="Write a post">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+    </button>
+    <span class="fab-tooltip">Share your thoughts</span>
+</div>
+{% endif %}
+{% endblock floating_button %}
+
 {% block content %}
+<!-- Main Tab Navigation -->
+<nav class="main-tabs">
+    <a href="{% url 'posting:home' %}" class="main-tab {% if not view_mode or view_mode == 'home' %}active{% endif %}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        Home
+    </a>
+    <a href="{% url 'posting:home' %}?view=create" class="main-tab {% if view_mode == 'create' %}active{% endif %}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+        Create Post
+    </a>
+    <a href="{% url 'posting:home' %}?view=posts" class="main-tab {% if view_mode == 'posts' %}active{% endif %}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+        Posts
+    </a>
+</nav>
+
 <!-- Search Bar -->
 <section class="search-section">
     <form method="get" action="{% url 'posting:home' %}" class="search-form">
@@ -15,9 +56,12 @@
         {% if sort == "popular" %}
         <input type="hidden" name="sort" value="{{ sort }}">
         {% endif %}
+        {% if view_mode == "posts" %}
+        <input type="hidden" name="view" value="posts">
+        {% endif %}
         <button type="submit" class="search-button" aria-label="Search">🔍</button>
         {% if search_query %}
-        <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}{% if sort == 'popular' %}{% if active_tag %}&{% else %}?{% endif %}sort=popular{% endif %}"
+        <a href="{% url 'posting:home' %}{% if active_tag %}?tag={{ active_tag }}{% endif %}{% if sort == 'popular' %}{% if active_tag %}&{% else %}?{% endif %}sort=popular{% endif %}{% if view_mode == 'posts' %}{% if active_tag or sort == 'popular' %}&{% else %}?{% endif %}view=posts{% endif %}"
             class="clear-search" aria-label="Clear search">
             ✕
         </a>
@@ -29,12 +73,12 @@
 <section class="tag-filter-section">
     <h2 class="visually-hidden">Filter by Tag</h2>
     <div class="tag-chips">
-        <a href="{% url 'posting:home' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}{% if search_query %}&{% else %}?{% endif %}sort=popular{% endif %}"
+        <a href="{% url 'posting:home' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}{% if search_query %}&{% else %}?{% endif %}sort=popular{% endif %}{% if view_mode == 'posts' %}{% if search_query or sort == 'popular' %}&{% else %}?{% endif %}view=posts{% endif %}"
             class="tag-chip {% if not active_tag %}active{% endif %}" aria-label="Show all posts">
             All Posts
         </a>
         {% for tag in tags %}
-        <a href="{% url 'posting:home' %}?tag={{ tag.slug }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}&sort=popular{% endif %}"
+        <a href="{% url 'posting:home' %}?tag={{ tag.slug }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}&sort=popular{% endif %}{% if view_mode == 'posts' %}&view=posts{% endif %}#posts-section"
             class="tag-chip tag-{{ tag.slug|lower|slugify }} {% if tag.slug == active_tag %}active{% endif %}"
             aria-label="{{ tag.name }} ({{ tag.post_count }} posts)"
             title="{{ tag.name }} ({{ tag.post_count }} posts)">
@@ -48,6 +92,35 @@
     </div>
 </section>
 
+{% if active_tag == "pastclassreview" %}
+<!-- Sub-filters for Past Class Reviews -->
+<section class="sub-filter-section">
+    <div class="sub-filter-bar">
+        <span class="sub-filter-label">Filter by sentiment:</span>
+        <div class="sub-filter-chips">
+            <a href="{% url 'posting:home' %}?tag=pastclassreview{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}&sort=popular{% endif %}"
+                class="sub-filter-chip {% if not sentiment_filter %}active{% endif %}">
+                All Reviews
+            </a>
+            <a href="{% url 'posting:home' %}?tag=recommended{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}&sort=popular{% endif %}"
+                class="sub-filter-chip recommended {% if sentiment_filter == 'recommended' %}active{% endif %}">
+                Recommended
+            </a>
+            <a href="{% url 'posting:home' %}?tag=not-recommended{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}&sort=popular{% endif %}"
+                class="sub-filter-chip not-recommended {% if sentiment_filter == 'not-recommended' %}active{% endif %}">
+                Not Recommended
+            </a>
+            <a href="{% url 'posting:home' %}?tag=mixed-review{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if sort == 'popular' %}&sort=popular{% endif %}"
+                class="sub-filter-chip mixed {% if sentiment_filter == 'mixed-review' %}active{% endif %}">
+                Mixed
+            </a>
+        </div>
+    </div>
+    <p class="sub-filter-hint">Tip: Use the search bar to find reviews for a specific course (e.g., "MGT 809")</p>
+</section>
+{% endif %}
+
+{% if view_mode == 'home' or view_mode == 'create' %}
 <section class="post-form-section">
     <h1>Share Your Thoughts</h1>
     {% if user.is_authenticated %}
@@ -104,8 +177,10 @@
     <p><a href="{% url 'auth_landing:login' %}">Log in with your Yale account</a> to post.</p>
     {% endif %}
 </section>
+{% endif %}
 
-<section>
+{% if view_mode != 'create' %}
+<section id="posts-section">
     <div class="posts-header">
         <div>
             <h2 style="margin: 0;">
@@ -139,26 +214,55 @@
 
     {% if posts %}
     {% for post in posts %}
-    <article>
-        <header>
-            <h3>{{ post.title }}</h3>
-            <p>
-                Posted by
-                {% if post.is_anonymous %}
-                Anonymous
-                {% else %}
-                {{ post.author.get_full_name|default:post.author.username }}
+    <article class="post-card" data-post-id="{{ post.pk }}">
+        <header class="post-header">
+            <div class="post-header-main">
+                <h3>{{ post.title }}</h3>
+                <p class="post-meta">
+                    Posted by
+                    {% if post.is_anonymous %}
+                    Anonymous
+                    {% else %}
+                    {{ post.author.get_full_name|default:post.author.username }}
+                    {% endif %}
+                    on {{ post.created_at|date:"M d, Y H:i" }}
+                </p>
+                {% if post.is_flagged %}
+                <p class="post-flagged">⚠️ Flagged for moderator review</p>
                 {% endif %}
-                on {{ post.created_at|date:"M d, Y H:i" }}
-            </p>
-            {% if post.is_flagged %}
-            <p>⚠️ Flagged for moderator review</p>
-            {% endif %}
+            </div>
+            <div class="post-header-actions">
+                {% if user.is_authenticated %}
+                <button type="button" class="reply-btn" onclick="togglePostComments({{ post.pk }})" aria-label="Reply to post">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    <span class="reply-count">{{ post.visible_comments_count|default:0 }}</span>
+                </button>
+                {% else %}
+                <span class="comment-count-badge">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    {{ post.visible_comments_count|default:0 }}
+                </span>
+                {% endif %}
+            </div>
         </header>
+        {% if post.show_crisis_resources %}
+        <div class="crisis-resources-box">
+            <strong>You're not alone.</strong> If you or someone you know needs support:
+            <ul>
+                <li>Yale Mental Health &amp; Counseling: <a href="tel:203-432-0290">203-432-0290</a> (24/7)</li>
+                <li>Crisis Text Line: Text HOME to 741741</li>
+                <li>988 Suicide &amp; Crisis Lifeline: Call or text 988</li>
+            </ul>
+        </div>
+        {% endif %}
         <div class="post-body-content" data-collapsed="true">
             {{ post.body|linebreaks }}
         </div>
-        <p>
+        <p class="post-tags">
             Tags:
             {% for tag in post.tags.all %}
             <span>{{ tag.name }}</span>{% if not forloop.last %}, {% endif %}
@@ -194,6 +298,11 @@
                 <button type="submit" class="flag-button">Flag</button>
             </form>
         </footer>
+
+        {# Comments Section - Hidden by default #}
+        <div class="comments-wrapper" id="comments-wrapper-{{ post.pk }}" style="display: none;">
+            {% include "posting/components/comments.html" with post=post user_comment_votes=user_comment_votes %}
+        </div>
     </article>
     {% endfor %}
     {% else %}
@@ -221,6 +330,7 @@
     </div>
     {% endif %}
 </section>
+{% endif %}
 
 <script>
     // Debounced search functionality
@@ -260,14 +370,16 @@
         if (bodyTextarea && hashtagPreview && hashtagList) {
             function extractHashtags(text) {
                 if (!text) return [];
-                // Match # followed by alphanumeric characters, hyphens, and underscores
+                // Match # followed immediately by alphanumeric characters, hyphens, underscores
+                // This regex naturally stops at spaces, # symbols, or non-matching chars
                 const hashtagPattern = /#([a-zA-Z0-9_-]+)/g;
                 const matches = [];
                 let match;
 
                 while ((match = hashtagPattern.exec(text)) !== null) {
                     const tag = match[1].toLowerCase().trim();
-                    if (tag && !matches.includes(tag)) {
+                    // Validate length (2-50 chars) and no duplicates
+                    if (tag && tag.length >= 2 && tag.length <= 50 && !matches.includes(tag)) {
                         matches.push(tag);
                     }
                 }
@@ -318,6 +430,108 @@
             updateButtonText(); // Initial state
         }
     })();
+
+    // AI Tag Suggestions
+    (function () {
+        const titleInput = document.getElementById('id_title');
+        const bodyTextarea = document.getElementById('id_body');
+        const tagsInput = document.getElementById('id_tags_input');
+
+        if (!titleInput || !bodyTextarea || !tagsInput) return;
+
+        // Create suggestion container
+        const suggestContainer = document.createElement('div');
+        suggestContainer.id = 'tag-suggestions';
+        suggestContainer.className = 'tag-suggestions';
+        suggestContainer.style.display = 'none';
+        suggestContainer.innerHTML = '<span class="suggestion-label">Suggested tags:</span><span class="suggestion-chips"></span>';
+        tagsInput.parentNode.insertBefore(suggestContainer, tagsInput.nextSibling);
+
+        let suggestTimeout;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+
+        async function fetchSuggestions() {
+            const title = titleInput.value.trim();
+            const body = bodyTextarea.value.trim();
+
+            if (title.length + body.length < 20) {
+                suggestContainer.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch('{% url "posting:suggest_tags" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({ title, body })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    displaySuggestions(data.tags);
+                }
+            } catch (error) {
+                console.log('Tag suggestion request failed');
+            }
+        }
+
+        function displaySuggestions(tags) {
+            const chipsContainer = suggestContainer.querySelector('.suggestion-chips');
+
+            if (!tags || tags.length === 0) {
+                suggestContainer.style.display = 'none';
+                return;
+            }
+
+            // Get current tags to avoid suggesting duplicates
+            const currentTags = tagsInput.value.toLowerCase().split(',').map(t => t.trim());
+
+            const filteredTags = tags.filter(tag =>
+                !currentTags.includes(tag.toLowerCase())
+            );
+
+            if (filteredTags.length === 0) {
+                suggestContainer.style.display = 'none';
+                return;
+            }
+
+            chipsContainer.innerHTML = filteredTags.map(tag =>
+                '<button type="button" class="suggestion-chip" data-tag="' + tag + '">' + tag + '</button>'
+            ).join('');
+
+            suggestContainer.style.display = 'block';
+
+            // Add click handlers
+            chipsContainer.querySelectorAll('.suggestion-chip').forEach(chip => {
+                chip.addEventListener('click', function () {
+                    const tag = this.dataset.tag;
+                    const current = tagsInput.value.trim();
+                    if (current) {
+                        tagsInput.value = current + ', ' + tag;
+                    } else {
+                        tagsInput.value = tag;
+                    }
+                    // Remove this chip
+                    this.remove();
+                    // Hide if no more chips
+                    if (chipsContainer.children.length === 0) {
+                        suggestContainer.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        function debouncedFetch() {
+            clearTimeout(suggestTimeout);
+            suggestTimeout = setTimeout(fetchSuggestions, 800);
+        }
+
+        titleInput.addEventListener('input', debouncedFetch);
+        bodyTextarea.addEventListener('input', debouncedFetch);
+    })();
     // Auto-collapse long posts
     (function () {
         const WORD_LIMIT = 250;
@@ -343,9 +557,341 @@
             }
         });
     })();
+
+    // Floating Action Button visibility
+    (function () {
+        const fab = document.getElementById('fab-container');
+        const postFormSection = document.querySelector('.post-form-section');
+
+        if (!fab || !postFormSection) return;
+
+        function checkFabVisibility() {
+            const rect = postFormSection.getBoundingClientRect();
+            // Show FAB when post form is scrolled out of view
+            if (rect.bottom < 0) {
+                fab.classList.add('visible');
+            } else {
+                fab.classList.remove('visible');
+            }
+        }
+
+        window.addEventListener('scroll', checkFabVisibility);
+        checkFabVisibility(); // Initial check
+    })();
+
+    // Scroll to post form function
+    function scrollToPostForm() {
+        const postFormSection = document.querySelector('.post-form-section');
+        if (postFormSection) {
+            postFormSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Focus the title input after scroll
+            setTimeout(() => {
+                const titleInput = document.getElementById('id_title');
+                if (titleInput) titleInput.focus();
+            }, 500);
+        }
+    }
+    window.scrollToPostForm = scrollToPostForm;
+
+    // Toggle comments section for a post
+    function togglePostComments(postId) {
+        const wrapper = document.getElementById('comments-wrapper-' + postId);
+        const btn = document.querySelector(`[data-post-id="${postId}"] .reply-btn`);
+
+        if (wrapper) {
+            const isHidden = wrapper.style.display === 'none';
+            wrapper.style.display = isHidden ? 'block' : 'none';
+
+            if (btn) {
+                btn.classList.toggle('active', isHidden);
+            }
+
+            // Scroll to comments if opening
+            if (isHidden) {
+                setTimeout(() => {
+                    wrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    // Focus the comment textarea
+                    const textarea = wrapper.querySelector('.comment-textarea');
+                    if (textarea) textarea.focus();
+                }, 100);
+            }
+        }
+    }
+    window.togglePostComments = togglePostComments;
+
+    // Auto-scroll to posts section if URL has hash
+    (function() {
+        if (window.location.hash === '#posts-section') {
+            setTimeout(() => {
+                const postsSection = document.getElementById('posts-section');
+                if (postsSection) {
+                    postsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+    })();
+
+    // AJAX voting and flagging
+    (function () {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+
+        // Handle vote forms
+        document.querySelectorAll('.vote-form').forEach(form => {
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const url = this.action;
+                const button = this.querySelector('button');
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Update UI
+                        const voteSection = this.closest('.vote-section');
+                        const netVotesSpan = voteSection.querySelector('.net-votes');
+                        const upvoteBtn = voteSection.querySelector('.upvote-button');
+                        const downvoteBtn = voteSection.querySelector('.downvote-button');
+
+                        // Update net votes display
+                        netVotesSpan.textContent = data.net_votes;
+                        netVotesSpan.classList.remove('positive', 'negative');
+                        if (data.net_votes > 0) netVotesSpan.classList.add('positive');
+                        else if (data.net_votes < 0) netVotesSpan.classList.add('negative');
+
+                        // Update button states
+                        upvoteBtn.classList.remove('active');
+                        downvoteBtn.classList.remove('active');
+                        if (data.user_vote === 'UPVOTE') upvoteBtn.classList.add('active');
+                        else if (data.user_vote === 'DOWNVOTE') downvoteBtn.classList.add('active');
+
+                        showToast(data.message, 'success');
+                    } else {
+                        showToast(data.message || 'Action failed', 'error');
+                    }
+                } catch (error) {
+                    showToast('Network error. Please try again.', 'error');
+                }
+            });
+        });
+
+        // Handle flag forms
+        document.querySelectorAll('.flag-form').forEach(form => {
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const url = this.action;
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showToast(data.message, 'success');
+                    } else {
+                        showToast(data.message || 'Already flagged', 'info');
+                    }
+                } catch (error) {
+                    showToast('Network error. Please try again.', 'error');
+                }
+            });
+        });
+    })();
 </script>
 
 <style>
+    /* Main Tab Navigation */
+    .main-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        margin-bottom: 1.5rem;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .main-tab {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.875rem 2rem;
+        color: #6b7280;
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: all 0.2s;
+    }
+
+    .main-tab:hover {
+        color: #00356b;
+        background: #f9fafb;
+    }
+
+    .main-tab.active {
+        color: #00356b;
+        border-bottom-color: #00356b;
+    }
+
+    .main-tab svg {
+        opacity: 0.7;
+    }
+
+    .main-tab.active svg {
+        opacity: 1;
+    }
+
+    /* Post Card Header */
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .post-header-main {
+        flex: 1;
+    }
+
+    .post-header-main h3 {
+        margin: 0 0 0.5rem 0;
+    }
+
+    .post-meta {
+        margin: 0;
+        color: #6b7280;
+        font-size: 0.9rem;
+    }
+
+    .post-flagged {
+        margin: 0.5rem 0 0 0;
+        color: #dc2626;
+        font-size: 0.9rem;
+    }
+
+    .post-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .reply-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.5rem 0.875rem;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+        color: #4b5563;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .reply-btn:hover {
+        background: #e5e7eb;
+        color: #1f2937;
+    }
+
+    .reply-btn.active {
+        background: #00356b;
+        color: #fff;
+        border-color: #00356b;
+    }
+
+    .reply-btn svg {
+        flex-shrink: 0;
+    }
+
+    .reply-count {
+        font-weight: 600;
+    }
+
+    .comment-count-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.5rem 0.875rem;
+        background: #f3f4f6;
+        border-radius: 20px;
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+    .post-tags {
+        font-size: 0.9rem;
+        color: #6b7280;
+    }
+
+    /* Comments Wrapper */
+    .comments-wrapper {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e5e7eb;
+        animation: slideDown 0.2s ease-out;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Post Card Styling */
+    .post-card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    @media (max-width: 600px) {
+        .main-tabs {
+            margin-bottom: 1rem;
+        }
+
+        .main-tab {
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .post-header {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .post-header-actions {
+            width: 100%;
+        }
+
+        .reply-btn {
+            flex: 1;
+            justify-content: center;
+        }
+    }
+
     .post-body-content.collapsed {
         max-height: 300px;
         overflow: hidden;
@@ -367,6 +913,166 @@
 
     .read-more-btn:hover {
         text-decoration: underline;
+    }
+
+    .crisis-resources-box {
+        background: linear-gradient(135deg, #fef3c7, #fde68a);
+        border: 2px solid #f59e0b;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .crisis-resources-box strong {
+        color: #92400e;
+        font-size: 1rem;
+    }
+
+    .crisis-resources-box ul {
+        margin: 0.5rem 0 0 0;
+        padding-left: 1.25rem;
+        font-size: 0.9rem;
+        color: #78350f;
+    }
+
+    .crisis-resources-box li {
+        margin-bottom: 0.25rem;
+    }
+
+    .crisis-resources-box a {
+        color: #00356b;
+        font-weight: 600;
+    }
+
+    .tag-suggestions {
+        margin-top: 0.75rem;
+        padding: 0.75rem;
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        border-radius: 6px;
+        border-left: 3px solid #3b82f6;
+    }
+
+    .suggestion-label {
+        font-size: 0.875rem;
+        color: #1e40af;
+        margin-right: 0.75rem;
+        font-weight: 600;
+    }
+
+    .suggestion-chips {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .suggestion-chip {
+        display: inline-block;
+        padding: 0.375rem 0.875rem;
+        background: #fff;
+        color: #1e40af;
+        border: 1px solid #3b82f6;
+        border-radius: 16px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .suggestion-chip:hover {
+        background: #3b82f6;
+        color: #fff;
+    }
+
+    /* Sub-filter styles for class reviews */
+    .sub-filter-section {
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .sub-filter-bar {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .sub-filter-label {
+        font-weight: 600;
+        color: #475569;
+        font-size: 0.9rem;
+    }
+
+    .sub-filter-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .sub-filter-chip {
+        display: inline-block;
+        padding: 0.375rem 0.875rem;
+        background: #fff;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .sub-filter-chip:hover {
+        border-color: #00356b;
+        color: #00356b;
+        background: #f8fafc;
+    }
+
+    .sub-filter-chip.active {
+        background: #00356b;
+        color: #fff;
+        border-color: #00356b;
+    }
+
+    .sub-filter-chip.recommended:not(.active):hover {
+        border-color: #059669;
+        color: #059669;
+    }
+
+    .sub-filter-chip.not-recommended:not(.active):hover {
+        border-color: #dc2626;
+        color: #dc2626;
+    }
+
+    .sub-filter-chip.mixed:not(.active):hover {
+        border-color: #d97706;
+        color: #d97706;
+    }
+
+    .sub-filter-hint {
+        margin: 0.75rem 0 0 0;
+        font-size: 0.8rem;
+        color: #64748b;
+        font-style: italic;
+    }
+
+    @media (max-width: 600px) {
+        .sub-filter-bar {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .sub-filter-chips {
+            width: 100%;
+        }
+
+        .sub-filter-chip {
+            flex: 1;
+            text-align: center;
+            min-width: calc(50% - 0.25rem);
+        }
     }
 </style>
 
@@ -501,6 +1207,272 @@
     @media (max-width: 600px) {
         .post-form-section {
             padding: 1.5rem;
+        }
+    }
+</style>
+
+<script>
+    // Toggle reply form visibility
+    function toggleReplyForm(commentId) {
+        const replyForm = document.getElementById('reply-form-' + commentId);
+        if (replyForm) {
+            replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+        }
+    }
+</script>
+
+<style>
+    /* Comment styles */
+    .comments-section {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .comments-header {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        color: #1b1b1b;
+    }
+
+    .comment-form, .reply-form {
+        margin-bottom: 1.5rem;
+    }
+
+    .comment-textarea, .reply-textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 0.95rem;
+        resize: vertical;
+        box-sizing: border-box;
+    }
+
+    .comment-textarea:focus, .reply-textarea:focus {
+        outline: none;
+        border-color: #00356b;
+        box-shadow: 0 0 0 3px rgba(0, 53, 107, 0.1);
+    }
+
+    .comment-form-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.5rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .comment-anonymous-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #6b7280;
+    }
+
+    .comment-submit-btn {
+        background: #00356b;
+        color: #fff;
+        padding: 0.5rem 1.25rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .comment-submit-btn:hover {
+        background: #002a55;
+    }
+
+    .comment-cancel-btn {
+        background: #6b7280;
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        margin-right: 0.5rem;
+    }
+
+    .comment-cancel-btn:hover {
+        background: #4b5563;
+    }
+
+    .comments-list {
+        margin-top: 1rem;
+    }
+
+    .no-comments {
+        color: #6b7280;
+        font-style: italic;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .comment-item {
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        background: #f9fafb;
+        border-radius: 6px;
+    }
+
+    .comment-reply {
+        margin-left: 2rem;
+        margin-top: 0.5rem;
+        background: #f3f4f6;
+    }
+
+    .comment-deleted {
+        background: #fef2f2;
+        border-left: 3px solid #ef4444;
+    }
+
+    .comment-deleted-text {
+        color: #6b7280;
+        font-style: italic;
+    }
+
+    .comment-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        flex-wrap: wrap;
+    }
+
+    .comment-author {
+        font-weight: 600;
+        color: #1b1b1b;
+    }
+
+    .comment-timestamp {
+        color: #6b7280;
+    }
+
+    .comment-flagged-badge {
+        background: #fef2f2;
+        color: #dc2626;
+        padding: 0.125rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+    }
+
+    .comment-body {
+        margin: 0.5rem 0;
+        color: #1b1b1b;
+        line-height: 1.5;
+    }
+
+    .comment-body p {
+        margin: 0;
+    }
+
+    .comment-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .comment-vote-section {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .comment-vote-btn {
+        background: none;
+        border: 1px solid #d1d5db;
+        color: #6b7280;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.875rem;
+    }
+
+    .comment-vote-btn:hover {
+        background: #f3f4f6;
+        border-color: #9ca3af;
+    }
+
+    .comment-vote-btn.active {
+        background: #00356b;
+        color: #fff;
+        border-color: #00356b;
+    }
+
+    .comment-net-votes {
+        font-weight: 600;
+        min-width: 2rem;
+        text-align: center;
+        font-size: 0.875rem;
+    }
+
+    .comment-net-votes.positive {
+        color: #059669;
+    }
+
+    .comment-net-votes.negative {
+        color: #dc2626;
+    }
+
+    .comment-reply-btn, .comment-flag-btn, .comment-delete-btn {
+        background: none;
+        border: none;
+        color: #00356b;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .comment-reply-btn:hover, .comment-flag-btn:hover {
+        text-decoration: underline;
+    }
+
+    .comment-delete-btn {
+        color: #dc2626;
+    }
+
+    .comment-delete-btn:hover {
+        text-decoration: underline;
+    }
+
+    .comment-reply-form {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #d1d5db;
+    }
+
+    .comment-replies {
+        margin-top: 0.5rem;
+    }
+
+    @media (max-width: 600px) {
+        .comment-reply {
+            margin-left: 1rem;
+        }
+
+        .comment-actions {
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .comment-form-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .comment-submit-btn, .comment-cancel-btn {
+            width: 100%;
+            margin-right: 0;
         }
     }
 </style>

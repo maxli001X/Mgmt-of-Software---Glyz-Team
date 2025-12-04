@@ -5,7 +5,49 @@
 {% block content %}
 <section>
     <h1>Moderation Dashboard</h1>
-    <p>This screen will list flagged posts and ranking metrics once story #50 is implemented.</p>
+    <p>Manage flagged content and view moderation tools.</p>
+
+    <div class="dashboard-links">
+        <a href="{% url 'moderation_ranking:flagged_queue' %}" class="dashboard-card">
+            <h2>Flagged Content Queue</h2>
+            <p>Review and moderate flagged posts and comments</p>
+        </a>
+    </div>
 </section>
+
+<style>
+    .dashboard-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .dashboard-card {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.2s;
+        border: 2px solid transparent;
+    }
+
+    .dashboard-card:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-color: #00356b;
+    }
+
+    .dashboard-card h2 {
+        margin-top: 0;
+        color: #00356b;
+    }
+
+    .dashboard-card p {
+        color: #6b7280;
+        margin-bottom: 0;
+    }
+</style>
 {% endblock content %}
 

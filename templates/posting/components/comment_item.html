@@ -1,0 +1,133 @@
+{% load posting_tags %}
+
+{# Default depth to 0 if not set, max depth is 4 levels #}
+{% with current_depth=depth|default:0 %}
+<div class="comment-item {% if comment.is_reply %}comment-reply{% endif %}" data-comment-id="{{ comment.pk }}" data-depth="{{ current_depth }}">
+    <div class="comment-content {% if comment.is_deleted %}comment-deleted{% endif %}">
+        {% if comment.is_deleted %}
+            <p class="comment-deleted-text">[Comment deleted]</p>
+        {% else %}
+            <div class="comment-header">
+                <span class="comment-author">
+                    {% if comment.is_anonymous %}
+                        Anonymous
+                    {% else %}
+                        {{ comment.author.get_full_name|default:comment.author.username }}
+                    {% endif %}
+                </span>
+                <span class="comment-timestamp">{{ comment.created_at|date:"M d, Y H:i" }}</span>
+                {% if comment.is_flagged %}
+                    <span class="comment-flagged-badge">Flagged</span>
+                {% endif %}
+            </div>
+
+            {% if comment.show_crisis_resources %}
+            <div class="crisis-resources-box comment-crisis">
+                <strong>You're not alone.</strong> If you or someone you know needs support:
+                <ul>
+                    <li>Yale Mental Health: <a href="tel:203-432-0290">203-432-0290</a> (24/7)</li>
+                    <li>Crisis Text Line: Text HOME to 741741</li>
+                    <li>988 Lifeline: Call or text 988</li>
+                </ul>
+            </div>
+            {% endif %}
+
+            <p class="comment-body">{{ comment.body|linebreaks }}</p>
+
+            <div class="comment-actions">
+                {# Voting #}
+                <div class="comment-vote-section">
+                    {% with vote=user_comment_votes|get_item:comment.pk %}
+                    <form method="post" action="{% url 'posting:upvote_comment' comment.pk %}" class="vote-form">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="vote-button comment-vote-btn {% if vote and vote.vote_type == 'UPVOTE' %}active{% endif %}"
+                            aria-label="Upvote comment">
+                            ▲
+                        </button>
+                    </form>
+                    <span class="comment-net-votes {% if comment.get_net_votes > 0 %}positive{% elif comment.get_net_votes < 0 %}negative{% endif %}">
+                        {{ comment.get_net_votes|default:0 }}
+                    </span>
+                    <form method="post" action="{% url 'posting:downvote_comment' comment.pk %}" class="vote-form">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="vote-button comment-vote-btn {% if vote and vote.vote_type == 'DOWNVOTE' %}active{% endif %}"
+                            aria-label="Downvote comment">
+                            ▼
+                        </button>
+                    </form>
+                    {% endwith %}
+                </div>
+
+                {# Reply button #}
+                {% if user.is_authenticated %}
+                <button type="button" class="comment-reply-btn" onclick="toggleReplyForm({{ comment.pk }})" aria-label="Reply to comment">
+                    Reply
+                </button>
+                {% endif %}
+
+                {# Flag button #}
+                <form method="post" action="{% url 'posting:flag_comment' comment.pk %}" class="flag-form">
+                    {% csrf_token %}
+                    <button type="submit" class="comment-flag-btn" aria-label="Flag comment">Flag</button>
+                </form>
+
+                {# Delete button (own comments only) #}
+                {% if comment.author == user or user.is_staff %}
+                <form method="post" action="{% url 'posting:delete_comment' comment.pk %}" class="delete-form">
+                    {% csrf_token %}
+                    <button type="submit" class="comment-delete-btn" onclick="return confirm('Delete this comment?')" aria-label="Delete comment">
+                        Delete
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {# Reply form (hidden by default) #}
+        {% if user.is_authenticated and not comment.is_deleted %}
+        <div class="comment-reply-form" id="reply-form-{{ comment.pk }}" style="display: none;">
+            <form method="post" action="{% url 'posting:add_reply' comment.pk %}" class="reply-form">
+                {% csrf_token %}
+                <textarea
+                    name="body"
+                    rows="2"
+                    class="comment-textarea reply-textarea"
+                    placeholder="Write a reply..."
+                    required
+                    aria-label="Reply text"
+                ></textarea>
+                <div class="comment-form-actions">
+                    <label class="comment-anonymous-label">
+                        <input type="checkbox" name="is_anonymous" checked class="form-checkbox">
+                        <span>Post anonymously</span>
+                    </label>
+                    <button type="button" class="comment-cancel-btn" onclick="toggleReplyForm({{ comment.pk }})">Cancel</button>
+                    <button type="submit" class="comment-submit-btn">Post Reply</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    {# Nested replies - limit depth to 4 levels #}
+    {% if comment.replies.exists and current_depth < 4 %}
+    <div class="comment-replies">
+        {% with next_depth=current_depth|add:1 %}
+        {% for reply in comment.replies.all %}
+            {% if not reply.is_deleted or reply.replies.exists %}
+                {% include "posting/components/comment_item.html" with comment=reply user_comment_votes=user_comment_votes depth=next_depth %}
+            {% endif %}
+        {% endfor %}
+        {% endwith %}
+    </div>
+    {% elif comment.replies.exists and current_depth >= 4 %}
+    <div class="comment-replies-collapsed">
+        <a href="#" class="view-more-replies" onclick="alert('Deep thread - view full discussion to see more replies'); return false;">
+            View {{ comment.replies.count }} more repl{{ comment.replies.count|pluralize:"y,ies" }}...
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endwith %}
