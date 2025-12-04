@@ -1,11 +1,20 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from urllib.parse import urlparse
 
-from posting.models import Comment, Post
+from posting.models import Comment, Post, Tag
+
+
+def _cleanup_orphan_tags():
+    """Delete tags that have no posts associated with them."""
+    orphan_tags = Tag.objects.annotate(post_count=Count('posts')).filter(post_count=0)
+    count = orphan_tags.count()
+    orphan_tags.delete()
+    return count
 
 
 def _safe_redirect(request, default_url):
@@ -101,7 +110,14 @@ def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     title = post.title
     post.delete()
-    messages.success(request, f"Post '{title}' has been permanently deleted.")
+
+    # Clean up orphan tags (tags with no posts)
+    orphan_count = _cleanup_orphan_tags()
+
+    if orphan_count > 0:
+        messages.success(request, f"Post '{title}' deleted. {orphan_count} unused tag(s) also removed.")
+    else:
+        messages.success(request, f"Post '{title}' has been permanently deleted.")
 
     return _safe_redirect(request, reverse("moderation_ranking:flagged_queue"))
 

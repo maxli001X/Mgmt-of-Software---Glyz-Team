@@ -187,12 +187,17 @@ class PostForm(forms.ModelForm):
 
         Sets ai_flagged, ai_severity_score, ai_categories, and show_crisis_resources.
         """
+        import logging
+        logger = logging.getLogger(__name__)
+
         try:
             from ..utils.ai_moderator import get_moderator
 
             moderator = get_moderator()
             text = f"{post.title}\n\n{post.body}"
             result = moderator.check_content(text)
+
+            logger.info(f"AI Moderation result: flagged={result.get('flagged')}, is_crisis={result.get('is_crisis')}, error={result.get('error')}")
 
             post.ai_flagged = result.get("flagged", False)
             post.ai_severity_score = result.get("severity_score")
@@ -202,7 +207,9 @@ class PostForm(forms.ModelForm):
             # Auto-flag for human review if AI flags it
             if post.ai_flagged:
                 post.is_flagged = True
+                logger.info(f"Post auto-flagged by AI moderation")
 
-        except Exception:
-            # If AI moderation fails, continue without it
+        except Exception as e:
+            # If AI moderation fails, log it and continue without it
+            logger.error(f"AI moderation failed: {e}")
             pass
