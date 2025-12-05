@@ -1,7 +1,7 @@
 # Sprint 4 Planning
 
 **Sprint Goal:** Deploy to production, implement A/B endpoint with analytics, and complete remaining MVP features.
-**Duration:** [Current Date] - [Final Submission Date]
+**Duration:** 2025-12-03 - 2025-12-10
 
 ## Sprint Goal
 By the end of Sprint 4, we will have a production-ready application deployed to a public URL, with a working A/B test endpoint tracked by analytics, and all core MVP features polished and bug-free.
