@@ -1,279 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
     <title>{% block title %}Tree Hole Yale{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
-<header>
-    <nav>
-        <a href="{% url 'posting:home' %}">Tree Hole Yale</a>
-        <ul>
-            {% if user.is_authenticated %}
+    <header>
+        <nav>
+            <a href="{% url 'posting:home' %}">Tree Hole Yale</a>
+            <ul>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'posting:home' %}">Home</a></li>
                 <li><a href="{% url 'profile_settings:my_posts' %}">My Posts</a></li>
                 <li><a href="{% url 'posting:my_stats' %}">My Stats</a></li>
-                <li><a href="{% url 'profile_settings:dashboard' %}">Profile & Settings</a></li>
+                <li>
+                    <a href="{% url 'profile_settings:dashboard' %}" class="nav-profile-link">
+                        {% if user.profile.avatar %}
+                        <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="nav-avatar">
+                        {% else %}
+                        <span class="nav-icon">⚙️</span>
+                        {% endif %}
+                        Settings
+                    </a>
+                </li>
                 {% if user.is_staff or user.is_superuser %}
+                <li><a href="{% url 'posting:aggregated_stats' %}">Overall Stats</a></li>
                 <li><a href="{% url 'posting:admin_user_list' %}">Users</a></li>
                 <li><a href="{% url 'moderation_ranking:dashboard' %}">Moderation</a></li>
                 {% endif %}
-                <li>
-                    <form method="post" action="{% url 'auth_landing:logout' %}">
-                        {% csrf_token %}
-                        <button type="submit">Log out</button>
-                    </form>
-                </li>
-            {% else %}
-                <li><a href="{% url 'auth_landing:login' %}">Log in</a></li>
-                <li><a href="{% url 'auth_landing:signup' %}">Sign up</a></li>
-            {% endif %}
-            <li><a href="{% url 'posting:aggregated_stats' %}">Stats</a></li>
-        </ul>
+                {% else %}
+                <li><a href="{% url 'auth_landing:login' %}">Log In</a></li>
+                <li><a href="{% url 'auth_landing:signup' %}" class="btn btn-primary">Sign Up</a></li>
+                {% endif %}
+                <li><a href="{% url 'posting:aggregated_stats' %}">Stats</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock content %}
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <a href="{% url 'posting:home' %}"
+            class="mobile-nav-item {% if request.resolver_match.url_name == 'home' and not request.GET.view %}active{% endif %}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Home</span>
+        </a>
+        <a href="{% url 'posting:home' %}?view=create"
+            class="mobile-nav-item {% if request.GET.view == 'create' %}active{% endif %}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+            <span>Post</span>
+        </a>
+        <a href="{% url 'profile_settings:dashboard' %}"
+            class="mobile-nav-item {% if 'profile' in request.resolver_match.app_name %}active{% endif %}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Profile</span>
+        </a>
     </nav>
-</header>
-<main>
-    {% block content %}{% endblock content %}
-</main>
 
-<!-- Toast Notification Container -->
-<div id="toast-container" class="toast-container"></div>
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
 
-<!-- Floating Action Button (only on home page) -->
-{% block floating_button %}{% endblock floating_button %}
+    <!-- Floating Action Button (only on home page) -->
+    {% block floating_button %}{% endblock floating_button %}
 
-<!-- Toast notifications from Django messages -->
-{% if messages %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    {% for message in messages %}
-    showToast("{{ message|escapejs }}", "{{ message.tags|default:'info' }}");
-    {% endfor %}
-});
-</script>
-{% endif %}
+    <!-- Toast notifications from Django messages -->
+    {% if messages %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            {% for message in messages %}
+            showToast("{{ message|escapejs }}", "{{ message.tags|default:'info' }}");
+            {% endfor %}
+        });
+    </script>
+    {% endif %}
 
-<style>
-/* Toast Notification Styles */
-.toast-container {
-    position: fixed;
-    bottom: 24px;
-    left: 24px;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    pointer-events: none;
-}
+    <style>
+        /* Toast Notification Styles */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
 
-.toast {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 20px;
-    background: #1b1b1b;
-    color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    font-size: 0.9rem;
-    pointer-events: auto;
-    animation: slideIn 0.3s ease-out;
-    max-width: 320px;
-}
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: #1b1b1b;
+            color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-size: 0.9rem;
+            pointer-events: auto;
+            animation: slideIn 0.3s ease-out;
+            max-width: 320px;
+        }
 
-.toast.success {
-    background: #059669;
-}
+        .toast.success {
+            background: #059669;
+        }
 
-.toast.error {
-    background: #dc2626;
-}
+        .toast.error {
+            background: #dc2626;
+        }
 
-.toast.warning {
-    background: #d97706;
-}
+        .toast.warning {
+            background: #d97706;
+        }
 
-.toast.info {
-    background: #00356b;
-}
+        .toast.info {
+            background: #00356b;
+        }
 
-.toast-icon {
-    font-size: 1.1rem;
-}
+        .toast-icon {
+            font-size: 1.1rem;
+        }
 
-.toast-message {
-    flex: 1;
-}
+        .toast-message {
+            flex: 1;
+        }
 
-.toast-close {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.7);
-    cursor: pointer;
-    padding: 0;
-    font-size: 1.2rem;
-    line-height: 1;
-}
+        .toast-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            padding: 0;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
 
-.toast-close:hover {
-    color: #fff;
-}
+        .toast-close:hover {
+            color: #fff;
+        }
 
-@keyframes slideIn {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
 
-@keyframes slideOut {
-    from {
-        transform: translateX(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-}
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
 
-.toast.hiding {
-    animation: slideOut 0.3s ease-in forwards;
-}
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
 
-/* Floating Action Button */
-.fab-container {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.8);
-    transition: all 0.3s ease;
-}
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
 
-.fab-container.visible {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1);
-}
+        .toast.hiding {
+            animation: slideOut 0.3s ease-in forwards;
+        }
 
-.fab-button {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: #00356b;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 53, 107, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    transition: all 0.2s;
-}
+        /* Floating Action Button */
+        .fab-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
 
-.fab-button:hover {
-    background: #002a55;
-    transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(0, 53, 107, 0.4);
-}
+        .fab-container.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
 
-.fab-button:active {
-    transform: scale(0.95);
-}
+        .fab-button {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #00356b;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 53, 107, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.2s;
+        }
 
-.fab-tooltip {
-    position: absolute;
-    right: 68px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #1b1b1b;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s;
-}
+        .fab-button:hover {
+            background: #002a55;
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 53, 107, 0.4);
+        }
 
-.fab-container:hover .fab-tooltip {
-    opacity: 1;
-    visibility: visible;
-}
+        .fab-button:active {
+            transform: scale(0.95);
+        }
 
-@media (max-width: 600px) {
-    .toast-container {
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-    }
+        .fab-tooltip {
+            position: absolute;
+            right: 68px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1b1b1b;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
 
-    .toast {
-        max-width: none;
-    }
+        .fab-container:hover .fab-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
 
-    .fab-container {
-        bottom: 16px;
-        right: 16px;
-    }
+        @media (max-width: 600px) {
+            .toast-container {
+                left: 12px;
+                right: 12px;
+                bottom: 12px;
+            }
 
-    .fab-button {
-        width: 48px;
-        height: 48px;
-        font-size: 1.25rem;
-    }
+            .toast {
+                max-width: none;
+            }
 
-    .fab-tooltip {
-        display: none;
-    }
-}
-</style>
+            .fab-container {
+                bottom: 16px;
+                right: 16px;
+            }
 
-<script>
-// Toast notification system
-function showToast(message, type = 'info', duration = 4000) {
-    const container = document.getElementById('toast-container');
-    if (!container) return;
+            .fab-button {
+                width: 48px;
+                height: 48px;
+                font-size: 1.25rem;
+            }
 
-    const toast = document.createElement('div');
-    toast.className = 'toast ' + type;
+            .fab-tooltip {
+                display: none;
+            }
+        }
+    </style>
 
-    const icons = {
-        success: '✓',
-        error: '✕',
-        warning: '⚠',
-        info: 'ℹ'
-    };
+    <script>
+        // Toast notification system
+        function showToast(message, type = 'info', duration = 4000) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
 
-    toast.innerHTML = `
+            const toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+
+            const icons = {
+                success: '✓',
+                error: '✕',
+                warning: '⚠',
+                info: 'ℹ'
+            };
+
+            toast.innerHTML = `
         <span class="toast-icon">${icons[type] || icons.info}</span>
         <span class="toast-message">${message}</span>
         <button class="toast-close" onclick="this.parentElement.remove()">×</button>
     `;
 
-    container.appendChild(toast);
+            container.appendChild(toast);
 
-    // Auto-remove after duration
-    setTimeout(() => {
-        toast.classList.add('hiding');
-        setTimeout(() => toast.remove(), 300);
-    }, duration);
-}
+            // Auto-remove after duration
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
 
-// Make showToast globally available
-window.showToast = showToast;
-</script>
+        // Make showToast globally available
+        window.showToast = showToast;
+    </script>
 </body>
-</html>
 
+</html>

@@ -30,13 +30,18 @@ class PostForm(forms.ModelForm):
                 "class": "form-textarea",
                 "placeholder": "Share your thoughts... Use #hashtag to add tags!"
             }),
-            "is_anonymous": forms.CheckboxInput(attrs={"class": "form-checkbox"}),
         }
         labels = {
             "title": "Title",
             "body": "Post Content",
             "is_anonymous": "Post anonymously",
         }
+
+    post_as_identity = forms.BooleanField(
+        required=False,
+        label="Post with my Profile Identity",
+        widget=forms.CheckboxInput(attrs={"class": "form-checkbox"})
+    )
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -139,6 +144,11 @@ class PostForm(forms.ModelForm):
 
         # Run AI content moderation before saving
         self._run_ai_moderation(post)
+
+        # Handle identity choice
+        # If post_as_identity is True, is_anonymous is False
+        # If post_as_identity is False, is_anonymous is True
+        post.is_anonymous = not self.cleaned_data.get('post_as_identity', False)
 
         if commit:
             post.save()

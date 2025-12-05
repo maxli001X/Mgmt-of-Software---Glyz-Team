@@ -1,3 +1,3 @@
-from .profile_form import EmailPreferencesForm, FeedbackForm
+from .profile_form import FeedbackForm, ProfileForm
 
-__all__ = ["EmailPreferencesForm", "FeedbackForm"]
+__all__ = ["FeedbackForm", "ProfileForm"]

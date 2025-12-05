@@ -10,6 +10,19 @@ class UserProfile(models.Model):
         related_name="profile"
     )
     
+    # Identity
+    display_name = models.CharField(
+        max_length=50, 
+        blank=True, 
+        help_text="Optional display name for posts"
+    )
+    avatar = models.ImageField(
+        upload_to='avatars/', 
+        null=True, 
+        blank=True,
+        help_text="Optional profile picture"
+    )
+    
     # Email notification preferences
     email_notifications_enabled = models.BooleanField(
         default=True,

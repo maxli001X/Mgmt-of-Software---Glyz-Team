@@ -5,13 +5,53 @@
 {% block content %}
 <section>
     <h1>Profile & Settings</h1>
-    
+
     <div class="profile-header">
         <div class="profile-info">
             <h2>{{ user.get_full_name|default:user.username }}</h2>
             <p class="profile-email">{{ user.email }}</p>
             <p class="profile-school">Yale University</p>
+            <div class="settings-section">
+                <h3>Account Actions</h3>
+                <form action="{% url 'auth_landing:logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" style="width: 100%; margin-top: 1rem;">Log Out</button>
+                </form>
+            </div>
         </div>
+    </div>
+
+    <!-- Profile Identity Settings -->
+    <div class="profile-section">
+        <h3>Public Identity</h3>
+        <p class="section-desc">Set a display name and avatar to use when you choose not to be anonymous.</p>
+
+        <form method="post" enctype="multipart/form-data" class="profile-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.display_name.id_for_label }}">Display Name</label>
+                {{ form.display_name }}
+                {% if form.display_name.errors %}
+                <div class="error-message">{{ form.display_name.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.avatar.id_for_label }}">Profile Picture</label>
+                {{ form.avatar }}
+                {% if user.profile.avatar %}
+                <div class="current-avatar">
+                    <img src="{{ user.profile.avatar.url }}" alt="Current Avatar" class="avatar-preview">
+                    <p>Current Avatar</p>
+                </div>
+                {% endif %}
+                {% if form.avatar.errors %}
+                <div class="error-message">{{ form.avatar.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="save-btn">Save Identity</button>
+        </form>
     </div>
 
     <div class="profile-actions">
@@ -23,7 +63,7 @@
             </div>
             <span class="action-arrow">→</span>
         </a>
-        
+
         <a href="{% url 'profile_settings:settings' %}" class="profile-action-card">
             <span class="action-icon">⚙️</span>
             <div class="action-content">
@@ -35,112 +75,180 @@
     </div>
 
     <div class="profile-note">
-        <p><strong>About Anonymity:</strong> When you post anonymously, your identity is hidden from other users. However, you can always see your own anonymous posts in "My Posts".</p>
+        <p><strong>About Anonymity:</strong> When you post anonymously, your identity is hidden from other users.
+            However, you can always see your own anonymous posts in "My Posts".</p>
     </div>
 </section>
 
 <style>
-.profile-header {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    margin-bottom: 2rem;
-}
+    .profile-header {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        margin-bottom: 2rem;
+    }
 
-.profile-info h2 {
-    margin: 0 0 0.5rem 0;
-    color: #1b1b1b;
-    font-size: 1.75rem;
-}
+    .profile-info h2 {
+        margin: 0 0 0.5rem 0;
+        color: #1b1b1b;
+        font-size: 1.75rem;
+    }
 
-.profile-email {
-    color: #6b7280;
-    margin: 0.25rem 0;
-    font-size: 1rem;
-}
+    .profile-email {
+        color: #6b7280;
+        margin: 0.25rem 0;
+        font-size: 1rem;
+    }
 
-.profile-school {
-    color: #00356b;
-    font-weight: 600;
-    margin: 0.5rem 0 0 0;
-    font-size: 0.95rem;
-}
+    .profile-school {
+        color: #00356b;
+        font-weight: 600;
+        margin: 0.5rem 0 0 0;
+        font-size: 0.95rem;
+    }
 
-.profile-actions {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.profile-action-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    text-decoration: none;
-    color: #1b1b1b;
-    transition: all 0.2s;
-    border: 2px solid transparent;
-}
-
-.profile-action-card:hover {
-    border-color: #00356b;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.action-icon {
-    font-size: 2rem;
-}
-
-.action-content {
-    flex: 1;
-}
-
-.action-content h3 {
-    margin: 0 0 0.25rem 0;
-    color: #1b1b1b;
-    font-size: 1.1rem;
-}
-
-.action-content p {
-    margin: 0;
-    color: #6b7280;
-    font-size: 0.9rem;
-}
-
-.action-arrow {
-    color: #6b7280;
-    font-size: 1.5rem;
-}
-
-.profile-note {
-    background: #e6f7ff;
-    border-left: 4px solid #00356b;
-    padding: 1rem 1.5rem;
-    border-radius: 4px;
-    color: #1b1b1b;
-}
-
-.profile-note p {
-    margin: 0;
-    line-height: 1.6;
-}
-
-@media (max-width: 600px) {
     .profile-actions {
-        grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
     }
-    
+
     .profile-action-card {
-        padding: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        text-decoration: none;
+        color: #1b1b1b;
+        transition: all 0.2s;
+        border: 2px solid transparent;
     }
-}
+
+    .profile-action-card:hover {
+        border-color: #00356b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-icon {
+        font-size: 2rem;
+    }
+
+    .action-content {
+        flex: 1;
+    }
+
+    .action-content h3 {
+        margin: 0 0 0.25rem 0;
+        color: #1b1b1b;
+        font-size: 1.1rem;
+    }
+
+    .action-content p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 0.9rem;
+    }
+
+    .action-arrow {
+        color: #6b7280;
+        font-size: 1.5rem;
+    }
+
+    .profile-note {
+        background: #e6f7ff;
+        border-left: 4px solid #00356b;
+        padding: 1rem 1.5rem;
+        border-radius: 4px;
+        color: #1b1b1b;
+    }
+
+    .profile-note p {
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 600px) {
+        .profile-actions {
+            grid-template-columns: 1fr;
+        }
+
+        .profile-action-card {
+            padding: 1.25rem;
+        }
+    }
+    }
+    }
+
+    .profile-section {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        margin-bottom: 2rem;
+    }
+
+    .profile-section h3 {
+        margin: 0 0 0.5rem 0;
+        color: #1b1b1b;
+    }
+
+    .section-desc {
+        color: #6b7280;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #374151;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 1rem;
+    }
+
+    .save-btn {
+        background: #00356b;
+        color: #fff;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .save-btn:hover {
+        background: #002a55;
+    }
+
+    .current-avatar {
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .avatar-preview {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #e5e7eb;
+    }
 </style>
 {% endblock content %}
-

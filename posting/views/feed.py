@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db.models import Count, Prefetch, Q
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -88,12 +89,17 @@ def home(request):
     # Count results for screen reader announcement
     posts_count = posts.count()
 
+    # Pagination
+    paginator = Paginator(posts, 12)  # 12 posts per page
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(
         request,
         "posting/home.html",
         {
             "form": form,
-            "posts": posts,
+            "posts": page_obj,  # Pass page_obj instead of posts
             "tags": tags,
             "active_tag": tag_slug,
             "search_query": search_query,

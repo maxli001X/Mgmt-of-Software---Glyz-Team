@@ -3,18 +3,27 @@ from django import forms
 from ..models import Feedback, UserProfile
 
 
-class EmailPreferencesForm(forms.ModelForm):
-    """Form for managing email notification preferences."""
+class ProfileForm(forms.ModelForm):
+    """Form for managing user profile and email notification preferences."""
     
     class Meta:
         model = UserProfile
         fields = [
+            'display_name',
+            'avatar',
             "email_notifications_enabled",
             "email_on_replies",
             "email_on_upvotes",
             "email_on_mentions",
         ]
         widgets = {
+            'display_name': forms.TextInput(attrs={
+                'class': 'form-input',
+                'placeholder': 'Choose a display name (optional)'
+            }),
+            'avatar': forms.FileInput(attrs={
+                'class': 'form-input'
+            }),
             "email_notifications_enabled": forms.CheckboxInput(
                 attrs={"class": "form-checkbox"}
             ),
@@ -29,10 +38,12 @@ class EmailPreferencesForm(forms.ModelForm):
             ),
         }
         labels = {
-            "email_notifications_enabled": "Enable email notifications",
-            "email_on_replies": "Email me when someone replies to my posts",
-            "email_on_upvotes": "Email me when my posts receive upvotes",
-            "email_on_mentions": "Email me when I am mentioned",
+            'display_name': 'Display Name',
+            'avatar': 'Profile Picture',
+            "email_notifications_enabled": "Enable Email Notifications",
+            "email_on_replies": "Notify on Replies",
+            "email_on_upvotes": "Notify on Upvotes",
+            "email_on_mentions": "Notify on Mentions",
         }
         help_texts = {
             "email_notifications_enabled": "Master switch for all email notifications",

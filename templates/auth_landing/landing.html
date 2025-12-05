@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +8,7 @@
     <title>Tree Hole Yale - Welcome</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
+
 <body>
     <!-- Loading State -->
     <div id="loading-overlay" class="loading-overlay">
@@ -15,36 +17,61 @@
 
     <!-- Landing Page Content -->
     <div class="landing-page">
-        <div class="landing-content">
-            <div class="landing-logo">🌳</div>
-            <h1 class="landing-app-name">Tree Hole Yale</h1>
-            <p class="landing-tagline">
-                Anonymous Yale-only campus forum
-            </p>
-            <div class="landing-buttons">
-                <a href="{% url 'auth_landing:signup' %}" class="landing-button">Sign Up</a>
-                <a href="{% url 'auth_landing:login' %}" class="landing-button secondary">Sign In</a>
+        <div class="landing-hero">
+            <div class="landing-content">
+                <div class="landing-logo">🌳</div>
+                <h1 class="landing-app-name">Tree Hole Yale</h1>
+                <p class="landing-tagline">
+                    The anonymous community for Yale students.<br>
+                    Real talk. Real connection. No filters.
+                </p>
+                <div class="landing-buttons">
+                    <a href="{% url 'auth_landing:signup' %}" class="landing-button primary">Get Started</a>
+                    <a href="{% url 'auth_landing:login' %}" class="landing-button secondary">Log In</a>
+                </div>
             </div>
         </div>
+
+        <div class="landing-features">
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Anonymous & Safe</h3>
+                <p>Speak your mind freely without judgment. Your identity is protected.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎓</div>
+                <h3>Yale Only</h3>
+                <p>A verified community exclusively for Yale students and alumni.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>Real Discussions</h3>
+                <p>From course reviews to campus life, connect on what matters.</p>
+            </div>
+        </div>
+
+        <footer class="landing-footer">
+            <p>&copy; {% now "Y" %} Tree Hole Yale. Made with 💙 in New Haven.</p>
+        </footer>
     </div>
 
     <script>
         // Handle loading state - hide after page loads
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             const loadingOverlay = document.getElementById('loading-overlay');
             // Small delay to ensure smooth transition
-            setTimeout(function() {
+            setTimeout(function () {
                 loadingOverlay.classList.add('hidden');
                 // Remove from DOM after animation
-                setTimeout(function() {
+                setTimeout(function () {
                     loadingOverlay.style.display = 'none';
                 }, 300);
             }, 100);
         });
 
         // Show loading state when navigating away
-        document.querySelectorAll('.landing-button').forEach(function(button) {
-            button.addEventListener('click', function(e) {
+        document.querySelectorAll('.landing-button').forEach(function (button) {
+            button.addEventListener('click', function (e) {
                 const loadingOverlay = document.getElementById('loading-overlay');
                 loadingOverlay.classList.remove('hidden');
                 loadingOverlay.style.display = 'flex';
@@ -52,5 +79,5 @@
         });
     </script>
 </body>
-</html>
 
+</html>

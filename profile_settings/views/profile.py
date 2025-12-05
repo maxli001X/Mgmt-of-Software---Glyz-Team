@@ -5,7 +5,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
-from ..forms import EmailPreferencesForm, FeedbackForm
+from ..forms import FeedbackForm, ProfileForm
 from ..models import Feedback, UserProfile
 from posting.models import Post
 
@@ -13,7 +13,23 @@ from posting.models import Post
 @login_required
 def dashboard(request):
     """Profile & Settings dashboard."""
-    return render(request, "profile_settings/dashboard.html")
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully!")
+            return redirect('profile_settings:dashboard')
+    else:
+        form = ProfileForm(instance=user_profile)
+    
+    context = {
+        'user_profile': user_profile,
+        'form': form,
+        'active_tab': 'dashboard'
+    }
+    return render(request, 'profile_settings/dashboard.html', context)
 
 
 @login_required
@@ -72,7 +88,7 @@ def email_preferences(request):
     profile, created = UserProfile.objects.get_or_create(user=request.user)
     
     if request.method == "POST":
-        form = EmailPreferencesForm(request.POST, instance=profile)
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             messages.success(request, "Email preferences updated successfully!")
@@ -80,7 +96,7 @@ def email_preferences(request):
         else:
             messages.error(request, "Please correct the errors below.")
     else:
-        form = EmailPreferencesForm(instance=profile)
+        form = ProfileForm(instance=profile)
     
     return render(
         request,
