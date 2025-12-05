@@ -23,4 +23,5 @@ media/
 *.idea/
 .vscode/
 *.egg-info/
+mcp-config-reference.json
 

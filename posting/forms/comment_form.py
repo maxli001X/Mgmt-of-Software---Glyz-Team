@@ -74,19 +74,22 @@ class CommentForm(forms.ModelForm):
         Sets ai_flagged, ai_severity_score, ai_categories, and show_crisis_resources.
         """
         try:
-            from ..utils.ai_moderator import get_moderator
+            from django.conf import settings
+            # Only run AI moderation if API key is configured
+            if settings.OPENAI_API_KEY:
+                from ..utils.ai_moderator import get_moderator
 
-            moderator = get_moderator()
-            result = moderator.check_content(comment.body)
+                moderator = get_moderator()
+                result = moderator.check_content(comment.body)
 
-            comment.ai_flagged = result.get("flagged", False)
-            comment.ai_severity_score = result.get("severity_score")
-            comment.ai_categories = result.get("category_scores")
-            comment.show_crisis_resources = result.get("is_crisis", False)
+                comment.ai_flagged = result.get("flagged", False)
+                comment.ai_severity_score = result.get("severity_score")
+                comment.ai_categories = result.get("category_scores")
+                comment.show_crisis_resources = result.get("is_crisis", False)
 
-            # Auto-flag for human review if AI flags it
-            if comment.ai_flagged:
-                comment.is_flagged = True
+                # Auto-flag for human review if AI flags it
+                if comment.ai_flagged:
+                    comment.is_flagged = True
 
         except Exception:
             # If AI moderation fails, continue without it

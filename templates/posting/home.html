@@ -709,7 +709,7 @@
             return;
         }
 
-        const url = `/posting/posts/${postId}/${voteType}vote/`;
+        const url = `/posts/${postId}/${voteType}vote/`;
 
         try {
             const response = await fetch(url, {
