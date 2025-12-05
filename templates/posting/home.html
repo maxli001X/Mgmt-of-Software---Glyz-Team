@@ -317,7 +317,7 @@
                     {% for i in posts.paginator.page_range %}
                     <option
                         value="?page={{ i }}{% if search_query %}&q={{ search_query }}{% endif %}{% if active_tag %}&tag={{ active_tag }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}"
-                        {% if posts.number==i %}selected{% endif %}>
+                        {% if posts.number == i %}selected{% endif %}>
                         {{ i }}
                     </option>
                     {% endfor %}
