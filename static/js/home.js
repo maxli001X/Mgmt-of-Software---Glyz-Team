@@ -4,15 +4,189 @@
 (function() {
     'use strict';
 
+    // ================== Dropdown Functionality ==================
+    function initDropdowns() {
+        // Settings Dropdown
+        const settingsButton = document.getElementById('header-settings-button');
+        const settingsMenu = document.getElementById('header-settings-menu');
+        
+        // Filter Dropdown
+        const filterButton = document.getElementById('header-filter-button');
+        const filterMenu = document.getElementById('header-filter-menu');
+        
+        function toggleDropdown(button, menu, closeOtherMenu) {
+            if (!button || !menu) return;
+            
+            const isOpen = menu.style.display !== 'none';
+            
+            if (isOpen) {
+                closeDropdown(menu, button);
+            } else {
+                // Close other dropdown if provided
+                if (closeOtherMenu) {
+                    const otherButton = closeOtherMenu === settingsMenu ? settingsButton : filterButton;
+                    closeDropdown(closeOtherMenu, otherButton);
+                }
+                openDropdown(menu, button);
+            }
+        }
+        
+        function openDropdown(menu, button) {
+            menu.style.display = 'block';
+            button.setAttribute('aria-expanded', 'true');
+            // Focus first menu item for keyboard navigation
+            const firstItem = menu.querySelector('[role="menuitem"]');
+            if (firstItem) {
+                setTimeout(() => firstItem.focus(), 50);
+            }
+        }
+        
+        function closeDropdown(menu, button) {
+            menu.style.display = 'none';
+            if (button) {
+                button.setAttribute('aria-expanded', 'false');
+                button.focus(); // Return focus to button
+            }
+        }
+        
+        // Settings dropdown handlers
+        if (settingsButton && settingsMenu) {
+            settingsButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleDropdown(settingsButton, settingsMenu, filterMenu);
+            });
+            
+            // Keyboard support
+            settingsButton.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleDropdown(settingsButton, settingsMenu, filterMenu);
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (settingsMenu.style.display === 'none') {
+                        openDropdown(settingsMenu, settingsButton);
+                    }
+                }
+            });
+            
+            // Keyboard navigation within menu
+            settingsMenu.addEventListener('keydown', function(e) {
+                const items = Array.from(settingsMenu.querySelectorAll('[role="menuitem"]'));
+                const currentIndex = items.indexOf(document.activeElement);
+                
+                if (e.key === 'Escape') {
+                    closeDropdown(settingsMenu, settingsButton);
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const nextIndex = (currentIndex + 1) % items.length;
+                    items[nextIndex].focus();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const prevIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
+                    items[prevIndex].focus();
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    items[0].focus();
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    items[items.length - 1].focus();
+                }
+            });
+        }
+        
+        // Filter dropdown handlers
+        if (filterButton && filterMenu) {
+            filterButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleDropdown(filterButton, filterMenu, settingsMenu);
+            });
+            
+            // Keyboard support
+            filterButton.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleDropdown(filterButton, filterMenu, settingsMenu);
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (filterMenu.style.display === 'none') {
+                        openDropdown(filterMenu, filterButton);
+                    }
+                }
+            });
+            
+            // Keyboard navigation within menu
+            filterMenu.addEventListener('keydown', function(e) {
+                const items = Array.from(filterMenu.querySelectorAll('[role="menuitem"]'));
+                const currentIndex = items.indexOf(document.activeElement);
+                
+                if (e.key === 'Escape') {
+                    closeDropdown(filterMenu, filterButton);
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const nextIndex = (currentIndex + 1) % items.length;
+                    items[nextIndex].focus();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const prevIndex = currentIndex <= 0 ? items.length - 1 : currentIndex - 1;
+                    items[prevIndex].focus();
+                } else if (e.key === 'Home') {
+                    e.preventDefault();
+                    items[0].focus();
+                } else if (e.key === 'End') {
+                    e.preventDefault();
+                    items[items.length - 1].focus();
+                }
+            });
+        }
+        
+        // Close dropdowns when clicking outside (using event delegation for performance)
+        let clickOutsideHandler = null;
+        function setupClickOutside() {
+            if (clickOutsideHandler) return; // Already set up
+            
+            clickOutsideHandler = function(e) {
+                const target = e.target;
+                const isSettingsClick = settingsButton && (settingsButton.contains(target) || settingsMenu.contains(target));
+                const isFilterClick = filterButton && (filterButton.contains(target) || filterMenu.contains(target));
+                
+                if (!isSettingsClick && settingsMenu) {
+                    closeDropdown(settingsMenu, settingsButton);
+                }
+                if (!isFilterClick && filterMenu) {
+                    closeDropdown(filterMenu, filterButton);
+                }
+            };
+            
+            // Use capture phase for better performance
+            document.addEventListener('click', clickOutsideHandler, true);
+        }
+        
+        // Close dropdowns on ESC key (global handler)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (settingsMenu && settingsMenu.style.display !== 'none') {
+                    closeDropdown(settingsMenu, settingsButton);
+                }
+                if (filterMenu && filterMenu.style.display !== 'none') {
+                    closeDropdown(filterMenu, filterButton);
+                }
+            }
+        });
+        
+        // Initialize click outside handler
+        setupClickOutside();
+    }
+
     // ================== Search Functionality ==================
     function initSearchFunctionality() {
-        const searchInput = document.getElementById('search-input');
-        const searchForm = document.querySelector('.search-form');
-        const searchWrapper = document.querySelector('.search-wrapper');
+        // Try both old and new search input IDs for backward compatibility
+        const searchInput = document.getElementById('header-search-input') || document.getElementById('search-input');
+        const searchForm = document.querySelector('.header-search-form') || document.querySelector('.search-form');
+        const searchWrapper = document.querySelector('.header-search-wrapper') || document.querySelector('.search-wrapper');
         let debounceTimer;
         let suggestionsContainer = null;
 
-        if (searchInput && searchForm) {
+        if (searchInput && searchForm && searchWrapper) {
             // Create suggestions dropdown
             suggestionsContainer = document.createElement('div');
             suggestionsContainer.className = 'search-suggestions';
@@ -296,7 +470,7 @@
 
     // ================== Post Collapse ==================
     function initPostCollapse() {
-        const WORD_LIMIT = 250;
+        const WORD_LIMIT = 500;
         const posts = document.querySelectorAll('.post-body-content');
 
         posts.forEach(post => {
@@ -407,12 +581,16 @@
             const data = await response.json();
 
             if (data.success) {
-                const voteCountSpan = document.getElementById(`vote-count-${postId}`);
-                if (voteCountSpan) {
-                    voteCountSpan.textContent = data.net_votes;
-                    voteCountSpan.classList.remove('positive', 'negative');
-                    if (data.net_votes > 0) voteCountSpan.classList.add('positive');
-                    else if (data.net_votes < 0) voteCountSpan.classList.add('negative');
+                // Update upvote count
+                const upvoteCountSpan = document.getElementById(`upvote-count-${postId}`);
+                if (upvoteCountSpan && data.upvotes_count !== undefined) {
+                    upvoteCountSpan.textContent = data.upvotes_count;
+                }
+
+                // Update downvote count
+                const downvoteCountSpan = document.getElementById(`downvote-count-${postId}`);
+                if (downvoteCountSpan && data.downvotes_count !== undefined) {
+                    downvoteCountSpan.textContent = data.downvotes_count;
                 }
 
                 const postCard = document.querySelector(`.post-card[data-post-id="${postId}"]`);
@@ -491,7 +669,7 @@
     // ================== Toggle Comments ==================
     function toggleComments(postId) {
         const commentsWrapper = document.getElementById(`comments-wrapper-${postId}`);
-        const btn = document.querySelector(`[data-post-id="${postId}"] .header-reply-button`);
+        const btn = document.getElementById(`reply-btn-${postId}`);
 
         if (commentsWrapper) {
             const isHidden = commentsWrapper.style.display === 'none';
@@ -519,6 +697,7 @@
 
     // ================== Initialization ==================
     document.addEventListener('DOMContentLoaded', function() {
+        initDropdowns();
         initSearchFunctionality();
         initHashtagDetection();
         initIdentityState();

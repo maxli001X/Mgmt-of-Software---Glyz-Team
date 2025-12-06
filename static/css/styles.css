@@ -50,17 +50,21 @@ body {
 header {
     background: var(--primary-blue);
     color: white;
-    padding: 1rem 0;
+    padding: 0.75rem 0;
     box-shadow: var(--shadow-md);
     position: sticky;
     top: 0;
     z-index: var(--z-header);
 }
 
-header .container {
+.header-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    gap: 1rem;
 }
 
 .logo {
@@ -70,20 +74,333 @@ header .container {
     color: white;
     text-decoration: none;
     letter-spacing: -0.02em;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 960px;
+/* Header Inline Search */
+.header-search-container {
+    flex: 1;
+    max-width: 500px;
     margin: 0 auto;
 }
 
-nav a {
-    color: #fff;
+.header-search-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.header-search-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.header-search-wrapper:focus-within {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.header-search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 0;
+    font-size: 0.9rem;
+    color: white;
+    outline: none;
+    height: 28px;
+    line-height: 28px;
+}
+
+.header-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.header-search-button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.header-search-button:hover {
+    opacity: 1;
+}
+
+/* Header Filter Dropdown */
+.header-filter-dropdown {
+    position: relative;
+}
+
+.header-filter-button {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    height: 40px;
+}
+
+.header-filter-button:hover,
+.header-filter-button:focus {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    outline: 2px solid rgba(255, 255, 255, 0.3);
+    outline-offset: 2px;
+}
+
+.header-filter-button[aria-expanded="true"] {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.header-filter-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 140px;
+    z-index: var(--z-dropdown);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    max-height: 0;
+}
+
+.header-filter-menu[style*="block"] {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Prevent dropdown from going off-screen on mobile */
+@media (max-width: 768px) {
+    .header-filter-menu {
+        right: auto;
+        left: 0;
+        min-width: 120px;
+    }
+}
+
+.filter-option {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--text-main);
     text-decoration: none;
-    font-weight: bold;
+    font-size: 0.9rem;
+    transition: background 0.15s ease;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+.filter-option:hover,
+.filter-option:focus {
+    background: var(--bg-color);
+    outline: none;
+}
+
+.filter-option.active {
+    background: var(--primary-blue);
+    color: white;
+    font-weight: 600;
+}
+
+.filter-option.active:hover,
+.filter-option.active:focus {
+    background: var(--primary-dark);
+}
+
+/* Header Settings Dropdown */
+.header-settings-container {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.header-settings-button {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transition: all 0.2s ease;
+}
+
+.header-settings-button:hover,
+.header-settings-button:focus {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    outline: 2px solid rgba(255, 255, 255, 0.3);
+    outline-offset: 2px;
+}
+
+.header-settings-button[aria-expanded="true"] {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.header-settings-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    min-width: 180px;
+    z-index: var(--z-dropdown);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    max-height: 0;
+}
+
+.header-settings-menu[style*="block"] {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Prevent dropdown from going off-screen on mobile */
+@media (max-width: 768px) {
+    .header-settings-menu {
+        right: 0;
+        left: auto;
+        min-width: 160px;
+        max-width: calc(100vw - 2rem);
+    }
+}
+
+.settings-menu-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.15s ease;
+    cursor: pointer;
+}
+
+.settings-menu-item:hover,
+.settings-menu-item:focus {
+    background: var(--bg-color);
+    outline: none;
+}
+
+.settings-menu-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 0.5rem 0;
+}
+
+/* Header Auth Links */
+.header-auth-links {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.header-auth-link {
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+}
+
+.header-auth-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.header-auth-link-primary {
+    background: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+}
+
+.header-auth-link-primary:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* In-Page Navigation Bar */
+.in-page-nav {
+    position: sticky;
+    top: calc(0.75rem * 2 + 40px);
+    z-index: var(--z-sticky);
+    background: var(--bg-color);
+    margin: 0 -1rem 1.5rem -1rem;
+    padding: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.in-page-nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    background: var(--surface-color);
+    border-radius: 0;
+}
+
+.in-page-nav-item {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-align: center;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.in-page-nav-item:hover {
+    background: var(--bg-color);
+    color: var(--primary-blue);
+}
+
+.in-page-nav-item.active {
+    color: var(--primary-blue);
+    border-bottom-color: var(--primary-blue);
+    background: var(--bg-color);
 }
 
 nav ul {
@@ -98,6 +415,8 @@ main {
     max-width: 960px;
     margin: 2rem auto;
     padding: 0 1rem;
+    /* Ensure background extends for sticky header */
+    position: relative;
 }
 
 section {
@@ -291,6 +610,17 @@ article footer {
 }
 
 /* New Post Creation Styles */
+.post-create-card {
+    background: var(--surface-color);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .fake-input-wrapper {
     width: 100%;
     text-align: left;
@@ -302,6 +632,50 @@ article footer {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+}
+
+.post-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-field label {
+    font-weight: 600;
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+.form-field input[type="text"],
+.form-field textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.2s;
+    box-sizing: border-box;
+    background: #ffffff;
+    color: var(--text-main);
+}
+
+.form-field input[type="text"]:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(0, 53, 107, 0.1);
+}
+
+.form-field textarea {
+    min-height: 120px;
+    resize: vertical;
 }
 
 .fake-input-wrapper:hover {
@@ -717,9 +1091,9 @@ article footer {
 /* Search Section */
 .search-section {
     background: #fff;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: var(--radius-md);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
@@ -729,6 +1103,11 @@ article footer {
     border-radius: 0 0 var(--radius-md) var(--radius-md);
     box-shadow: var(--shadow-sm);
     margin-bottom: 1rem;
+    /* Ensure it sits properly within sticky header */
+    position: relative;
+    z-index: 1;
+    /* Add seamless connection to sticky header background */
+    border-top: 1px solid transparent;
 }
 
 .search-form {
@@ -751,8 +1130,16 @@ article footer {
     border-radius: 12px;
     max-height: 400px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: calc(var(--z-header) + 1);
     border: 1px solid var(--border-color);
+}
+
+/* Search suggestions in header need special positioning */
+.header-search-wrapper .search-suggestions {
+    top: calc(100% + 0.5rem);
+    margin-top: 0.5rem;
+    z-index: calc(var(--z-header) + 10);
+    max-height: min(400px, calc(100vh - 200px));
 }
 
 .suggestions-section {
@@ -851,23 +1238,28 @@ article footer {
     flex: 1;
     border: none;
     background: transparent;
-    padding: 0.5rem;
-    font-size: 1rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.9rem;
     color: var(--text-main);
     outline: none;
     width: 100%;
-    /* Ensure input takes full width */
+    height: 32px;
+    line-height: 32px;
 }
 
 .search-button {
-    padding: 0.75rem 1rem;
+    padding: 0.375rem 0.75rem;
     background: #00356b;
     color: #fff;
     border: none;
     border-radius: 6px;
-    font-size: 1.2rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .search-button:hover {
@@ -1178,14 +1570,23 @@ header nav button {
 .sticky-header {
     position: sticky;
     top: 64px;
-    /* Adjusted to match header height exactly */
     z-index: var(--z-sticky);
     background: var(--bg-color);
-    padding-top: 1rem;
     margin: 0 -1rem;
-    padding: 1rem 1rem 0;
-    /* Ensure it covers content behind it */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Extend sticky header visually to cover scrolled content */
+.sticky-header::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: var(--bg-color);
+    z-index: -1;
 }
 
 .sticky-header .main-tabs {
@@ -1197,27 +1598,80 @@ header nav button {
 }
 
 .sticky-header .search-section {
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
-    margin-bottom: 1.5rem;
-    box-shadow: var(--shadow-md);
+    border-radius: var(--radius-md);
+    margin: 0;
+    padding: 0.25rem 1rem;
+    box-shadow: none;
+    border: 1px solid var(--border-color);
+    background: var(--surface-color);
 }
 
-/* Enhanced Post Card */
+/* Enhanced Post Card - Clean Modern Design */
 .post-card {
     background: var(--surface-color);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: var(--shadow-md);
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: var(--radius-md);
+    padding: 1rem 1rem 1rem 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
     border: 1px solid var(--border-color);
-    border-left: 4px solid var(--primary-blue);
+    border-left: 3px solid var(--primary-blue);
+    position: relative;
 }
 
 .post-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-    /* Lift effect */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: #d1d5db;
+}
+
+/* Vote buttons - minimal inline style */
+.vote-section-absolute {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    background: #f8fafc;
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.vote-section-absolute .vote-button {
+    background: transparent;
+    border: none;
+    padding: 0.25rem;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    transition: all 0.15s;
+}
+
+.vote-section-absolute .vote-button:hover {
+    background: #e2e8f0;
+}
+
+.vote-section-absolute .vote-button.active {
+    color: var(--primary-blue);
+}
+
+.vote-section-absolute .vote-count-inline {
+    font-size: 0.8rem;
+    font-weight: 600;
+    min-width: 0.75rem;
+    text-align: center;
+    padding: 0 0.125rem;
+}
+
+.vote-section-absolute .upvote-count {
+    color: #16a34a;
+}
+
+.vote-section-absolute .downvote-count {
+    color: #dc2626;
 }
 
 .post-header-main h3 {
@@ -1306,9 +1760,19 @@ header nav button {
 }
 
 .hashtag {
+    display: inline-block;
     color: var(--primary-blue);
     font-weight: 500;
-    margin-right: 0.5rem;
+    font-size: 0.8rem;
+    margin-right: 0.375rem;
+    padding: 0.125rem 0.5rem;
+    background: #eff6ff;
+    border-radius: 12px;
+    transition: all 0.15s;
+}
+
+.hashtag:hover {
+    background: #dbeafe;
 }
 
 /* Comment styles */
@@ -1339,6 +1803,8 @@ header nav button {
     font-size: 0.95rem;
     resize: vertical;
     box-sizing: border-box;
+    background: #ffffff;
+    color: var(--text-main);
 }
 
 .comment-textarea:focus,
@@ -1718,15 +2184,76 @@ header nav button {
     flex-direction: column;
 }
 
-/* Banner Header Styles */
+/* Post Header - Clean, no banner */
 .post-header {
+    margin-bottom: 0.5rem;
+    padding-right: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.post-header-top-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.4rem;
+    padding-right: 0;
+}
+
+.post-title-main {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    flex: 1;
+}
+
+.post-title-main:hover {
+    color: var(--primary-blue);
+}
+
+.post-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.post-meta-actions-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
-    padding-bottom: 0.75rem;
-    margin-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border-color);
+    gap: 0.75rem;
+    background: transparent;
+    box-shadow: none;
+}
+
+.post-meta-small {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: #64748b;
+    background: transparent;
+}
+
+.post-author-small {
+    font-weight: 500;
+    color: #475569;
+}
+
+.post-time-small {
+    color: #94a3b8;
+}
+
+.post-avatar.tiny {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.post-avatar.tiny .avatar-placeholder {
+    font-size: 0.65rem;
 }
 
 .post-meta-line {
@@ -1738,14 +2265,7 @@ header nav button {
     flex: 1;
 }
 
-.post-title {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--primary-blue);
-    margin: 0 0 1rem 0;
-    font-family: var(--font-serif);
-    line-height: 1.3;
-}
+/* Post title is now .post-title-main */
 
 .post-header-info.small-text {
     display: flex;
@@ -1773,36 +2293,61 @@ header nav button {
     color: #64748b;
 }
 
-/* Header Actions */
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.vote-section {
+/* Header Actions - Inline subtle buttons */
+.header-actions-compact {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    background: var(--bg-color);
+}
+
+
+.vote-section-compact {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #ffffff;
     padding: 0.25rem 0.5rem;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.vote-count-inline {
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.upvote-count {
+    color: #059669;
+}
+
+.downvote-count {
+    color: #dc2626;
 }
 
 .vote-button {
-    background: transparent;
-    border: none;
-    padding: 0.25rem;
-    color: var(--primary-blue);
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    padding: 0.25rem 0.5rem;
+    color: var(--text-main);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s;
+    transition: all 0.2s;
+    border-radius: var(--radius-sm);
 }
 
 .vote-button:hover {
-    transform: scale(1.1);
+    background: var(--bg-color);
+    border-color: var(--primary-blue);
+}
+
+.vote-button.active {
+    background: var(--primary-blue);
+    color: #ffffff;
+    border-color: var(--primary-blue);
 }
 
 .vote-button.loading {
@@ -1846,32 +2391,132 @@ header nav button {
 /* Header Reply Button */
 .header-reply-button {
     background: transparent;
-    /* No background */
     border: none;
-    padding: 0.5rem;
+    padding: 0.375rem 0.5rem;
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.375rem;
     cursor: pointer;
-    color: var(--primary-blue);
-    transition: transform 0.2s;
+    color: #64748b;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.8rem;
+    transition: all 0.15s;
 }
 
 .header-reply-button:hover {
-    transform: scale(1.1);
+    background: #f1f5f9;
+    color: var(--primary-blue);
+}
+
+.header-reply-button.active {
+    background: var(--primary-blue);
+    color: #ffffff;
+}
+
+.header-reply-button svg {
+    width: 14px;
+    height: 14px;
 }
 
 .reply-count {
     font-weight: 600;
+    font-size: 0.8rem;
+}
+
+/* Bottom action buttons - larger size */
+.bottom-action-button {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.95rem !important;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--border-color);
+    background: #ffffff;
+    border-radius: var(--radius-md);
+    transition: all 0.15s;
+}
+
+.bottom-action-button.header-reply-button {
+    color: #64748b;
+}
+
+.bottom-action-button.header-reply-button:hover {
+    background: #f1f5f9;
+    color: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+
+.bottom-action-button.header-reply-button.active {
+    background: var(--primary-blue);
+    color: #ffffff;
+    border-color: var(--primary-blue);
+}
+
+.bottom-action-button.flag-button {
+    color: #94a3b8;
+}
+
+.bottom-action-button.flag-button:hover {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #dc2626;
+}
+
+.bottom-action-button svg {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.bottom-action-button .reply-count {
     font-size: 0.9rem;
+}
+
+/* Flag button */
+.flag-button {
+    background: transparent;
+    border: none;
+    padding: 0.375rem;
+    color: #94a3b8;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s;
+}
+
+.flag-button:hover {
+    background: #fef2f2;
+    color: #dc2626;
 }
 
 /* Post Body */
 .post-body-content {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: var(--text-main);
-    margin: 0 0 1rem 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: #374151;
+    margin: 0.75rem 0;
+}
+
+/* Post tags container */
+.post-bottom-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    gap: 1rem;
+}
+
+.post-tags {
+    margin: 0;
+    flex: 1;
+}
+
+.post-actions-bottom {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
 }
 
 /* Post Footer */
@@ -2063,4 +2708,162 @@ header nav button {
     background: var(--surface-color);
     color: var(--text-main);
     cursor: pointer;
+}
+
+/* Responsive Styles for New Header and Navigation */
+@media (max-width: 768px) {
+    .header-nav {
+        padding: 0 0.75rem;
+        gap: 0.5rem;
+    }
+    
+    .logo {
+        font-size: 1.25rem;
+    }
+    
+    .header-search-container {
+        max-width: none;
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .header-search-wrapper {
+        padding: 0.4rem 0.75rem;
+    }
+    
+    .header-search-input {
+        font-size: 0.85rem;
+        height: 24px;
+        line-height: 24px;
+    }
+    
+    .header-search-input::placeholder {
+        font-size: 0.8rem;
+    }
+    
+    .header-search-button {
+        padding: 0.2rem;
+        min-width: 32px; /* Better touch target */
+    }
+    
+    .header-search-button svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .header-filter-button {
+        padding: 0.4rem 0.6rem;
+        height: 36px;
+        min-width: 36px; /* Better touch target */
+    }
+    
+    .header-filter-button svg {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .header-settings-button {
+        width: 36px;
+        height: 36px;
+        padding: 0.4rem;
+        min-width: 36px; /* Better touch target */
+    }
+    
+    .header-settings-button svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .header-filter-menu,
+    .header-settings-menu {
+        right: 0;
+        min-width: 160px;
+    }
+    
+    .in-page-nav {
+        top: calc(0.75rem * 2 + 36px);
+    }
+    
+    .in-page-nav-item {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        min-height: 44px; /* Better touch target */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .header-auth-links {
+        gap: 0.5rem;
+    }
+    
+    .header-auth-link {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.75rem;
+        min-height: 36px; /* Better touch target */
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Ensure menu items have good touch targets */
+    .filter-option,
+    .settings-menu-item {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-nav {
+        padding: 0 0.5rem;
+        gap: 0.25rem;
+        flex-wrap: nowrap;
+    }
+    
+    .logo {
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+    
+    .header-search-container {
+        flex: 1;
+        min-width: 0;
+        /* Keep search visible but make it more compact */
+    }
+    
+    .header-search-wrapper {
+        padding: 0.35rem 0.5rem;
+    }
+    
+    .header-search-input {
+        font-size: 0.8rem;
+    }
+    
+    .header-search-input::placeholder {
+        font-size: 0.75rem;
+        content: "Search...";
+    }
+    
+    /* Hide filter button on very small screens, but keep search */
+    .header-filter-button {
+        display: none;
+    }
+    
+    .header-settings-button {
+        width: 32px;
+        height: 32px;
+        padding: 0.35rem;
+    }
+    
+    .in-page-nav-item {
+        padding: 0.625rem 0.5rem;
+        font-size: 0.75rem;
+        min-height: 44px;
+    }
+    
+    .header-auth-link {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
 }

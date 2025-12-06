@@ -62,10 +62,14 @@ def upvote_post(request, pk):
         user_vote = None
 
     if _is_ajax(request):
+        # Refresh post to get updated vote counts
+        post.refresh_from_db()
         return JsonResponse({
             "success": True,
             "message": message,
             "net_votes": post.get_net_votes(),
+            "upvotes_count": post.get_upvotes_count(),
+            "downvotes_count": post.get_downvotes_count(),
             "user_vote": user_vote
         })
 
@@ -108,10 +112,14 @@ def downvote_post(request, pk):
         user_vote = None
 
     if _is_ajax(request):
+        # Refresh post to get updated vote counts
+        post.refresh_from_db()
         return JsonResponse({
             "success": True,
             "message": message,
             "net_votes": post.get_net_votes(),
+            "upvotes_count": post.get_upvotes_count(),
+            "downvotes_count": post.get_downvotes_count(),
             "user_vote": user_vote
         })
 
