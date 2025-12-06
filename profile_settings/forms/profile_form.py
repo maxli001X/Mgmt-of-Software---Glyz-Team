@@ -51,6 +51,22 @@ class ProfileForm(forms.ModelForm):
             "email_on_upvotes": "Get notified when your posts are upvoted",
             "email_on_mentions": "Get notified when someone mentions you",
         }
+    
+    def clean_avatar(self):
+        """Validate avatar file size and type."""
+        avatar = self.cleaned_data.get('avatar')
+        if avatar:
+            # Check file size (10MB limit)
+            if avatar.size > 10 * 1024 * 1024:
+                raise forms.ValidationError('Image file too large (maximum size is 10MB).')
+            
+            # Check file type
+            valid_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp']
+            ext = avatar.name.lower().split('.')[-1]
+            if f'.{ext}' not in valid_extensions:
+                raise forms.ValidationError('Unsupported file type. Please upload a JPG, PNG, GIF, or WebP image.')
+        
+        return avatar
 
 
 class FeedbackForm(forms.ModelForm):

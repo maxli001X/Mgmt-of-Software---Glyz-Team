@@ -230,6 +230,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# File upload size limits (10MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10MB
+
 LOGIN_REDIRECT_URL = 'posting:home'
 LOGOUT_REDIRECT_URL = 'auth_landing:landing'
 LOGIN_URL = 'auth_landing:login'

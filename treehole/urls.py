@@ -26,5 +26,6 @@ urlpatterns = [
     path('972b69d/', include('analytics.urls')),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve media files in both development and production
+# Note: For production scale, consider using cloud storage (S3/Cloudinary)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

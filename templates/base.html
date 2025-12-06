@@ -76,7 +76,7 @@
             <div class="header-settings-container">
                 {% if user.is_authenticated %}
                 <button type="button" class="header-settings-button" id="header-settings-button" 
-                    aria-label="Settings" aria-expanded="false" aria-haspopup="true">
+                    aria-label="Profile & Settings" aria-expanded="false" aria-haspopup="true">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="3"></circle>
@@ -91,7 +91,7 @@
                         My Stats
                     </a>
                     <a href="{% url 'profile_settings:dashboard' %}" class="settings-menu-item" role="menuitem">
-                        Settings
+                        Profile & Settings
                     </a>
                     {% if user.is_staff or user.is_superuser %}
                     <div class="settings-menu-divider" role="separator"></div>
