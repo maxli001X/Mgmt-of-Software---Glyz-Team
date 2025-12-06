@@ -146,6 +146,18 @@
             
             clickOutsideHandler = function(e) {
                 const target = e.target;
+                
+                // Don't interfere with form inputs, textareas, or buttons inside forms
+                if (target.tagName === 'INPUT' || 
+                    target.tagName === 'TEXTAREA' || 
+                    target.tagName === 'BUTTON' ||
+                    target.closest('form') ||
+                    target.closest('.form-field') ||
+                    target.closest('.comment-form') ||
+                    target.closest('.post-form')) {
+                    return; // Let form interactions proceed normally
+                }
+                
                 const isSettingsClick = settingsButton && (settingsButton.contains(target) || settingsMenu.contains(target));
                 const isFilterClick = filterButton && (filterButton.contains(target) || filterMenu.contains(target));
                 
@@ -162,8 +174,15 @@
         }
         
         // Close dropdowns on ESC key (global handler)
+        // Only handle Escape if dropdowns are open, don't interfere with form inputs
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
+            // Don't interfere with Escape key in form inputs/textareas unless dropdowns are open
+            const target = e.target;
+            const isFormInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
+            const hasOpenDropdown = (settingsMenu && settingsMenu.style.display !== 'none') ||
+                                   (filterMenu && filterMenu.style.display !== 'none');
+            
+            if (e.key === 'Escape' && (hasOpenDropdown || !isFormInput)) {
                 if (settingsMenu && settingsMenu.style.display !== 'none') {
                     closeDropdown(settingsMenu, settingsButton);
                 }
