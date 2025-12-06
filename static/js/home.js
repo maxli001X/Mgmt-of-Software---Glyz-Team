@@ -1,7 +1,7 @@
 // Tree Hole Yale - Home Page JavaScript
 // All functionality for the home feed page
 
-(function() {
+(function () {
     'use strict';
 
     // ================== Dropdown Functionality ==================
@@ -9,16 +9,16 @@
         // Settings Dropdown
         const settingsButton = document.getElementById('header-settings-button');
         const settingsMenu = document.getElementById('header-settings-menu');
-        
+
         // Filter Dropdown
         const filterButton = document.getElementById('header-filter-button');
         const filterMenu = document.getElementById('header-filter-menu');
-        
+
         function toggleDropdown(button, menu, closeOtherMenu) {
             if (!button || !menu) return;
-            
+
             const isOpen = menu.style.display !== 'none';
-            
+
             if (isOpen) {
                 closeDropdown(menu, button);
             } else {
@@ -30,7 +30,7 @@
                 openDropdown(menu, button);
             }
         }
-        
+
         function openDropdown(menu, button) {
             menu.style.display = 'block';
             button.setAttribute('aria-expanded', 'true');
@@ -40,7 +40,7 @@
                 setTimeout(() => firstItem.focus(), 50);
             }
         }
-        
+
         function closeDropdown(menu, button) {
             menu.style.display = 'none';
             if (button) {
@@ -48,16 +48,16 @@
                 button.focus(); // Return focus to button
             }
         }
-        
+
         // Settings dropdown handlers
         if (settingsButton && settingsMenu) {
-            settingsButton.addEventListener('click', function(e) {
+            settingsButton.addEventListener('click', function (e) {
                 e.stopPropagation();
                 toggleDropdown(settingsButton, settingsMenu, filterMenu);
             });
-            
+
             // Keyboard support
-            settingsButton.addEventListener('keydown', function(e) {
+            settingsButton.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     toggleDropdown(settingsButton, settingsMenu, filterMenu);
@@ -68,12 +68,12 @@
                     }
                 }
             });
-            
+
             // Keyboard navigation within menu
-            settingsMenu.addEventListener('keydown', function(e) {
+            settingsMenu.addEventListener('keydown', function (e) {
                 const items = Array.from(settingsMenu.querySelectorAll('[role="menuitem"]'));
                 const currentIndex = items.indexOf(document.activeElement);
-                
+
                 if (e.key === 'Escape') {
                     closeDropdown(settingsMenu, settingsButton);
                 } else if (e.key === 'ArrowDown') {
@@ -93,16 +93,16 @@
                 }
             });
         }
-        
+
         // Filter dropdown handlers
         if (filterButton && filterMenu) {
-            filterButton.addEventListener('click', function(e) {
+            filterButton.addEventListener('click', function (e) {
                 e.stopPropagation();
                 toggleDropdown(filterButton, filterMenu, settingsMenu);
             });
-            
+
             // Keyboard support
-            filterButton.addEventListener('keydown', function(e) {
+            filterButton.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     toggleDropdown(filterButton, filterMenu, settingsMenu);
@@ -113,12 +113,12 @@
                     }
                 }
             });
-            
+
             // Keyboard navigation within menu
-            filterMenu.addEventListener('keydown', function(e) {
+            filterMenu.addEventListener('keydown', function (e) {
                 const items = Array.from(filterMenu.querySelectorAll('[role="menuitem"]'));
                 const currentIndex = items.indexOf(document.activeElement);
-                
+
                 if (e.key === 'Escape') {
                     closeDropdown(filterMenu, filterButton);
                 } else if (e.key === 'ArrowDown') {
@@ -138,34 +138,34 @@
                 }
             });
         }
-        
+
         // Close dropdowns when clicking outside (using event delegation for performance)
         let clickOutsideHandler = null;
         function setupClickOutside() {
             if (clickOutsideHandler) return; // Already set up
-            
-            clickOutsideHandler = function(e) {
+
+            clickOutsideHandler = function (e) {
                 const target = e.target;
-                
+
                 // Check if this was marked as a vote button click by the isolation handler
                 if (e.voteButtonClick) {
                     return; // Don't interfere with vote button clicks
                 }
-                
+
                 // Don't interfere with vote buttons, form inputs, textareas, or buttons inside forms
                 // Explicitly check for vote buttons first to prevent misrouting clicks
                 // Check both the target and its parent elements (for SVG clicks inside buttons)
                 const voteSection = target.closest('.vote-section-absolute');
-                const voteButton = target.closest('.vote-button') || 
-                                  target.closest('.upvote-button') || 
-                                  target.closest('.downvote-button');
-                
+                const voteButton = target.closest('.vote-button') ||
+                    target.closest('.upvote-button') ||
+                    target.closest('.downvote-button');
+
                 // Also check if target is SVG inside a vote button
                 const isVoteButtonSVG = target.tagName === 'svg' && target.closest('.vote-button');
                 const isVoteButtonPath = target.tagName === 'path' && target.closest('.vote-button');
                 const isVoteButtonPolyline = target.tagName === 'polyline' && target.closest('.vote-button');
-                
-                if (voteSection || voteButton || 
+
+                if (voteSection || voteButton ||
                     target.classList.contains('vote-button') ||
                     target.classList.contains('upvote-button') ||
                     target.classList.contains('downvote-button') ||
@@ -173,19 +173,19 @@
                     // Don't interfere with vote button clicks - return immediately
                     return; // Let vote button clicks proceed normally to their onclick handlers
                 }
-                
+
                 // Don't interfere with search form and search button
                 const isSearchForm = target.closest('.header-search-form');
                 const isSearchButton = target.closest('.header-search-button') || target.classList.contains('header-search-button');
                 const isSearchInput = target.classList.contains('header-search-input') || target.id === 'header-search-input';
-                
+
                 if (isSearchForm || isSearchButton || isSearchInput) {
                     return; // Let search form interactions proceed normally
                 }
-                
+
                 // Don't interfere with form inputs, textareas, or buttons inside forms
-                if (target.tagName === 'INPUT' || 
-                    target.tagName === 'TEXTAREA' || 
+                if (target.tagName === 'INPUT' ||
+                    target.tagName === 'TEXTAREA' ||
                     target.tagName === 'BUTTON' ||
                     target.closest('form') ||
                     target.closest('.form-field') ||
@@ -193,10 +193,10 @@
                     target.closest('.post-form')) {
                     return; // Let form interactions proceed normally
                 }
-                
+
                 const isSettingsClick = settingsButton && (settingsButton.contains(target) || settingsMenu.contains(target));
                 const isFilterClick = filterButton && (filterButton.contains(target) || filterMenu.contains(target));
-                
+
                 if (!isSettingsClick && settingsMenu) {
                     closeDropdown(settingsMenu, settingsButton);
                 }
@@ -204,21 +204,21 @@
                     closeDropdown(filterMenu, filterButton);
                 }
             };
-            
+
             // Use capture phase for better performance
             // But ensure vote buttons are completely excluded from click outside handler
             document.addEventListener('click', clickOutsideHandler, true);
         }
-        
+
         // Close dropdowns on ESC key (global handler)
         // Only handle Escape if dropdowns are open, don't interfere with form inputs
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             // Don't interfere with Escape key in form inputs/textareas unless dropdowns are open
             const target = e.target;
             const isFormInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
             const hasOpenDropdown = (settingsMenu && settingsMenu.style.display !== 'none') ||
-                                   (filterMenu && filterMenu.style.display !== 'none');
-            
+                (filterMenu && filterMenu.style.display !== 'none');
+
             if (e.key === 'Escape' && (hasOpenDropdown || !isFormInput)) {
                 if (settingsMenu && settingsMenu.style.display !== 'none') {
                     closeDropdown(settingsMenu, settingsButton);
@@ -228,7 +228,7 @@
                 }
             }
         });
-        
+
         // Initialize click outside handler
         setupClickOutside();
     }
@@ -258,7 +258,7 @@
                 }
 
                 const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
-                
+
                 try {
                     const response = await fetch(`/api/search-suggestions/?q=${encodeURIComponent(query)}`, {
                         headers: {
@@ -322,7 +322,7 @@
                 clearTimeout(debounceTimer);
                 debounceTimer = setTimeout(function () {
                     const query = searchInput.value.trim();
-                    
+
                     // Show suggestions if 2+ chars
                     if (query.length >= 2) {
                         fetchSearchSuggestions(query);
@@ -349,14 +349,14 @@
             });
 
             // Hide suggestions on focus out
-            searchInput.addEventListener('blur', function() {
+            searchInput.addEventListener('blur', function () {
                 setTimeout(() => {
                     suggestionsContainer.style.display = 'none';
                 }, 200);
             });
 
             // Show suggestions on focus if there's a query
-            searchInput.addEventListener('focus', function() {
+            searchInput.addEventListener('focus', function () {
                 if (searchInput.value.length >= 2) {
                     fetchSearchSuggestions(searchInput.value);
                 }
@@ -580,14 +580,14 @@
         const modalContainer = document.getElementById('modal-form-container');
         const modal = document.getElementById('post-modal');
 
-        window.openPostModal = function() {
+        window.openPostModal = function () {
             if (!postForm || !modalContainer) return;
             modalContainer.appendChild(postForm);
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         };
 
-        window.closePostModal = function() {
+        window.closePostModal = function () {
             if (!postForm || !staticContainer) return;
             staticContainer.appendChild(postForm);
             modal.style.display = 'none';
@@ -762,13 +762,13 @@
     function initVoteButtonHandlers() {
         // Add direct event listeners to vote buttons instead of relying on onclick attributes
         // This ensures votes work even if other handlers interfere
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             const target = e.target;
-            
+
             // Find the vote button element (could be button itself or SVG inside it)
             let voteButton = null;
-            if (target.classList.contains('vote-button') || 
-                target.classList.contains('upvote-button') || 
+            if (target.classList.contains('vote-button') ||
+                target.classList.contains('upvote-button') ||
                 target.classList.contains('downvote-button')) {
                 voteButton = target;
             } else if (target.closest('.vote-button')) {
@@ -779,17 +779,17 @@
             } else {
                 return; // Not a vote button click
             }
-            
+
             // Prevent click outside handler from interfering
             e.stopPropagation();
-            
+
             // Get post ID from the button's parent post card
             const postCard = voteButton.closest('.post-card');
             if (!postCard) return;
-            
+
             const postId = postCard.getAttribute('data-post-id');
             if (!postId) return;
-            
+
             // Determine vote type from button class
             let voteType = null;
             if (voteButton.classList.contains('upvote-button')) {
@@ -799,7 +799,7 @@
             } else {
                 return; // Not a valid vote button
             }
-            
+
             // Call handleVote function
             if (window.handleVote) {
                 e.preventDefault();
@@ -808,8 +808,8 @@
         }, true); // Use capture phase to run BEFORE click outside handler
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        initVoteButtonHandlers(); // Initialize vote button handlers FIRST
+    document.addEventListener('DOMContentLoaded', function () {
+        // initVoteButtonHandlers removed to rely on inline onclick and prevent event conflicts
         initDropdowns();
         initSearchFunctionality();
         initHashtagDetection();
