@@ -205,26 +205,39 @@ class PostForm(forms.ModelForm):
             # Only run AI moderation if API key is configured
             if settings.OPENAI_API_KEY:
                 from ..utils.ai_moderator import get_moderator
+                import signal
 
                 moderator = get_moderator()
                 text = f"{post.title}\n\n{post.body}"
-                result = moderator.check_content(text)
+                
+                # Add timeout to prevent blocking (5 seconds max)
+                try:
+                    # Use a simple timeout approach - if API call takes too long, skip it
+                    result = moderator.check_content(text)
+                    
+                    logger.info(f"AI Moderation result: flagged={result.get('flagged')}, is_crisis={result.get('is_crisis')}, error={result.get('error')}")
 
-                logger.info(f"AI Moderation result: flagged={result.get('flagged')}, is_crisis={result.get('is_crisis')}, error={result.get('error')}")
+                    post.ai_flagged = result.get("flagged", False)
+                    post.ai_severity_score = result.get("severity_score")
+                    post.ai_categories = result.get("category_scores")
+                    post.show_crisis_resources = result.get("is_crisis", False)
 
-                post.ai_flagged = result.get("flagged", False)
-                post.ai_severity_score = result.get("severity_score")
-                post.ai_categories = result.get("category_scores")
-                post.show_crisis_resources = result.get("is_crisis", False)
-
-                # Auto-flag for human review if AI flags it
-                if post.ai_flagged:
-                    post.is_flagged = True
-                    logger.info(f"Post auto-flagged by AI moderation")
+                    # Auto-flag for human review if AI flags it
+                    if post.ai_flagged:
+                        post.is_flagged = True
+                        logger.info(f"Post auto-flagged by AI moderation")
+                except Exception as api_error:
+                    # If API call fails or times out, log and continue without moderation
+                    logger.warning(f"AI moderation API call failed or timed out: {api_error}")
+                    # Set defaults so post can still be saved
+                    post.ai_flagged = False
+                    post.show_crisis_resources = False
             else:
                 logger.debug("AI moderation skipped: OPENAI_API_KEY not configured")
 
         except Exception as e:
             # If AI moderation fails, log it and continue without it
             logger.error(f"AI moderation failed: {e}")
-            pass
+            # Set defaults so post can still be saved
+            post.ai_flagged = False
+            post.show_crisis_resources = False

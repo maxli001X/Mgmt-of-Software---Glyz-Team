@@ -123,6 +123,10 @@ header {
     color: rgba(255, 255, 255, 0.7);
 }
 
+.header-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
 .header-search-button {
     background: transparent;
     border: none;
@@ -526,6 +530,8 @@ article footer {
     font-size: 1rem;
     font-family: inherit;
     transition: border-color 0.2s, box-shadow 0.2s;
+    background: #ffffff !important;
+    color: var(--text-main);
 }
 
 .form-input:focus {
@@ -662,7 +668,7 @@ article footer {
     font-size: 1rem;
     transition: all 0.2s;
     box-sizing: border-box;
-    background: #ffffff;
+    background: #ffffff !important;
     color: var(--text-main);
 }
 
@@ -720,9 +726,33 @@ article footer {
 }
 
 .identity-radio input[type="radio"] {
-    accent-color: #00356b;
+    accent-color: #ffffff;
     width: 1.1rem;
     height: 1.1rem;
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border-radius: 50%;
+    position: relative;
+}
+
+.identity-radio input[type="radio"]:checked {
+    background-color: #00356b !important;
+    border-color: #00356b;
+}
+
+.identity-radio input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background-color: #ffffff;
 }
 
 .radio-label {
@@ -1636,6 +1666,7 @@ header nav button {
     padding: 0.25rem 0.5rem;
     border-radius: 20px;
     border: 1px solid #e2e8f0;
+    z-index: 10; /* Ensure vote buttons are above other content */
 }
 
 .vote-section-absolute .vote-button {
@@ -1803,7 +1834,7 @@ header nav button {
     font-size: 0.95rem;
     resize: vertical;
     box-sizing: border-box;
-    background: #ffffff;
+    background: #ffffff !important;
     color: var(--text-main);
 }
 

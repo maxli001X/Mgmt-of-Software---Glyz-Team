@@ -1,7 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db import models
 from django.db.models import Count, Prefetch, Q, F, ExpressionWrapper, FloatField
+from django.db.models.functions import Extract
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -30,7 +32,7 @@ def home(request):
     # Annotate with non-deleted comment count to avoid N+1 query
     posts = (
         Post.objects.filter(is_hidden=False)
-        .select_related("author")
+        .select_related("author", "author__profile")
         .prefetch_related("tags", "votes", comments_prefetch)
         .annotate(
             upvotes_count=Count("votes", filter=Q(votes__vote_type=Vote.UPVOTE)),
@@ -52,26 +54,60 @@ def home(request):
     # Apply sorting
     if sort == "trending":
         # Trending algorithm: (recent_votes * 2 + recent_comments) / (age_hours + 2)
-        now = timezone.now()
-        hours_ago_24 = now - timedelta(hours=24)
-        
-        posts = posts.annotate(
-            recent_votes=Count('votes', filter=Q(votes__created_at__gte=hours_ago_24)),
-            recent_comments=Count('comments', filter=Q(comments__created_at__gte=hours_ago_24, comments__is_deleted=False)),
-            age_seconds=ExpressionWrapper(
-                (now - F('created_at')),
-                output_field=FloatField()
+        try:
+            now = timezone.now()
+            hours_ago_24 = now - timedelta(hours=24)
+            
+            # Calculate trending score using database functions
+            # Use Extract to get epoch seconds, then calculate age in hours
+            from django.db.models.functions import Extract
+            from django.db import connection
+            
+            # Annotate with recent activity counts first
+            posts = posts.annotate(
+                recent_votes=Count('votes', filter=Q(votes__created_at__gte=hours_ago_24)),
+                recent_comments=Count('comments', filter=Q(comments__created_at__gte=hours_ago_24, comments__is_deleted=False))
             )
-        ).annotate(
-            age_hours=ExpressionWrapper(
-                F('age_seconds') / 3600.0,
-                output_field=FloatField()
-            ),
-            trending_score=ExpressionWrapper(
-                (F('recent_votes') * 2.0 + F('recent_comments') * 1.0) / (F('age_hours') + 2.0),
-                output_field=FloatField()
-            )
-        ).order_by('-trending_score', '-created_at')
+            
+            # Calculate age in hours - use database-specific approach
+            if 'postgresql' in connection.vendor:
+                # PostgreSQL: Extract epoch from datetime difference
+                posts = posts.annotate(
+                    age_hours=ExpressionWrapper(
+                        Extract(now - F('created_at'), 'epoch') / 3600.0,
+                        output_field=FloatField()
+                    )
+                )
+            elif 'sqlite' in connection.vendor:
+                # SQLite: Use julianday for date difference calculation
+                from django.db.models.functions import Cast
+                from django.db.models import Value
+                # Calculate hours using (julianday('now') - julianday(created_at)) * 24
+                posts = posts.extra(
+                    select={'age_hours': "(julianday('now') - julianday(posting_post.created_at)) * 24"}
+                )
+            else:
+                # Fallback: calculate age using Extract with epoch
+                posts = posts.annotate(
+                    age_hours=ExpressionWrapper(
+                        (Extract(Value(now), 'epoch') - Extract(F('created_at'), 'epoch')) / 3600.0,
+                        output_field=FloatField()
+                    )
+                )
+            
+            # Calculate trending score
+            posts = posts.annotate(
+                trending_score=ExpressionWrapper(
+                    (F('recent_votes') * 2.0 + F('recent_comments') * 1.0) / (F('age_hours') + 2.0),
+                    output_field=FloatField()
+                )
+            ).order_by('-trending_score', '-created_at')
+        except Exception as e:
+            # Fallback to recent if trending query fails
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Trending query failed: {e}")
+            posts = posts.order_by("-created_at")
     elif sort == "popular":
         posts = posts.annotate(
             net_votes=F("upvotes_count") - F("downvotes_count")

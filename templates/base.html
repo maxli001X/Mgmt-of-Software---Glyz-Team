@@ -54,10 +54,6 @@
                                 class="filter-option {% if request.GET.sort == 'trending' %}active{% endif %}" role="menuitem">
                                 Trending
                             </a>
-                            <a href="{% url 'posting:home' %}?sort=popular{% if request.GET.q %}&q={{ request.GET.q|urlencode }}{% endif %}{% if request.GET.tag %}&tag={{ request.GET.tag|urlencode }}{% endif %}{% if request.GET.view %}&view={{ request.GET.view|urlencode }}{% endif %}" 
-                                class="filter-option {% if request.GET.sort == 'popular' %}active{% endif %}" role="menuitem">
-                                Popular
-                            </a>
                         </div>
                     </div>
                     {% if request.GET.tag %}

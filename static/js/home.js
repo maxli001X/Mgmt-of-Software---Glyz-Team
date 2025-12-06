@@ -147,6 +147,42 @@
             clickOutsideHandler = function(e) {
                 const target = e.target;
                 
+                // Check if this was marked as a vote button click by the isolation handler
+                if (e.voteButtonClick) {
+                    return; // Don't interfere with vote button clicks
+                }
+                
+                // Don't interfere with vote buttons, form inputs, textareas, or buttons inside forms
+                // Explicitly check for vote buttons first to prevent misrouting clicks
+                // Check both the target and its parent elements (for SVG clicks inside buttons)
+                const voteSection = target.closest('.vote-section-absolute');
+                const voteButton = target.closest('.vote-button') || 
+                                  target.closest('.upvote-button') || 
+                                  target.closest('.downvote-button');
+                
+                // Also check if target is SVG inside a vote button
+                const isVoteButtonSVG = target.tagName === 'svg' && target.closest('.vote-button');
+                const isVoteButtonPath = target.tagName === 'path' && target.closest('.vote-button');
+                const isVoteButtonPolyline = target.tagName === 'polyline' && target.closest('.vote-button');
+                
+                if (voteSection || voteButton || 
+                    target.classList.contains('vote-button') ||
+                    target.classList.contains('upvote-button') ||
+                    target.classList.contains('downvote-button') ||
+                    isVoteButtonSVG || isVoteButtonPath || isVoteButtonPolyline) {
+                    // Don't interfere with vote button clicks - return immediately
+                    return; // Let vote button clicks proceed normally to their onclick handlers
+                }
+                
+                // Don't interfere with search form and search button
+                const isSearchForm = target.closest('.header-search-form');
+                const isSearchButton = target.closest('.header-search-button') || target.classList.contains('header-search-button');
+                const isSearchInput = target.classList.contains('header-search-input') || target.id === 'header-search-input';
+                
+                if (isSearchForm || isSearchButton || isSearchInput) {
+                    return; // Let search form interactions proceed normally
+                }
+                
                 // Don't interfere with form inputs, textareas, or buttons inside forms
                 if (target.tagName === 'INPUT' || 
                     target.tagName === 'TEXTAREA' || 
@@ -170,6 +206,7 @@
             };
             
             // Use capture phase for better performance
+            // But ensure vote buttons are completely excluded from click outside handler
             document.addEventListener('click', clickOutsideHandler, true);
         }
         
@@ -376,11 +413,16 @@
     // ================== Identity State Management ==================
     function updateIdentityState(value) {
         const isAnonymousCheckbox = document.getElementById('id_is_anonymous');
+        const postAsIdentityCheckbox = document.getElementById('id_post_as_identity');
 
         if (value === 'anonymous') {
+            // Anonymous: is_anonymous = True, post_as_identity = False
             if (isAnonymousCheckbox) isAnonymousCheckbox.checked = true;
+            if (postAsIdentityCheckbox) postAsIdentityCheckbox.checked = false;
         } else {
+            // Profile Identity: is_anonymous = False, post_as_identity = True
             if (isAnonymousCheckbox) isAnonymousCheckbox.checked = false;
+            if (postAsIdentityCheckbox) postAsIdentityCheckbox.checked = true;
         }
     }
 
@@ -562,7 +604,8 @@
     }
 
     // ================== Vote Handling ==================
-    async function handleVote(postId, voteType) {
+    // Make handleVote globally accessible so onclick handlers can call it
+    window.handleVote = async function handleVote(postId, voteType) {
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
         if (!csrfToken) {
             alert('Please log in to vote.');
@@ -715,7 +758,58 @@
     }
 
     // ================== Initialization ==================
+    // ================== Vote Button Click Isolation ==================
+    function initVoteButtonHandlers() {
+        // Add direct event listeners to vote buttons instead of relying on onclick attributes
+        // This ensures votes work even if other handlers interfere
+        document.addEventListener('click', function(e) {
+            const target = e.target;
+            
+            // Find the vote button element (could be button itself or SVG inside it)
+            let voteButton = null;
+            if (target.classList.contains('vote-button') || 
+                target.classList.contains('upvote-button') || 
+                target.classList.contains('downvote-button')) {
+                voteButton = target;
+            } else if (target.closest('.vote-button')) {
+                voteButton = target.closest('.vote-button');
+            } else if (target.closest('.vote-section-absolute')) {
+                // If clicking in vote section but not on button, ignore
+                return;
+            } else {
+                return; // Not a vote button click
+            }
+            
+            // Prevent click outside handler from interfering
+            e.stopPropagation();
+            
+            // Get post ID from the button's parent post card
+            const postCard = voteButton.closest('.post-card');
+            if (!postCard) return;
+            
+            const postId = postCard.getAttribute('data-post-id');
+            if (!postId) return;
+            
+            // Determine vote type from button class
+            let voteType = null;
+            if (voteButton.classList.contains('upvote-button')) {
+                voteType = 'up';
+            } else if (voteButton.classList.contains('downvote-button')) {
+                voteType = 'down';
+            } else {
+                return; // Not a valid vote button
+            }
+            
+            // Call handleVote function
+            if (window.handleVote) {
+                e.preventDefault();
+                window.handleVote(postId, voteType);
+            }
+        }, true); // Use capture phase to run BEFORE click outside handler
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
+        initVoteButtonHandlers(); // Initialize vote button handlers FIRST
         initDropdowns();
         initSearchFunctionality();
         initHashtagDetection();

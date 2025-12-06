@@ -183,7 +183,8 @@
     <article class="post-card" data-post-id="{{ post.pk }}">
         <!-- Vote Buttons - Upper Right -->
         <div class="vote-section-absolute">
-                <button class="vote-button upvote-button {% if request.user in post.upvotes.all %}active{% endif %}"
+                {% with user_vote=user_votes|get_item:post.pk %}
+                <button class="vote-button upvote-button {% if user_vote and user_vote.vote_type == 'UPVOTE' %}active{% endif %}"
                     onclick="handleVote('{{ post.pk }}', 'up')" aria-label="Upvote">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -194,7 +195,7 @@
                     {{ post.upvotes_count|default:0 }}
                 </span>
                 <button
-                    class="vote-button downvote-button {% if request.user in post.downvotes.all %}active{% endif %}"
+                    class="vote-button downvote-button {% if user_vote and user_vote.vote_type == 'DOWNVOTE' %}active{% endif %}"
                     onclick="handleVote('{{ post.pk }}', 'down')" aria-label="Downvote">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -204,6 +205,7 @@
                 <span id="downvote-count-{{ post.pk }}" class="vote-count-inline downvote-count">
                     {{ post.downvotes_count|default:0 }}
                 </span>
+                {% endwith %}
         </div>
 
 
