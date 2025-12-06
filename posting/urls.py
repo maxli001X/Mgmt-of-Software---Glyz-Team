@@ -23,5 +23,6 @@ urlpatterns = [
     path("stats/", views.aggregated_stats, name="aggregated_stats"),
     # API endpoints
     path("api/suggest-tags/", views.suggest_tags, name="suggest_tags"),
+    path("api/search-suggestions/", views.search_suggestions, name="search_suggestions"),
 ]
 

@@ -1,9 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db.models import Count, Prefetch, Q
+from django.db.models import Count, Prefetch, Q, F, ExpressionWrapper, FloatField
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils import timezone
+from datetime import timedelta
 
 from ..forms import PostForm
 from ..models import Comment, CommentVote, Post, Tag, Vote
@@ -48,8 +50,29 @@ def home(request):
         posts = posts.filter(tags__slug=tag_slug)
 
     # Apply sorting
-    if sort == "popular":
-        from django.db.models import F
+    if sort == "trending":
+        # Trending algorithm: (recent_votes * 2 + recent_comments) / (age_hours + 2)
+        now = timezone.now()
+        hours_ago_24 = now - timedelta(hours=24)
+        
+        posts = posts.annotate(
+            recent_votes=Count('votes', filter=Q(votes__created_at__gte=hours_ago_24)),
+            recent_comments=Count('comments', filter=Q(comments__created_at__gte=hours_ago_24, comments__is_deleted=False)),
+            age_seconds=ExpressionWrapper(
+                (now - F('created_at')),
+                output_field=FloatField()
+            )
+        ).annotate(
+            age_hours=ExpressionWrapper(
+                F('age_seconds') / 3600.0,
+                output_field=FloatField()
+            ),
+            trending_score=ExpressionWrapper(
+                (F('recent_votes') * 2.0 + F('recent_comments') * 1.0) / (F('age_hours') + 2.0),
+                output_field=FloatField()
+            )
+        ).order_by('-trending_score', '-created_at')
+    elif sort == "popular":
         posts = posts.annotate(
             net_votes=F("upvotes_count") - F("downvotes_count")
         ).order_by("-net_votes", "-created_at")

@@ -1,7 +1,7 @@
 # Import all views for backward compatibility
 # This allows `from posting.views import home, upvote_post, downvote_post, flag_post` to work as before
 
-from .api import suggest_tags
+from .api import suggest_tags, search_suggestions
 from .comments import (
     add_comment,
     add_reply,
@@ -29,5 +29,6 @@ __all__ = [
     "flag_comment",
     "delete_comment",
     "suggest_tags",
+    "search_suggestions",
 ]
 

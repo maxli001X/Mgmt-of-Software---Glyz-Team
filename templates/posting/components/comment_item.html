@@ -124,9 +124,9 @@
     </div>
     {% elif comment.replies.exists and current_depth >= 4 %}
     <div class="comment-replies-collapsed">
-        <a href="#" class="view-more-replies" onclick="alert('Deep thread - view full discussion to see more replies'); return false;">
+        <button class="view-more-replies-btn" onclick="alert('Please refresh to view deeper thread levels')">
             View {{ comment.replies.count }} more repl{{ comment.replies.count|pluralize:"y,ies" }}...
-        </a>
+        </button>
     </div>
     {% endif %}
 </div>
