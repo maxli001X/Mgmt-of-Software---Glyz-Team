@@ -1,6 +1,12 @@
 // Tree Hole Yale - Home Page JavaScript
 // All functionality for the home feed page
 
+// Prevent multiple initializations (in case script is loaded twice)
+if (window._homeJsInitialized) {
+    console.warn('home.js already initialized, skipping duplicate init');
+} else {
+    window._homeJsInitialized = true;
+
 (function () {
     'use strict';
 
@@ -868,3 +874,5 @@
     });
 
 })();
+
+} // End of initialization guard

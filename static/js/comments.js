@@ -1,8 +1,14 @@
 // comments.js - AJAX handling for comments and votes
 
-document.addEventListener('DOMContentLoaded', function () {
-    initCommentInteractions();
-});
+// Prevent multiple initializations (in case script is loaded twice)
+if (window._commentsJsInitialized) {
+    console.warn('comments.js already initialized, skipping duplicate init');
+} else {
+    window._commentsJsInitialized = true;
+    document.addEventListener('DOMContentLoaded', function () {
+        initCommentInteractions();
+    });
+}
 
 function initCommentInteractions() {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
@@ -16,7 +22,14 @@ function initCommentInteractions() {
         const form = btn.closest('.comment-form');
         if (!form) return;
 
+        // Prevent double submission
+        if (form.dataset.submitting === 'true') {
+            e.preventDefault();
+            return;
+        }
+
         e.preventDefault(); // Stop standard form submit
+        form.dataset.submitting = 'true'; // Mark as submitting
 
         const formData = new FormData(form);
         const actionUrl = form.action;
@@ -117,6 +130,7 @@ function initCommentInteractions() {
         } finally {
             btn.disabled = false;
             btn.innerHTML = originalText;
+            form.dataset.submitting = 'false'; // Reset submission flag
         }
     });
 
