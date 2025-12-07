@@ -142,7 +142,7 @@ class PostForm(forms.ModelForm):
         if author is not None:
             post.author = author
 
-        # Run AI content moderation before saving
+        # Run quick crisis check (synchronous, instant)
         self._run_ai_moderation(post)
 
         # Handle identity choice
@@ -152,10 +152,10 @@ class PostForm(forms.ModelForm):
 
         if commit:
             post.save()
-            
+
             # Collect all tags from both sources
             all_tags = []
-            
+
             # 1. Get tags from tags_input field
             tags_input_str = self.cleaned_data.get("tags_input", "").strip()
             if tags_input_str:
@@ -168,76 +168,62 @@ class PostForm(forms.ModelForm):
                         tag = tag.lstrip("#").strip()
                         if tag:
                             tag_list.append(tag)
-                
+
                 for tag_name in tag_list:
                     tag = self.get_or_create_tag(tag_name)
                     if tag:
                         all_tags.append(tag)
-            
+
             # 2. Extract hashtags from body text
             body_text = self.cleaned_data.get("body", "")
             hashtags = self.extract_hashtags(body_text)
-            
+
             for tag_name in hashtags:
                 tag = self.get_or_create_tag(tag_name)
                 if tag:
                     all_tags.append(tag)
-            
+
             # Remove duplicates (in case same tag appears in both sources)
             unique_tags = list(set(all_tags))
-            
+
             # Set tags on post
             post.tags.set(unique_tags)
 
+            # Run full AI moderation async (background thread)
+            # This updates ai_flagged, ai_severity_score, etc. after post is saved
+            try:
+                from django.conf import settings
+                if getattr(settings, 'OPENAI_API_KEY', None):
+                    from ..utils.ai_moderator import run_moderation_async
+                    text = f"{post.title}\n\n{post.body}"
+                    run_moderation_async(post.pk, text)
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).error(f"Failed to start async moderation: {e}")
+
         return post
 
-    def _run_ai_moderation(self, post):
+    def _run_ai_moderation(self, post, run_async=True):
         """
         Run AI content moderation on the post.
 
-        Sets ai_flagged, ai_severity_score, ai_categories, and show_crisis_resources.
+        Uses a two-phase approach for fast posting:
+        1. Quick keyword check (synchronous) - detects obvious crisis content immediately
+        2. Full AI moderation (async) - runs in background after post saves
+
+        Sets show_crisis_resources immediately if crisis keywords detected.
+        Full ai_flagged, ai_severity_score, ai_categories updated async.
         """
         import logging
         logger = logging.getLogger(__name__)
 
-        try:
-            from django.conf import settings
-            # Only run AI moderation if API key is configured
-            if settings.OPENAI_API_KEY:
-                from ..utils.ai_moderator import get_moderator
-                import signal
+        text = f"{post.title}\n\n{post.body}"
 
-                moderator = get_moderator()
-                text = f"{post.title}\n\n{post.body}"
-                
-                # Add timeout to prevent blocking (5 seconds max)
-                try:
-                    # Use a simple timeout approach - if API call takes too long, skip it
-                    result = moderator.check_content(text)
-                    
-                    logger.info(f"AI Moderation result: flagged={result.get('flagged')}, is_crisis={result.get('is_crisis')}, error={result.get('error')}")
+        # Phase 1: Quick crisis keyword check (instant, no API call)
+        from ..utils.ai_moderator import quick_crisis_check
+        if quick_crisis_check(text):
+            post.show_crisis_resources = True
+            logger.info("Crisis keywords detected - showing resources immediately")
 
-                    post.ai_flagged = result.get("flagged", False)
-                    post.ai_severity_score = result.get("severity_score")
-                    post.ai_categories = result.get("category_scores")
-                    post.show_crisis_resources = result.get("is_crisis", False)
-
-                    # Auto-flag for human review if AI flags it
-                    if post.ai_flagged:
-                        post.is_flagged = True
-                        logger.info(f"Post auto-flagged by AI moderation")
-                except Exception as api_error:
-                    # If API call fails or times out, log and continue without moderation
-                    logger.warning(f"AI moderation API call failed or timed out: {api_error}")
-                    # Set defaults so post can still be saved
-                    post.ai_flagged = False
-                    post.show_crisis_resources = False
-            else:
-                logger.debug("AI moderation skipped: OPENAI_API_KEY not configured")
-
-        except Exception as e:
-            # If AI moderation fails, log it and continue without it
-            logger.error(f"AI moderation failed: {e}")
-            # Set defaults so post can still be saved
-            post.ai_flagged = False
-            post.show_crisis_resources = False
+        # Phase 2: Full AI moderation runs async after post is saved
+        # This is handled in save() method after commit

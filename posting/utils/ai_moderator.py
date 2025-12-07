@@ -17,11 +17,34 @@ Usage:
 """
 
 import logging
+import re
+import threading
 from typing import Optional
 
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
+
+# Crisis keywords for instant detection (no API call needed)
+CRISIS_KEYWORDS = [
+    r'\b(suicid|kill\s*(my)?self|end\s*(my)?\s*life|want\s*to\s*die)\b',
+    r'\b(self[- ]?harm|cutting\s*myself|hurt\s*myself)\b',
+    r'\b(don\'?t\s*want\s*to\s*live|no\s*reason\s*to\s*live)\b',
+    r'\b(overdose|take\s*pills|slit\s*wrist)\b',
+]
+CRISIS_PATTERN = re.compile('|'.join(CRISIS_KEYWORDS), re.IGNORECASE)
+
+
+def quick_crisis_check(text: str) -> bool:
+    """
+    Fast keyword-based crisis detection (no API call).
+
+    Returns True if text contains obvious crisis/self-harm indicators.
+    This runs synchronously for immediate crisis resource display.
+    """
+    if not text:
+        return False
+    return bool(CRISIS_PATTERN.search(text))
 
 
 class AIContentModerator:
@@ -149,3 +172,37 @@ def get_moderator() -> AIContentModerator:
     if _moderator_instance is None:
         _moderator_instance = AIContentModerator()
     return _moderator_instance
+
+
+def run_moderation_async(post_id: int, text: str):
+    """
+    Run AI moderation in background thread.
+
+    Updates the post's ai_flagged, ai_severity_score, ai_categories,
+    and show_crisis_resources fields after moderation completes.
+    """
+    def _moderate():
+        try:
+            # Import here to avoid circular imports
+            from posting.models import Post
+
+            moderator = get_moderator()
+            result = moderator.check_content(text)
+
+            logger.info(f"Async moderation for post {post_id}: flagged={result.get('flagged')}, is_crisis={result.get('is_crisis')}")
+
+            # Update post with moderation results
+            Post.objects.filter(pk=post_id).update(
+                ai_flagged=result.get("flagged", False),
+                ai_severity_score=result.get("severity_score"),
+                ai_categories=result.get("category_scores"),
+                show_crisis_resources=result.get("is_crisis", False),
+                is_flagged=result.get("flagged", False),  # Auto-flag for human review
+            )
+
+        except Exception as e:
+            logger.error(f"Async moderation failed for post {post_id}: {e}")
+
+    # Run in background thread
+    thread = threading.Thread(target=_moderate, daemon=True)
+    thread.start()
