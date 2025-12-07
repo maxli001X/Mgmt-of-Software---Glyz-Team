@@ -78,38 +78,10 @@ def search_suggestions(request):
     })
 
 
-def _categorize_tag(tag_name):
-    """
-    Categorize a tag based on its name using keyword matching.
-
-    Categories:
-    - Courses: Tags containing course codes (MGT, numbers)
-    - Sentiment: Recommended, Not Recommended, Mixed Review
-    - Reviews: Past Class Review
-    - Topics: Everything else
-    """
-    name_lower = tag_name.lower()
-
-    # Check for course-related tags
-    if 'mgt' in name_lower or any(char.isdigit() for char in tag_name):
-        return 'Courses'
-
-    # Check for sentiment tags
-    if any(term in name_lower for term in ['recommended', 'not recommended', 'mixed']):
-        return 'Sentiment'
-
-    # Check for review tags
-    if 'review' in name_lower or 'class' in name_lower:
-        return 'Reviews'
-
-    # Default to Topics
-    return 'Topics'
-
-
 @login_required
 def tag_categories(request):
     """
-    AJAX endpoint for getting tags grouped by category.
+    AJAX endpoint for getting tags grouped by category using AI.
 
     Returns JSON: {
         "categories": [
@@ -122,37 +94,36 @@ def tag_categories(request):
     }
     """
     from django.db.models import Q
+    from ..utils.tag_categorizer import get_categorizer
 
     # Get tags with at least 1 visible post
     tags = Tag.objects.annotate(
         post_count=Count('posts', filter=Q(posts__is_hidden=False))
     ).filter(post_count__gte=1).order_by('name')
 
-    # Group tags by category
-    categories_dict = {}
-    for tag in tags:
-        category = _categorize_tag(tag.name)
-        if category not in categories_dict:
-            categories_dict[category] = []
-        categories_dict[category].append({
+    # Build tag info dict for quick lookup
+    tag_info = {
+        tag.name: {
             'name': tag.name,
             'slug': tag.slug,
             'count': tag.post_count
-        })
+        }
+        for tag in tags
+    }
 
-    # Sort categories in preferred order
-    category_order = ['Reviews', 'Sentiment', 'Courses', 'Topics']
+    # Get AI-powered categorization
+    tag_names = list(tag_info.keys())
+    categorizer = get_categorizer()
+    ai_categories = categorizer.categorize_tags(tag_names)
+
+    # Build response with full tag info
     categories = []
-    for cat_name in category_order:
-        if cat_name in categories_dict:
-            categories.append({
-                'name': cat_name,
-                'tags': categories_dict[cat_name]
-            })
-
-    # Add any remaining categories not in the order list
-    for cat_name, cat_tags in categories_dict.items():
-        if cat_name not in category_order:
+    for cat_name, cat_tag_names in ai_categories.items():
+        cat_tags = []
+        for tag_name in cat_tag_names:
+            if tag_name in tag_info:
+                cat_tags.append(tag_info[tag_name])
+        if cat_tags:
             categories.append({
                 'name': cat_name,
                 'tags': cat_tags
