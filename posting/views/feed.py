@@ -90,8 +90,14 @@ def home(request):
             messages.success(request, "Post submitted successfully!")
             return redirect(reverse("posting:home"))
 
-    # Get all tags with post counts
-    tags = Tag.objects.annotate(post_count=Count("posts")).order_by("name")
+    # Get tags with at least 1 visible post (excludes hidden/deleted posts)
+    tags = (
+        Tag.objects.annotate(
+            post_count=Count("posts", filter=Q(posts__is_hidden=False))
+        )
+        .filter(post_count__gte=1)
+        .order_by("name")
+    )
 
     # Get user votes for all posts and comments to check vote state in template
     user_votes = {}
