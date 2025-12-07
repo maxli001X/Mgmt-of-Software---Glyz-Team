@@ -9,9 +9,15 @@ User = get_user_model()
 
 class ModerationDashboardTests(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
+        self.staff_user = User.objects.create_user(
             username="moderator",
             email="moderator@yale.edu",
+            password="password123",
+            is_staff=True,
+        )
+        self.regular_user = User.objects.create_user(
+            username="regular",
+            email="regular@yale.edu",
             password="password123",
         )
 
@@ -25,6 +31,12 @@ class ModerationDashboardTests(TestCase):
         response = self.client.get(reverse("moderation_ranking:dashboard"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Moderation Dashboard")
+
+    def test_dashboard_requires_staff(self):
+        """Non-staff users should get 403."""
+        self.client.login(username="regular", password="password123")
+        response = self.client.get(reverse("moderation_ranking:dashboard"))
+        self.assertEqual(response.status_code, 403)
 
 
 class FlaggedQueueTests(TestCase):

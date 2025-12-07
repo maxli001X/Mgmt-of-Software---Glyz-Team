@@ -19,7 +19,12 @@ def _safe_redirect(request, default_url):
     referer = request.META.get("HTTP_REFERER")
     if referer:
         parsed = urlparse(referer)
-        if parsed.netloc == "" or parsed.netloc == request.get_host():
+        # Only allow same-host redirects with valid schemes
+        # Reject protocol-relative URLs (empty scheme with netloc)
+        is_same_host = parsed.netloc == request.get_host()
+        is_relative = parsed.netloc == "" and parsed.scheme == ""
+        has_valid_scheme = parsed.scheme in ("", "http", "https")
+        if has_valid_scheme and (is_same_host or is_relative):
             return redirect(referer)
     return redirect(default_url)
 

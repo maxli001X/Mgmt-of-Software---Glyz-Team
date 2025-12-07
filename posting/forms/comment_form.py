@@ -91,6 +91,8 @@ class CommentForm(forms.ModelForm):
                 if comment.ai_flagged:
                     comment.is_flagged = True
 
-        except Exception:
-            # If AI moderation fails, continue without it
-            pass
+        except Exception as e:
+            # If AI moderation fails, log the error and continue without it
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"AI moderation failed for comment: {e}")

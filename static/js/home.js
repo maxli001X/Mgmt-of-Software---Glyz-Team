@@ -280,7 +280,7 @@ if (window._homeJsInitialized) {
                         displaySearchSuggestions(data);
                     }
                 } catch (error) {
-                    console.log('Search suggestions failed:', error);
+                    // Search suggestions failed silently
                 }
             }
 
@@ -483,7 +483,7 @@ if (window._homeJsInitialized) {
                     displaySuggestions(data.tags);
                 }
             } catch (error) {
-                console.log('Tag suggestion request failed');
+                // Tag suggestion request failed silently
             }
         }
 
@@ -698,7 +698,6 @@ if (window._homeJsInitialized) {
                     const up = parseInt(data.upvotes_count || 0);
                     const down = parseInt(data.downvotes_count || 0);
                     const score = up - down;
-                    console.log('New score:', score);
                     scoreElement.textContent = score;
                 }
 

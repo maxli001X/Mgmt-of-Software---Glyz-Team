@@ -71,46 +71,48 @@ def admin_user_list(request):
     """Admin view of all users with their statistics."""
     if not (request.user.is_staff or request.user.is_superuser):
         raise PermissionDenied
-    
-    users = User.objects.all().order_by('-date_joined')
-    
-    # Calculate stats for each user
+
+    from django.db.models import Max
+
+    # Use annotations to avoid N+1 queries
+    users = User.objects.annotate(
+        post_count=Count('posts', distinct=True),
+        vote_count=Count('votes', distinct=True),
+        flagged_count=Count('posts', filter=Q(posts__is_flagged=True), distinct=True),
+        last_post_date=Max('posts__created_at'),
+        last_vote_date=Max('votes__created_at'),
+    ).order_by('-date_joined')
+
+    # Build user_stats list with computed last_activity
     user_stats = []
     for user in users:
-        post_count = Post.objects.filter(author=user).count()
-        vote_count = Vote.objects.filter(voter=user).count()
-        flagged_count = Post.objects.filter(author=user, is_flagged=True).count()
-        
-        last_post = Post.objects.filter(author=user).order_by('-created_at').first()
-        last_vote = Vote.objects.filter(voter=user).order_by('-created_at').first()
-        
         last_activity = None
-        if last_post and last_vote:
-            last_activity = max(last_post.created_at, last_vote.created_at)
-        elif last_post:
-            last_activity = last_post.created_at
-        elif last_vote:
-            last_activity = last_vote.created_at
-        
+        if user.last_post_date and user.last_vote_date:
+            last_activity = max(user.last_post_date, user.last_vote_date)
+        elif user.last_post_date:
+            last_activity = user.last_post_date
+        elif user.last_vote_date:
+            last_activity = user.last_vote_date
+
         user_stats.append({
             'user': user,
-            'post_count': post_count,
-            'vote_count': vote_count,
-            'flagged_count': flagged_count,
+            'post_count': user.post_count,
+            'vote_count': user.vote_count,
+            'flagged_count': user.flagged_count,
             'last_activity': last_activity,
             'date_joined': user.date_joined,
         })
-    
+
     # Sort by last activity (most recent first)
     # Use a very old datetime for users with no activity
     min_datetime = datetime(1970, 1, 1, tzinfo=dt_timezone.utc)
     user_stats.sort(key=lambda x: x['last_activity'] or min_datetime, reverse=True)
-    
+
     context = {
         'user_stats': user_stats,
-        'total_users': User.objects.count(),
+        'total_users': len(user_stats),
     }
-    
+
     return render(request, 'posting/admin_user_list.html', context)
 
 
