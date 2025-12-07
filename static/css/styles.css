@@ -2408,6 +2408,55 @@ header nav button {
     }
 }
 
+/* Post Form Loading Overlay */
+.post-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    border-radius: var(--radius-md);
+}
+
+.post-loading-content {
+    text-align: center;
+    padding: 2rem;
+}
+
+.loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--border-color);
+    border-top-color: var(--primary-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin: 0 0 0.5rem 0;
+}
+
+.loading-subtext {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
 .comment-net-votes {
     font-weight: 600;
     color: var(--primary-dark);

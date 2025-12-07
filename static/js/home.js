@@ -780,6 +780,38 @@ if (window._homeJsInitialized) {
         });
     }
 
+    // ================== Post Form Loading State ==================
+    function initPostFormLoading() {
+        const postForm = document.getElementById('post-form');
+        if (!postForm) return;
+
+        const submitBtn = postForm.querySelector('#submit-button');
+        if (!submitBtn) return;
+
+        // Create loading overlay
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.className = 'post-loading-overlay';
+        loadingOverlay.innerHTML = `
+            <div class="post-loading-content">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">AI moderation in progress...</p>
+                <p class="loading-subtext">This may take a few seconds</p>
+            </div>
+        `;
+        loadingOverlay.style.display = 'none';
+        postForm.style.position = 'relative';
+        postForm.appendChild(loadingOverlay);
+
+        postForm.addEventListener('submit', function(e) {
+            // Show loading state
+            loadingOverlay.style.display = 'flex';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Posting...';
+
+            // Let form submit normally (don't prevent default)
+        });
+    }
+
     // ================== Scroll to Post Form ==================
     function scrollToPostForm() {
         const createPostSection = document.getElementById('create-post-section');
@@ -858,6 +890,7 @@ if (window._homeJsInitialized) {
         initFlagForms();
         initAutoScroll();
         initSearchHighlight();
+        initPostFormLoading(); // Loading indicator for post submission
 
         // AI Tag Suggestions needs URL from template
         const suggestTagsUrl = document.querySelector('[data-suggest-tags-url]')?.dataset.suggestTagsUrl;
