@@ -177,6 +177,9 @@
             <!-- Title Row -->
             <div class="post-header-top-row">
                 <h2 class="post-title-main">{{ post.title }}</h2>
+                {% if post.is_flagged %}
+                <span class="post-flagged-badge">⚠️ Flagged for review</span>
+                {% endif %}
             </div>
 
             <!-- Meta Row (Author/Time) -->
