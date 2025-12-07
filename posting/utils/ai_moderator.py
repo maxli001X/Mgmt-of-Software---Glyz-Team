@@ -123,11 +123,15 @@ class AIContentModerator:
             # Calculate severity score (max across all categories)
             severity_score = max(scores.values()) if scores else 0.0
 
-            # Check for crisis content (self-harm indicators)
+            # Check for crisis content (self-harm or violence indicators)
             is_crisis = (
+                # Self-harm indicators
                 scores.get("self-harm", 0) > 0.5
                 or scores.get("self-harm/intent", 0) > 0.3
                 or scores.get("self-harm/instructions", 0) > 0.3
+                # Violence indicators
+                or scores.get("violence", 0) > 0.5
+                or scores.get("violence/graphic", 0) > 0.3
             )
 
             return {
