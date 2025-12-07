@@ -758,7 +758,14 @@ if (window._homeJsInitialized) {
         document.querySelectorAll('.flag-form').forEach(form => {
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
+
+                if (!confirm('Flag this post as inappropriate?')) {
+                    return;
+                }
+
                 const url = this.action;
+                const postCard = this.closest('.post-card');
+
                 try {
                     const response = await fetch(url, {
                         method: 'POST',
@@ -769,7 +776,21 @@ if (window._homeJsInitialized) {
                     });
                     const data = await response.json();
                     if (data.success) {
-                        alert(data.message);
+                        // Add flagged badge to the post header
+                        if (postCard) {
+                            const headerTopRow = postCard.querySelector('.post-header-top-row');
+                            if (headerTopRow && !headerTopRow.querySelector('.post-flagged-badge')) {
+                                const badge = document.createElement('span');
+                                badge.className = 'post-flagged-badge';
+                                badge.textContent = '⚠️ Flagged for review';
+                                headerTopRow.appendChild(badge);
+                            }
+                        }
+                        // Show brief confirmation
+                        this.querySelector('button').textContent = '✓';
+                        setTimeout(() => {
+                            this.querySelector('button').innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>`;
+                        }, 1500);
                     } else {
                         alert(data.message || 'Already flagged');
                     }
