@@ -7,6 +7,8 @@ from urllib.parse import urlparse
 
 from ..forms import CommentForm
 from ..models import Comment, CommentVote, Post
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 
 def _safe_redirect(request, default_url):
@@ -32,9 +34,31 @@ def add_comment(request, post_pk):
 
     form = CommentForm(request.POST, post=post)
     if form.is_valid():
-        form.save(author=request.user)
+        comment = form.save(author=request.user)
+        
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            # return new comment html
+            context = {
+                'comment': comment,
+                'user_comment_votes': {}, # No votes yet on new comment
+                'user': request.user,
+            }
+            html = render_to_string('posting/components/comment_item.html', context, request=request)
+            return JsonResponse({
+                'success': True,
+                'message': 'Comment added!',
+                'html': html,
+                'comment_count': post.comments.count()
+            })
+            
         messages.success(request, "Comment added!")
     else:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+             return JsonResponse({
+                'success': False,
+                'message': str(form.errors.as_text())
+            })
+            
         for error in form.errors.get("body", []):
             messages.error(request, error)
 
@@ -58,9 +82,29 @@ def add_reply(request, comment_pk):
         request.POST, post=parent_comment.post, parent_comment=parent_comment
     )
     if form.is_valid():
-        form.save(author=request.user)
+        comment = form.save(author=request.user)
+        
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            context = {
+                'comment': comment,
+                'user_comment_votes': {},
+                'user': request.user,
+            }
+            html = render_to_string('posting/components/comment_item.html', context, request=request)
+            return JsonResponse({
+                'success': True,
+                'message': 'Reply added!',
+                'html': html
+            })
+
         messages.success(request, "Reply added!")
     else:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+             return JsonResponse({
+                'success': False,
+                'message': str(form.errors.as_text())
+            })
+
         for error in form.errors.get("body", []):
             messages.error(request, error)
 
@@ -89,18 +133,37 @@ def upvote_comment(request, pk):
                 comment=comment, voter=request.user, vote_type=CommentVote.UPVOTE
             )
             messages.success(request, "Upvote recorded.")
+            user_vote = "UPVOTE"
+            action = "added"
         except IntegrityError:
             # Race condition: vote was created by another request
             messages.info(request, "Vote already recorded.")
+            user_vote = "UPVOTE"
+            action = "none"
     elif existing_vote.vote_type == CommentVote.DOWNVOTE:
         # User has downvoted, change to upvote
         existing_vote.vote_type = CommentVote.UPVOTE
         existing_vote.save(update_fields=["vote_type"])
         messages.success(request, "Changed to upvote.")
+        user_vote = "UPVOTE"
+        action = "changed"
     else:
         # User has upvoted, remove vote (toggle off)
         existing_vote.delete()
         messages.info(request, "Upvote removed.")
+        user_vote = None
+        action = "removed"
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({
+            'success': True,
+            'message': 'Vote updated',
+            'new_score': comment.get_net_votes(),
+            'user_vote': user_vote,
+            'action': action,
+            'upvotes': comment.get_upvotes_count(),
+            'downvotes': comment.get_downvotes_count()
+        })
 
     return _safe_redirect(request, reverse("posting:home"))
 
@@ -127,18 +190,37 @@ def downvote_comment(request, pk):
                 comment=comment, voter=request.user, vote_type=CommentVote.DOWNVOTE
             )
             messages.success(request, "Downvote recorded.")
+            user_vote = "DOWNVOTE"
+            action = "added"
         except IntegrityError:
             # Race condition: vote was created by another request
             messages.info(request, "Vote already recorded.")
+            user_vote = "DOWNVOTE"
+            action = "none"
     elif existing_vote.vote_type == CommentVote.UPVOTE:
         # User has upvoted, change to downvote
         existing_vote.vote_type = CommentVote.DOWNVOTE
         existing_vote.save(update_fields=["vote_type"])
         messages.success(request, "Changed to downvote.")
+        user_vote = "DOWNVOTE"
+        action = "changed"
     else:
         # User has downvoted, remove vote (toggle off)
         existing_vote.delete()
         messages.info(request, "Downvote removed.")
+        user_vote = None
+        action = "removed"
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({
+            'success': True,
+            'message': 'Vote updated',
+            'new_score': comment.get_net_votes(),
+            'user_vote': user_vote,
+            'action': action,
+            'upvotes': comment.get_upvotes_count(),
+            'downvotes': comment.get_downvotes_count()
+        })
 
     return _safe_redirect(request, reverse("posting:home"))
 
@@ -160,8 +242,15 @@ def flag_comment(request, pk):
         comment.is_flagged = True
         comment.save(update_fields=["is_flagged"])
         messages.success(request, "Comment flagged for review.")
+        success = True
+        msg = "Comment flagged for review."
     else:
         messages.info(request, "This comment is already flagged for review.")
+        success = False
+        msg = "This comment is already flagged for review."
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'success': success, 'message': msg})
 
     return _safe_redirect(request, reverse("posting:home"))
 
@@ -186,7 +275,14 @@ def delete_comment(request, pk):
         comment.is_deleted = True
         comment.save(update_fields=["is_deleted"])
         messages.success(request, "Comment deleted.")
+        success = True
+        msg = "Comment deleted."
     else:
         messages.info(request, "This comment is already deleted.")
+        success = False
+        msg = "This comment is already deleted."
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'success': success, 'message': msg})
 
     return _safe_redirect(request, reverse("posting:home"))

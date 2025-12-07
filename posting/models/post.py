@@ -5,7 +5,63 @@ from django.utils import timezone
 from .tag import Tag
 
 
+
+class PostManager(models.Manager):
+    def get_trending_posts(self, queryset):
+        """
+        Annotate and sort queryset by trending score.
+        Algorithm: (recent_votes * 2 + recent_comments) / (age_hours + 2)
+        """
+        from django.db import connection
+        from django.db.models import Count, Q, F, ExpressionWrapper, FloatField, Value
+        from django.db.models.functions import Extract
+        from datetime import timedelta
+
+        now = timezone.now()
+        hours_ago_24 = now - timedelta(hours=24)
+
+        # Annotate with recent activity counts first
+        queryset = queryset.annotate(
+            recent_votes=Count('votes', filter=Q(votes__created_at__gte=hours_ago_24)),
+            recent_comments=Count('comments', filter=Q(comments__created_at__gte=hours_ago_24, comments__is_deleted=False))
+        )
+
+        # Calculate age in hours - use database-specific approach
+        if 'postgresql' in connection.vendor:
+            # PostgreSQL: Extract epoch from datetime difference
+            queryset = queryset.annotate(
+                age_hours=ExpressionWrapper(
+                    Extract(now - F('created_at'), 'epoch') / 3600.0,
+                    output_field=FloatField()
+                )
+            )
+        elif 'sqlite' in connection.vendor:
+            # SQLite: Use julianday for date difference calculation
+            # Calculate hours using (julianday('now') - julianday(created_at)) * 24
+            queryset = queryset.extra(
+                select={'age_hours': "(julianday('now') - julianday(posting_post.created_at)) * 24"}
+            )
+        else:
+            # Fallback: calculate age using Extract with epoch
+            queryset = queryset.annotate(
+                age_hours=ExpressionWrapper(
+                    (Extract(Value(now), 'epoch') - Extract(F('created_at'), 'epoch')) / 3600.0,
+                    output_field=FloatField()
+                )
+            )
+
+        # Calculate trending score
+        return queryset.annotate(
+            trending_score=ExpressionWrapper(
+                (F('recent_votes') * 2.0 + F('recent_comments') * 1.0) / (F('age_hours') + 2.0),
+                output_field=FloatField()
+            )
+        ).order_by('-trending_score', '-created_at')
+
+
 class Post(models.Model):
+    objects = PostManager()  # Add custom manager
+
     title = models.CharField(max_length=200)
     body = models.TextField()
     author = models.ForeignKey(

@@ -1655,55 +1655,7 @@ header nav button {
 }
 
 /* Vote buttons - minimal inline style */
-.vote-section-absolute {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.125rem;
-    background: #f8fafc;
-    padding: 0.25rem 0.5rem;
-    border-radius: 20px;
-    border: 1px solid #e2e8f0;
-    z-index: 10; /* Ensure vote buttons are above other content */
-}
-
-.vote-section-absolute .vote-button {
-    background: transparent;
-    border: none;
-    padding: 0.25rem;
-    color: #64748b;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    border-radius: 4px;
-    transition: all 0.15s;
-}
-
-.vote-section-absolute .vote-button:hover {
-    background: #e2e8f0;
-}
-
-.vote-section-absolute .vote-button.active {
-    color: var(--primary-blue);
-}
-
-.vote-section-absolute .vote-count-inline {
-    font-size: 0.8rem;
-    font-weight: 600;
-    min-width: 0.75rem;
-    text-align: center;
-    padding: 0 0.125rem;
-}
-
-.vote-section-absolute .upvote-count {
-    color: #16a34a;
-}
-
-.vote-section-absolute .downvote-count {
-    color: #dc2626;
-}
+/* Old vote section styles removed */
 
 .post-header-main h3 {
     font-family: var(--font-serif);
@@ -2106,6 +2058,7 @@ header nav button {
         margin-right: 0;
     }
 }
+
 /* Mobile Bottom Navigation */
 .mobile-bottom-nav {
     display: none;
@@ -2388,8 +2341,15 @@ header nav button {
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 0.3; }
+
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
 }
 
 .submit-btn.loading {
@@ -2406,9 +2366,20 @@ header nav button {
 }
 
 @keyframes dots {
-    0%, 20% { content: '.'; }
-    40% { content: '..'; }
-    60%, 100% { content: '...'; }
+
+    0%,
+    20% {
+        content: '.';
+    }
+
+    40% {
+        content: '..';
+    }
+
+    60%,
+    100% {
+        content: '...';
+    }
 }
 
 .comment-net-votes {
@@ -2747,95 +2718,100 @@ header nav button {
         padding: 0 0.75rem;
         gap: 0.5rem;
     }
-    
+
     .logo {
         font-size: 1.25rem;
     }
-    
+
     .header-search-container {
         max-width: none;
         flex: 1;
         min-width: 0;
     }
-    
+
     .header-search-wrapper {
         padding: 0.4rem 0.75rem;
     }
-    
+
     .header-search-input {
         font-size: 0.85rem;
         height: 24px;
         line-height: 24px;
     }
-    
+
     .header-search-input::placeholder {
         font-size: 0.8rem;
     }
-    
+
     .header-search-button {
         padding: 0.2rem;
-        min-width: 32px; /* Better touch target */
+        min-width: 32px;
+        /* Better touch target */
     }
-    
+
     .header-search-button svg {
         width: 16px;
         height: 16px;
     }
-    
+
     .header-filter-button {
         padding: 0.4rem 0.6rem;
         height: 36px;
-        min-width: 36px; /* Better touch target */
+        min-width: 36px;
+        /* Better touch target */
     }
-    
+
     .header-filter-button svg {
         width: 14px;
         height: 14px;
     }
-    
+
     .header-settings-button {
         width: 36px;
         height: 36px;
         padding: 0.4rem;
-        min-width: 36px; /* Better touch target */
+        min-width: 36px;
+        /* Better touch target */
     }
-    
+
     .header-settings-button svg {
         width: 18px;
         height: 18px;
     }
-    
+
     .header-filter-menu,
     .header-settings-menu {
         right: 0;
         min-width: 160px;
     }
-    
+
     .in-page-nav {
         top: calc(0.75rem * 2 + 36px);
     }
-    
+
     .in-page-nav-item {
         padding: 0.75rem 1rem;
         font-size: 0.85rem;
-        min-height: 44px; /* Better touch target */
+        min-height: 44px;
+        /* Better touch target */
         display: flex;
         align-items: center;
         justify-content: center;
     }
-    
+
     .header-auth-links {
         gap: 0.5rem;
     }
-    
+
     .header-auth-link {
         font-size: 0.85rem;
         padding: 0.5rem 0.75rem;
-        min-height: 36px; /* Better touch target */
+        min-height: 36px;
+        /* Better touch target */
         display: flex;
         align-items: center;
     }
-    
+
     /* Ensure menu items have good touch targets */
     .filter-option,
     .settings-menu-item {
@@ -2851,50 +2827,205 @@ header nav button {
         gap: 0.25rem;
         flex-wrap: nowrap;
     }
-    
+
     .logo {
         font-size: 1.1rem;
         flex-shrink: 0;
     }
-    
+
     .header-search-container {
         flex: 1;
         min-width: 0;
         /* Keep search visible but make it more compact */
     }
-    
+
     .header-search-wrapper {
         padding: 0.35rem 0.5rem;
     }
-    
+
     .header-search-input {
         font-size: 0.8rem;
     }
-    
+
     .header-search-input::placeholder {
         font-size: 0.75rem;
         content: "Search...";
     }
-    
+
     /* Hide filter button on very small screens, but keep search */
     .header-filter-button {
         display: none;
     }
-    
+
     .header-settings-button {
         width: 32px;
         height: 32px;
         padding: 0.35rem;
     }
-    
+
     .in-page-nav-item {
         padding: 0.625rem 0.5rem;
         font-size: 0.75rem;
         min-height: 44px;
     }
-    
+
     .header-auth-link {
         font-size: 0.8rem;
         padding: 0.4rem 0.6rem;
     }
+}
+
+/* Post Bottom Actions Container */
+.post-bottom-actions.reddit-style-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Cluster buttons closely */
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.action-pill {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    /* Subtle: Remove default background */
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    transition: all 0.2s;
+    height: 32px;
+    /* Fixed height for consistency */
+    cursor: pointer;
+}
+
+.action-pill:hover {
+    background-color: #f1f5f9;
+    /* Subtle grey on hover */
+    text-decoration: none;
+}
+
+/* Vote Pill Specifics */
+.vote-pill {
+    padding: 0;
+    gap: 0;
+}
+
+.vote-btn {
+    background: transparent;
+    border: none;
+    padding: 0 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: inherit;
+    transition: color 0.2s, background-color 0.2s;
+    border-radius: 0;
+}
+
+.vote-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.5px;
+}
+
+.vote-btn:first-child {
+    border-top-left-radius: 9999px;
+    border-bottom-left-radius: 9999px;
+    padding-left: 10px;
+}
+
+.vote-btn:last-child {
+    border-top-right-radius: 9999px;
+    border-bottom-right-radius: 9999px;
+    padding-right: 10px;
+}
+
+.vote-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Active Vote States */
+.vote-btn.active.upvote {
+    color: #d93900;
+    /* Reddit Orange */
+}
+
+.vote-btn.active.upvote svg {
+    stroke: #d93900;
+}
+
+.vote-btn.active.downvote {
+    color: #6a5cff;
+    /* Reddit Blue */
+}
+
+.vote-btn.active.downvote svg {
+    stroke: #6a5cff;
+}
+
+.vote-score {
+    padding: 0 4px;
+    min-width: 1.5ch;
+    text-align: center;
+    font-weight: 700;
+    color: #2a3c42;
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+/* Comment Pill */
+.comment-pill {
+    padding: 0 8px;
+    gap: 6px;
+    color: #576f76;
+    border-radius: 4px;
+    /* Slightly less rounded than pills? Or keep consistent? User said 'consistent style'. Keep pill? */
+    border-radius: 9999px;
+}
+
+.comment-pill svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--primary-blue);
+    /* Yale Blue Icon */
+}
+
+/* Search Highlighting */
+.highlight {
+    background-color: #fef08a;
+    /* Yellow-200 */
+    color: #1a202c;
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: 500;
+}
+
+.comment-pill:hover {
+    color: var(--primary-blue);
+    background-color: rgba(0, 53, 107, 0.08);
+    /* Subtle Yale Blue tint */
+}
+
+/* Flag Pill */
+.flag-pill {
+    padding: 0 8px;
+    justify-content: center;
+    color: #94a3b8;
+    /* Subtle grey */
+}
+
+.flag-pill svg {
+    width: 18px;
+    height: 18px;
+}
+
+.flag-pill:hover {
+    background-color: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+    /* Red on hover */
 }

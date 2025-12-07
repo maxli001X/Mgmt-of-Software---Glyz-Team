@@ -38,6 +38,7 @@ def home(request):
             upvotes_count=Count("votes", filter=Q(votes__vote_type=Vote.UPVOTE)),
             downvotes_count=Count("votes", filter=Q(votes__vote_type=Vote.DOWNVOTE)),
             visible_comments_count=Count("comments", filter=Q(comments__is_deleted=False)),
+            score=Count("votes", filter=Q(votes__vote_type=Vote.UPVOTE)) - Count("votes", filter=Q(votes__vote_type=Vote.DOWNVOTE))
         )
     )
 
@@ -53,55 +54,8 @@ def home(request):
 
     # Apply sorting
     if sort == "trending":
-        # Trending algorithm: (recent_votes * 2 + recent_comments) / (age_hours + 2)
         try:
-            now = timezone.now()
-            hours_ago_24 = now - timedelta(hours=24)
-            
-            # Calculate trending score using database functions
-            # Use Extract to get epoch seconds, then calculate age in hours
-            from django.db.models.functions import Extract
-            from django.db import connection
-            
-            # Annotate with recent activity counts first
-            posts = posts.annotate(
-                recent_votes=Count('votes', filter=Q(votes__created_at__gte=hours_ago_24)),
-                recent_comments=Count('comments', filter=Q(comments__created_at__gte=hours_ago_24, comments__is_deleted=False))
-            )
-            
-            # Calculate age in hours - use database-specific approach
-            if 'postgresql' in connection.vendor:
-                # PostgreSQL: Extract epoch from datetime difference
-                posts = posts.annotate(
-                    age_hours=ExpressionWrapper(
-                        Extract(now - F('created_at'), 'epoch') / 3600.0,
-                        output_field=FloatField()
-                    )
-                )
-            elif 'sqlite' in connection.vendor:
-                # SQLite: Use julianday for date difference calculation
-                from django.db.models.functions import Cast
-                from django.db.models import Value
-                # Calculate hours using (julianday('now') - julianday(created_at)) * 24
-                posts = posts.extra(
-                    select={'age_hours': "(julianday('now') - julianday(posting_post.created_at)) * 24"}
-                )
-            else:
-                # Fallback: calculate age using Extract with epoch
-                posts = posts.annotate(
-                    age_hours=ExpressionWrapper(
-                        (Extract(Value(now), 'epoch') - Extract(F('created_at'), 'epoch')) / 3600.0,
-                        output_field=FloatField()
-                    )
-                )
-            
-            # Calculate trending score
-            posts = posts.annotate(
-                trending_score=ExpressionWrapper(
-                    (F('recent_votes') * 2.0 + F('recent_comments') * 1.0) / (F('age_hours') + 2.0),
-                    output_field=FloatField()
-                )
-            ).order_by('-trending_score', '-created_at')
+            posts = Post.objects.get_trending_posts(posts)
         except Exception as e:
             # Fallback to recent if trending query fails
             import logging

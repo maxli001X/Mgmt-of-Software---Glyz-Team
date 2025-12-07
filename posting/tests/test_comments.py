@@ -129,6 +129,22 @@ class CommentViewTests(TestCase):
         self.assertEqual(comment.post, self.post)
         self.assertTrue(comment.is_anonymous)
 
+    def test_add_comment_ajax(self):
+        """Test adding a comment via AJAX."""
+        self.client.login(username="commenter", password="password123")
+        response = self.client.post(
+            reverse("posting:add_comment", args=[self.post.pk]),
+            {"body": "AJAX comment", "is_anonymous": True},
+            headers={'x-requested-with': 'XMLHttpRequest'}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['success'], True)
+        self.assertIn('html', response.json())
+        self.assertEqual(Comment.objects.count(), 1)
+        comment = Comment.objects.first()
+        self.assertEqual(comment.body, "AJAX comment")
+
+
     def test_add_reply_success(self):
         """Test adding a reply to a comment."""
         parent = Comment.objects.create(
@@ -146,6 +162,37 @@ class CommentViewTests(TestCase):
         reply = Comment.objects.get(parent_comment=parent)
         self.assertEqual(reply.body, "Reply")
         self.assertFalse(reply.is_anonymous)
+
+    def test_vote_comment_ajax(self):
+        """Test upvoting a comment via AJAX."""
+        comment = Comment.objects.create(
+            post=self.post,
+            body="Test",
+            author=self.user,
+        )
+        self.client.login(username="other", password="password123")
+
+        # Upvote
+        response = self.client.post(
+            reverse("posting:upvote_comment", args=[comment.pk]),
+            headers={'x-requested-with': 'XMLHttpRequest'}
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data['success'])
+        self.assertEqual(data['user_vote'], 'UPVOTE')
+        self.assertEqual(data['new_score'], 1)
+
+        # Toggle off
+        response = self.client.post(
+            reverse("posting:upvote_comment", args=[comment.pk]),
+            headers={'x-requested-with': 'XMLHttpRequest'}
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data['success'])
+        self.assertIsNone(data['user_vote'])
+        self.assertEqual(data['new_score'], 0)
 
     def test_upvote_comment_toggle(self):
         """Test upvoting a comment with toggle behavior."""

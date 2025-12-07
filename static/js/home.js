@@ -155,20 +155,22 @@
                 // Don't interfere with vote buttons, form inputs, textareas, or buttons inside forms
                 // Explicitly check for vote buttons first to prevent misrouting clicks
                 // Check both the target and its parent elements (for SVG clicks inside buttons)
-                const voteSection = target.closest('.vote-section-absolute');
+                const voteSection = target.closest('.vote-section-absolute') || target.closest('.vote-pill');
                 const voteButton = target.closest('.vote-button') ||
                     target.closest('.upvote-button') ||
-                    target.closest('.downvote-button');
+                    target.closest('.downvote-button') ||
+                    target.closest('.vote-btn');
 
                 // Also check if target is SVG inside a vote button
-                const isVoteButtonSVG = target.tagName === 'svg' && target.closest('.vote-button');
-                const isVoteButtonPath = target.tagName === 'path' && target.closest('.vote-button');
-                const isVoteButtonPolyline = target.tagName === 'polyline' && target.closest('.vote-button');
+                const isVoteButtonSVG = target.tagName === 'svg' && (target.closest('.vote-button') || target.closest('.vote-btn'));
+                const isVoteButtonPath = target.tagName === 'path' && (target.closest('.vote-button') || target.closest('.vote-btn'));
+                const isVoteButtonPolyline = target.tagName === 'polyline' && (target.closest('.vote-button') || target.closest('.vote-btn'));
 
                 if (voteSection || voteButton ||
                     target.classList.contains('vote-button') ||
                     target.classList.contains('upvote-button') ||
                     target.classList.contains('downvote-button') ||
+                    target.classList.contains('vote-btn') ||
                     isVoteButtonSVG || isVoteButtonPath || isVoteButtonPolyline) {
                     // Don't interfere with vote button clicks - return immediately
                     return; // Let vote button clicks proceed normally to their onclick handlers
@@ -599,28 +601,75 @@
                 if (event.target == modal) {
                     window.closePostModal();
                 }
-            };
+            }
         }
     }
 
     // ================== Vote Handling ==================
-    // Make handleVote globally accessible so onclick handlers can call it
-    window.handleVote = async function handleVote(postId, voteType) {
+    window.handleVote = async function (postId, voteType, btnElement) {
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
         if (!csrfToken) {
             alert('Please log in to vote.');
             return;
         }
 
-        const url = `/posts/${postId}/${voteType}vote/`;
+        // Normalize voteType for URL
+        const urlType = voteType.toLowerCase().replace('vote', '');
+        const url = `/posts/${postId}/${urlType}vote/`;
 
-        // Add loading state
-        const voteButtons = document.querySelectorAll(`[data-post-id="${postId}"] .vote-button`);
-        voteButtons.forEach(btn => {
-            btn.classList.add('loading');
-            btn.disabled = true;
-        });
+        // Find elements
+        const postCard = document.querySelector(`.post-card[data-post-id="${postId}"]`);
+        if (!postCard) return;
 
+        const scoreElement = document.getElementById(`vote-score-${postId}`);
+        const upBtn = postCard.querySelector('.vote-btn.upvote');
+        const downBtn = postCard.querySelector('.vote-btn.downvote');
+
+        // --- Optimistic UI Update ---
+        // 1. Determine current state
+        const isUpActive = upBtn && upBtn.classList.contains('active');
+        const isDownActive = downBtn && downBtn.classList.contains('active');
+        let currentScore = parseInt(scoreElement.textContent) || 0;
+
+        // 2. Calculate new state locally
+        let newScore = currentScore;
+        let newUpState = false;
+        let newDownState = false;
+
+        if (voteType === 'UPVOTE') {
+            if (isUpActive) {
+                // Toggling off upvote
+                newScore -= 1;
+                newUpState = false;
+            } else {
+                // Toggling on upvote
+                newScore += 1;
+                newUpState = true;
+                if (isDownActive) {
+                    newScore += 1; // Reclaim the downvote point too
+                }
+            }
+        } else if (voteType === 'DOWNVOTE') {
+            if (isDownActive) {
+                // Toggling off downvote
+                newScore += 1;
+                newDownState = false;
+            } else {
+                // Toggling on downvote
+                newScore -= 1;
+                newDownState = true;
+                if (isUpActive) {
+                    newScore -= 1; // Reclaim the upvote point too
+                }
+            }
+        }
+
+        // 3. Apply Visuals Immediately
+        if (scoreElement) scoreElement.textContent = newScore;
+        if (upBtn) upBtn.classList.toggle('active', newUpState);
+        if (downBtn) downBtn.classList.toggle('active', newDownState);
+
+        // 4. Send Request
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -631,60 +680,78 @@
             });
 
             if (!response.ok) {
+                // Revert on failure (simple reload or alert, for now just alert)
                 if (response.status === 403) {
                     alert('Please log in to vote.');
                     window.location.href = '/auth/login/';
                 } else {
-                    alert('Vote failed. Please try again.');
+                    alert('Vote failed.');
                 }
+                // Optional: Revert UI here if needed, but for now assuming success or refresh
                 return;
             }
 
             const data = await response.json();
 
             if (data.success) {
-                // Update upvote count
-                const upvoteCountSpan = document.getElementById(`upvote-count-${postId}`);
-                if (upvoteCountSpan && data.upvotes_count !== undefined) {
-                    upvoteCountSpan.textContent = data.upvotes_count;
+                if (scoreElement && data.upvotes_count !== undefined) {
+                    // Calculate score: Up - Down
+                    const up = parseInt(data.upvotes_count || 0);
+                    const down = parseInt(data.downvotes_count || 0);
+                    const score = up - down;
+                    console.log('New score:', score);
+                    scoreElement.textContent = score;
                 }
 
-                // Update downvote count
-                const downvoteCountSpan = document.getElementById(`downvote-count-${postId}`);
-                if (downvoteCountSpan && data.downvotes_count !== undefined) {
-                    downvoteCountSpan.textContent = data.downvotes_count;
-                }
+                // Update Button States
+                const buttons = postCard.querySelectorAll('.vote-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
 
-                const postCard = document.querySelector(`.post-card[data-post-id="${postId}"]`);
-                if (postCard) {
-                    const upvoteBtn = postCard.querySelector('.upvote-button');
-                    const downvoteBtn = postCard.querySelector('.downvote-button');
-
-                    if (upvoteBtn) upvoteBtn.classList.remove('active');
-                    if (downvoteBtn) downvoteBtn.classList.remove('active');
-
-                    if (data.user_vote === 'UPVOTE') {
-                        if (upvoteBtn) upvoteBtn.classList.add('active');
-                    } else if (data.user_vote === 'DOWNVOTE') {
-                        if (downvoteBtn) downvoteBtn.classList.add('active');
-                    }
+                if (data.user_vote === 'UPVOTE') {
+                    const upBtn = postCard.querySelector('.vote-btn.upvote');
+                    if (upBtn) upBtn.classList.add('active');
+                } else if (data.user_vote === 'DOWNVOTE') {
+                    const downBtn = postCard.querySelector('.vote-btn.downvote');
+                    if (downBtn) downBtn.classList.add('active');
                 }
             } else {
                 alert(data.message || 'Vote failed.');
             }
-        } catch (error) {
-            console.error('Network error:', error);
-            alert('Network error. Please try again.');
+        } catch (e) {
+            console.error('Vote error:', e);
+            // alert('Network error. Vote may not have saved.');
         } finally {
-            // Remove loading state
-            voteButtons.forEach(btn => {
-                btn.classList.remove('loading');
-                btn.disabled = false;
-            });
+            // Re-enable if needed, or keep enabled
+            // buttons.forEach(b => b.disabled = false); 
         }
-    }
+    };
 
-    window.handleVote = handleVote;
+    // ================== Search Highlighting ==================
+    function initSearchHighlight() {
+        // Get 'q' param from URL
+        const params = new URLSearchParams(window.location.search);
+        const query = params.get('q');
+
+        if (!query || query.trim() === '') return;
+
+        const term = query.trim();
+        const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+
+        document.querySelectorAll('.post-body-content').forEach(el => {
+            // Simple text walker to avoid breaking HTML
+            const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+            const nodes = [];
+            while (walker.nextNode()) nodes.push(walker.currentNode);
+
+            nodes.forEach(node => {
+                if (node.nodeValue && regex.test(node.nodeValue)) {
+                    const span = document.createElement('span');
+                    span.innerHTML = node.nodeValue.replace(regex, '<span class="highlight">$1</span>');
+                    node.parentNode.replaceChild(span, node);
+                }
+            });
+        });
+    }
 
     // ================== Flag Forms ==================
     function initFlagForms() {
@@ -760,56 +827,28 @@
     // ================== Initialization ==================
     // ================== Vote Button Click Isolation ==================
     function initVoteButtonHandlers() {
-        // Add direct event listeners to vote buttons instead of relying on onclick attributes
-        // This ensures votes work even if other handlers interfere
-        document.addEventListener('click', function (e) {
-            const target = e.target;
+        // Event delegation for vote buttons
+        document.body.addEventListener('click', function (e) {
+            // Check if click is on a vote button or its children
+            const btn = e.target.closest('.vote-btn');
+            if (!btn) return;
 
-            // Find the vote button element (could be button itself or SVG inside it)
-            let voteButton = null;
-            if (target.classList.contains('vote-button') ||
-                target.classList.contains('upvote-button') ||
-                target.classList.contains('downvote-button')) {
-                voteButton = target;
-            } else if (target.closest('.vote-button')) {
-                voteButton = target.closest('.vote-button');
-            } else if (target.closest('.vote-section-absolute')) {
-                // If clicking in vote section but not on button, ignore
-                return;
-            } else {
-                return; // Not a vote button click
-            }
-
-            // Prevent click outside handler from interfering
+            // Allow default behavior? No, we handle it.
+            e.preventDefault();
             e.stopPropagation();
 
-            // Get post ID from the button's parent post card
-            const postCard = voteButton.closest('.post-card');
-            if (!postCard) return;
+            const postId = btn.dataset.postId;
+            const voteType = btn.dataset.voteType; // UPVOTE or DOWNVOTE
 
-            const postId = postCard.getAttribute('data-post-id');
-            if (!postId) return;
-
-            // Determine vote type from button class
-            let voteType = null;
-            if (voteButton.classList.contains('upvote-button')) {
-                voteType = 'up';
-            } else if (voteButton.classList.contains('downvote-button')) {
-                voteType = 'down';
-            } else {
-                return; // Not a valid vote button
+            if (postId && voteType) {
+                window.handleVote(postId, voteType, btn);
             }
-
-            // Call handleVote function
-            if (window.handleVote) {
-                e.preventDefault();
-                window.handleVote(postId, voteType);
-            }
-        }, true); // Use capture phase to run BEFORE click outside handler
+        });
     }
 
+
     document.addEventListener('DOMContentLoaded', function () {
-        // initVoteButtonHandlers removed to rely on inline onclick and prevent event conflicts
+        initVoteButtonHandlers(); // Initialize delegated vote handler
         initDropdowns();
         initSearchFunctionality();
         initHashtagDetection();
@@ -819,6 +858,7 @@
         initModalLogic();
         initFlagForms();
         initAutoScroll();
+        initSearchHighlight();
 
         // AI Tag Suggestions needs URL from template
         const suggestTagsUrl = document.querySelector('[data-suggest-tags-url]')?.dataset.suggestTagsUrl;
@@ -828,4 +868,3 @@
     });
 
 })();
-

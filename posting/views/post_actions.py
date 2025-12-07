@@ -35,46 +35,7 @@ def upvote_post(request, pk):
             return JsonResponse({"success": False, "message": "Invalid method"}, status=405)
         return redirect(reverse("posting:home"))
 
-    post = get_object_or_404(Post, pk=pk)
-    existing_vote = post.get_user_vote(request.user)
-    message = ""
-    user_vote = None
-
-    if existing_vote is None:
-        # No vote exists, create upvote (handle race condition)
-        try:
-            Vote.objects.create(post=post, voter=request.user, vote_type=Vote.UPVOTE)
-            message = "Upvote recorded."
-            user_vote = "UPVOTE"
-        except IntegrityError:
-            # Race condition: vote was created by another request
-            message = "Vote already recorded."
-    elif existing_vote.vote_type == Vote.DOWNVOTE:
-        # User has downvoted, change to upvote
-        existing_vote.vote_type = Vote.UPVOTE
-        existing_vote.save(update_fields=["vote_type"])
-        message = "Changed to upvote."
-        user_vote = "UPVOTE"
-    else:
-        # User has upvoted, remove vote (toggle off)
-        existing_vote.delete()
-        message = "Upvote removed."
-        user_vote = None
-
-    if _is_ajax(request):
-        # Refresh post to get updated vote counts
-        post.refresh_from_db()
-        return JsonResponse({
-            "success": True,
-            "message": message,
-            "net_votes": post.get_net_votes(),
-            "upvotes_count": post.get_upvotes_count(),
-            "downvotes_count": post.get_downvotes_count(),
-            "user_vote": user_vote
-        })
-
-    messages.success(request, message)
-    return _safe_redirect(request, reverse("posting:home"))
+    return _handle_vote(request, pk, Vote.UPVOTE)
 
 
 @login_required
@@ -85,41 +46,54 @@ def downvote_post(request, pk):
             return JsonResponse({"success": False, "message": "Invalid method"}, status=405)
         return redirect(reverse("posting:home"))
 
+    return _handle_vote(request, pk, Vote.DOWNVOTE)
+
+
+def _handle_vote(request, pk, vote_type):
+    """Unified vote handler."""
     post = get_object_or_404(Post, pk=pk)
     existing_vote = post.get_user_vote(request.user)
     message = ""
     user_vote = None
 
     if existing_vote is None:
-        # No vote exists, create downvote (handle race condition)
+        # Create new vote
         try:
-            Vote.objects.create(post=post, voter=request.user, vote_type=Vote.DOWNVOTE)
-            message = "Downvote recorded."
-            user_vote = "DOWNVOTE"
+            Vote.objects.create(post=post, voter=request.user, vote_type=vote_type)
+            message = "Vote recorded."
+            user_vote = "UPVOTE" if vote_type == Vote.UPVOTE else "DOWNVOTE"
         except IntegrityError:
-            # Race condition: vote was created by another request
             message = "Vote already recorded."
-    elif existing_vote.vote_type == Vote.UPVOTE:
-        # User has upvoted, change to downvote
-        existing_vote.vote_type = Vote.DOWNVOTE
-        existing_vote.save(update_fields=["vote_type"])
-        message = "Changed to downvote."
-        user_vote = "DOWNVOTE"
-    else:
-        # User has downvoted, remove vote (toggle off)
+    
+    elif existing_vote.vote_type == vote_type:
+        # Toggle OFF (delete existing same vote)
         existing_vote.delete()
-        message = "Downvote removed."
+        message = "Vote removed."
         user_vote = None
+    
+    else:
+        # Switch vote (update existing)
+        existing_vote.vote_type = vote_type
+        existing_vote.save(update_fields=["vote_type"])
+        message = "Vote changed."
+        user_vote = "UPVOTE" if vote_type == Vote.UPVOTE else "DOWNVOTE"
 
     if _is_ajax(request):
-        # Refresh post to get updated vote counts
-        post.refresh_from_db()
+        # Calculate new counts
+        from django.db.models import Count, Q
+        counts = Vote.objects.filter(post=post).aggregate(
+            upvotes=Count('id', filter=Q(vote_type=Vote.UPVOTE)),
+            downvotes=Count('id', filter=Q(vote_type=Vote.DOWNVOTE))
+        )
+        upvotes = counts['upvotes'] or 0
+        downvotes = counts['downvotes'] or 0
+        
         return JsonResponse({
             "success": True,
             "message": message,
-            "net_votes": post.get_net_votes(),
-            "upvotes_count": post.get_upvotes_count(),
-            "downvotes_count": post.get_downvotes_count(),
+            "net_votes": upvotes - downvotes,
+            "upvotes_count": upvotes,
+            "downvotes_count": downvotes,
             "user_vote": user_vote
         })
 
