@@ -794,7 +794,8 @@ if (window._homeJsInitialized) {
         loadingOverlay.innerHTML = `
             <div class="post-loading-content">
                 <div class="loading-spinner"></div>
-                <p class="loading-text">Posting...</p>
+                <p class="loading-text">Moderating content...</p>
+                <p class="loading-subtext">Checking for safety guidelines</p>
             </div>
         `;
         loadingOverlay.style.display = 'none';

@@ -142,7 +142,7 @@ class PostForm(forms.ModelForm):
         if author is not None:
             post.author = author
 
-        # Run quick crisis check (synchronous, instant)
+        # Run AI moderation BEFORE saving (synchronous)
         self._run_ai_moderation(post)
 
         # Handle identity choice
@@ -189,41 +189,49 @@ class PostForm(forms.ModelForm):
             # Set tags on post
             post.tags.set(unique_tags)
 
-            # Run full AI moderation async (background thread)
-            # This updates ai_flagged, ai_severity_score, etc. after post is saved
-            try:
-                from django.conf import settings
-                if getattr(settings, 'OPENAI_API_KEY', None):
-                    from ..utils.ai_moderator import run_moderation_async
-                    text = f"{post.title}\n\n{post.body}"
-                    run_moderation_async(post.pk, text)
-            except Exception as e:
-                import logging
-                logging.getLogger(__name__).error(f"Failed to start async moderation: {e}")
-
         return post
 
-    def _run_ai_moderation(self, post, run_async=True):
+    def _run_ai_moderation(self, post):
         """
-        Run AI content moderation on the post.
+        Run AI content moderation on the post (synchronous).
 
-        Uses a two-phase approach for fast posting:
-        1. Quick keyword check (synchronous) - detects obvious crisis content immediately
-        2. Full AI moderation (async) - runs in background after post saves
-
-        Sets show_crisis_resources immediately if crisis keywords detected.
-        Full ai_flagged, ai_severity_score, ai_categories updated async.
+        Calls OpenAI Moderation API and sets:
+        - ai_flagged: Whether content was flagged
+        - ai_severity_score: Max severity across categories
+        - ai_categories: Category scores
+        - show_crisis_resources: Whether to show crisis help
+        - is_flagged: Auto-flag for human review if AI flags it
         """
         import logging
         logger = logging.getLogger(__name__)
 
-        text = f"{post.title}\n\n{post.body}"
+        try:
+            from django.conf import settings
+            if not getattr(settings, 'OPENAI_API_KEY', None):
+                logger.debug("AI moderation skipped: OPENAI_API_KEY not configured")
+                return
 
-        # Phase 1: Quick crisis keyword check (instant, no API call)
-        from ..utils.ai_moderator import quick_crisis_check
-        if quick_crisis_check(text):
-            post.show_crisis_resources = True
-            logger.info("Crisis keywords detected - showing resources immediately")
+            from ..utils.ai_moderator import get_moderator
 
-        # Phase 2: Full AI moderation runs async after post is saved
-        # This is handled in save() method after commit
+            moderator = get_moderator()
+            text = f"{post.title}\n\n{post.body}"
+
+            result = moderator.check_content(text)
+
+            logger.info(f"AI Moderation result: flagged={result.get('flagged')}, is_crisis={result.get('is_crisis')}")
+
+            post.ai_flagged = result.get("flagged", False)
+            post.ai_severity_score = result.get("severity_score")
+            post.ai_categories = result.get("category_scores")
+            post.show_crisis_resources = result.get("is_crisis", False)
+
+            # Auto-flag for human review if AI flags it
+            if post.ai_flagged:
+                post.is_flagged = True
+                logger.info("Post auto-flagged by AI moderation")
+
+        except Exception as e:
+            logger.error(f"AI moderation failed: {e}")
+            # Set defaults so post can still be saved
+            post.ai_flagged = False
+            post.show_crisis_resources = False
