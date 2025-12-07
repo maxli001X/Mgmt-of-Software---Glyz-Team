@@ -2,8 +2,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db import models
-from django.db.models import Count, Prefetch, Q, F, ExpressionWrapper, FloatField
-from django.db.models.functions import Extract
+from django.db.models import Count, Prefetch, Q, F, ExpressionWrapper, FloatField, Subquery, OuterRef, IntegerField
+from django.db.models.functions import Extract, Coalesce
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -29,16 +29,29 @@ def home(request):
     )
 
     # Base queryset with optimizations - exclude hidden posts
-    # Annotate with non-deleted comment count to avoid N+1 query
+    # Use subqueries for vote counts to avoid JOIN multiplication issues
+    # that can occur when combined with other queries (like trending)
+    upvotes_subquery = Vote.objects.filter(
+        post=OuterRef('pk'),
+        vote_type=Vote.UPVOTE
+    ).values('post').annotate(cnt=Count('id')).values('cnt')
+
+    downvotes_subquery = Vote.objects.filter(
+        post=OuterRef('pk'),
+        vote_type=Vote.DOWNVOTE
+    ).values('post').annotate(cnt=Count('id')).values('cnt')
+
     posts = (
         Post.objects.filter(is_hidden=False)
         .select_related("author", "author__profile")
         .prefetch_related("tags", "votes", comments_prefetch)
         .annotate(
-            upvotes_count=Count("votes", filter=Q(votes__vote_type=Vote.UPVOTE)),
-            downvotes_count=Count("votes", filter=Q(votes__vote_type=Vote.DOWNVOTE)),
+            upvotes_count=Coalesce(Subquery(upvotes_subquery), 0),
+            downvotes_count=Coalesce(Subquery(downvotes_subquery), 0),
             visible_comments_count=Count("comments", filter=Q(comments__is_deleted=False)),
-            score=Count("votes", filter=Q(votes__vote_type=Vote.UPVOTE)) - Count("votes", filter=Q(votes__vote_type=Vote.DOWNVOTE))
+        )
+        .annotate(
+            score=F('upvotes_count') - F('downvotes_count')
         )
     )
 
@@ -63,9 +76,8 @@ def home(request):
             logger.error(f"Trending query failed: {e}")
             posts = posts.order_by("-created_at")
     elif sort == "popular":
-        posts = posts.annotate(
-            net_votes=F("upvotes_count") - F("downvotes_count")
-        ).order_by("-net_votes", "-created_at")
+        # score is already annotated as upvotes - downvotes
+        posts = posts.order_by("-score", "-created_at")
     else:
         posts = posts.order_by("-created_at")
 

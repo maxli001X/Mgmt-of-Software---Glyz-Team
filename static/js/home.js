@@ -539,7 +539,7 @@ if (window._homeJsInitialized) {
 
     // ================== Post Collapse ==================
     function initPostCollapse() {
-        const WORD_LIMIT = 500;
+        const WORD_LIMIT = 150; // ~15 lines of text
         const posts = document.querySelectorAll('.post-body-content');
 
         posts.forEach(post => {
@@ -563,22 +563,15 @@ if (window._homeJsInitialized) {
 
     // ================== FAB Visibility ==================
     function initFABVisibility() {
+        // FAB is now conditionally rendered in template:
+        // - Only shown on Home view (not Create Post view)
+        // - Always visible when present (has 'visible' class in HTML)
+        // No scroll-based visibility needed anymore
         const fab = document.getElementById('fab-share-thought');
-        const postFormSection = document.getElementById('create-post-section');
+        if (!fab) return;
 
-        if (!fab || !postFormSection) return;
-
-        function checkFabVisibility() {
-            const rect = postFormSection.getBoundingClientRect();
-            if (rect.bottom < 0) {
-                fab.classList.add('visible');
-            } else {
-                fab.classList.remove('visible');
-            }
-        }
-
-        window.addEventListener('scroll', checkFabVisibility);
-        checkFabVisibility();
+        // Ensure FAB stays visible (template already adds 'visible' class)
+        fab.classList.add('visible');
     }
 
     // ================== Modal Logic ==================

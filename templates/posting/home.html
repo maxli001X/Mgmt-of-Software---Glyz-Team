@@ -17,29 +17,20 @@
 <nav class="in-page-nav">
     <div class="in-page-nav-container">
         <a href="{% url 'posting:home' %}"
-            class="in-page-nav-item {% if not request.GET.view or request.GET.view != 'create' and request.GET.view != 'posts' %}active{% endif %}">
+            class="in-page-nav-item {% if request.GET.view != 'create' %}active{% endif %}">
             Home
         </a>
         <a href="{% url 'posting:home' %}?view=create"
             class="in-page-nav-item {% if request.GET.view == 'create' %}active{% endif %}">
             Create Post
         </a>
-        <a href="{% url 'posting:home' %}?view=posts"
-            class="in-page-nav-item {% if request.GET.view == 'posts' %}active{% endif %}">
-            All Posts
-        </a>
     </div>
 </nav>
 
-<!-- Tag Filter Chips - REMOVED as per user request -->
-
-
-
-<!-- Post Creation Form (Always visible at top) -->
-<div id="create-post-section">
+<!-- Post Creation Form (visible on Create Post tab, hidden on Home but available for modal) -->
+<div id="create-post-section" {% if request.GET.view != 'create' %}style="display:none;"{% endif %}>
     <section class="post-create-card">
         <div class="card-header">
-            <!-- Avatar placeholder removed as per user request to delete 'v' (likely the placeholder) -->
             <button class="fake-input-wrapper"
                 onclick="document.getElementById('post-form-content').style.display='block'">
                 <span class="fake-input-title">Share Your Thought</span>
@@ -118,6 +109,7 @@
     </section>
 </div>
 
+{% if request.GET.view != 'create' %}
 <section id="posts-section" class="posts-feed">
     <div class="posts-header">
         <div>
@@ -151,6 +143,18 @@
             </a>
         </div>
     </div>
+
+    <!-- Tag Filter Row -->
+    {% if tags %}
+    <div class="tag-filter-row">
+        <a href="{% url 'posting:home' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}{% if sort and sort != 'recent' %}{% if search_query %}&{% else %}?{% endif %}sort={{ sort }}{% endif %}"
+            class="tag-link {% if not active_tag %}active{% endif %}">All</a>
+        {% for tag in tags %}
+        <a href="{% url 'posting:home' %}?tag={{ tag.slug }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if sort and sort != 'recent' %}&sort={{ sort }}{% endif %}"
+            class="tag-link {% if active_tag == tag.slug %}active{% endif %}">#{{ tag.name }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     {% if posts %}
     {% for post in posts %}
@@ -328,12 +332,15 @@
     </div>
     {% endif %}
 </section>
+{% endif %}
 
-<!-- Floating "Share Your Thought" Button (Visible on scroll) -->
-<button id="fab-share-thought" class="fab-share-thought" onclick="openPostModal()">
+{% if request.GET.view != 'create' %}
+<!-- Floating "Share Your Thought" Button (always visible on Home view) -->
+<button id="fab-share-thought" class="fab-share-thought visible" onclick="openPostModal()">
     <span class="fab-icon">✍️</span>
     <span class="fab-text">Share Your Thought</span>
 </button>
+{% endif %}
 
 <!-- Post Modal -->
 <div id="post-modal" class="post-modal" style="display: none;">

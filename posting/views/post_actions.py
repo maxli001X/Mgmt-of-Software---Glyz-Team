@@ -79,15 +79,11 @@ def _handle_vote(request, pk, vote_type):
         user_vote = "UPVOTE" if vote_type == Vote.UPVOTE else "DOWNVOTE"
 
     if _is_ajax(request):
-        # Calculate new counts
-        from django.db.models import Count, Q
-        counts = Vote.objects.filter(post=post).aggregate(
-            upvotes=Count('id', filter=Q(vote_type=Vote.UPVOTE)),
-            downvotes=Count('id', filter=Q(vote_type=Vote.DOWNVOTE))
-        )
-        upvotes = counts['upvotes'] or 0
-        downvotes = counts['downvotes'] or 0
-        
+        # Calculate new counts - use explicit separate queries to avoid ORM issues
+        # Refresh from database to ensure we get latest counts
+        upvotes = Vote.objects.filter(post_id=post.pk, vote_type=Vote.UPVOTE).count()
+        downvotes = Vote.objects.filter(post_id=post.pk, vote_type=Vote.DOWNVOTE).count()
+
         return JsonResponse({
             "success": True,
             "message": message,
