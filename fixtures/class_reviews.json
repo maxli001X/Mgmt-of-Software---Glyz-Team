@@ -1,0 +1,3334 @@
+[
+  {
+    "model": "posting.tag",
+    "pk": 1,
+    "fields": {
+      "name": "Past Class Review",
+      "slug": "pastclassreview"
+    }
+  },
+  {
+    "model": "posting.tag",
+    "pk": 2,
+    "fields": {
+      "name": "Recommended",
+      "slug": "recommended"
+    }
+  },
+  {
+    "model": "posting.tag",
+    "pk": 3,
+    "fields": {
+      "name": "Not Recommended",
+      "slug": "not-recommended"
+    }
+  },
+  {
+    "model": "posting.tag",
+    "pk": 4,
+    "fields": {
+      "name": "Mixed Review",
+      "slug": "mixed-review"
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 150,
+    "fields": {
+      "title": "MGT 649 - World Financial History",
+      "body": "Unsure how it will look next year. Content is historical, so AI can help instead of visiting archives. Middle of the course felt boring, but his enthusiasm is contagious, and he brings artifacts every class. Assignments: a few short papers plus a final paper. AI use is allowed.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.601Z",
+      "updated_at": "2025-12-04T19:16:24.601Z",
+      "tags": [
+        3,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 149,
+    "fields": {
+      "title": "Workforce Motivation",
+      "body": "The class was 1/2 seminar/lecture and 1/2 student presentations. I found the material engaging and interesting. The presentations were brief, but it was a great opportunity to reflect on my personal career. Also cool to hear from classmates. Relatively light workload class, recommend.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.599Z",
+      "updated_at": "2025-12-04T19:16:24.599Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 148,
+    "fields": {
+      "title": "Workforce Motivation",
+      "body": "Interesting class, but very self-driven. Very light workload. Professor is nice and clearly more of an academic (neither good or bad, just observation). Not sure if I got anything out of this. Some overlap with Workforce.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.598Z",
+      "updated_at": "2025-12-04T19:16:24.598Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 147,
+    "fields": {
+      "title": "MGT 997 - Venture Capital and Private Equity",
+      "body": "Great class if you want to learn about VC/PE. Feels slightly dry but a good class overall. Recommended to take it with Entrepreneurial Finance (Ma's another class). >> | Medium load.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.596Z",
+      "updated_at": "2025-12-04T19:16:24.596Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 146,
+    "fields": {
+      "title": "MGT 997 - Venture Capital and Private Equity",
+      "body": "Great intro to VC. Excel work is manageable if you follow slides. Final project is a memo for a real student startup\u201a\u00e0\u00f6\u221a\u00dcgood practice for diligence questions. Requires coordinating with founders. Final submission includes video, deck, memo, and models.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": true,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.595Z",
+      "updated_at": "2025-12-04T19:16:24.595Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 145,
+    "fields": {
+      "title": "MGT 633 - Topics in Advanced Management for Business & Society",
+      "body": "Another MAM requirement. Jensen is great but the class structure doesn't show off his strengths. Covers cases around global issues; final project is solving a UN SDG. Likely MAM-only.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.593Z",
+      "updated_at": "2025-12-04T19:16:24.593Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 144,
+    "fields": {
+      "title": "MGT 850 - The Science of Experiences and Well-Being",
+      "body": "I took the 8 am section and struggled to arrive awake. Content only grabbed me when applied to marketing; otherwise it felt boring. Not much work overall\u201a\u00e0\u00f6\u221a\u00dcsimple assignments and an easy group project.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.591Z",
+      "updated_at": "2025-12-04T19:16:24.591Z",
+      "tags": [
+        3,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 143,
+    "fields": {
+      "title": "MGT 929 - Sustainable Investing",
+      "body": "Easy load, didn't get anything valuable from course, had higher expectations, but appeared as a credit filler for me.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.590Z",
+      "updated_at": "2025-12-04T19:16:24.590Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 142,
+    "fields": {
+      "title": "MGT 995 - Sustainable Innovation in Healthcare",
+      "body": "Super interesting if you want to learn more about different trends in the healthcare space. Professor Licholai is very accomplished. He trained in neurosurgery, is the chief medical officer of a major company, HBS grad, etc. - always gives really good insight when he speaks. Work load was very light - one page responses to cases he developed with final presentation. Lots of guest speakers.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.588Z",
+      "updated_at": "2025-12-04T19:16:24.588Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 141,
+    "fields": {
+      "title": "MGT 873 - Supply Chain Management",
+      "body": "I was hoping this would be a continuation of operations engine from the core and that I would learn additional quantitative models that could be applied to supply chain considerations. But the course was primarily only qualitative. Could be a positive for some, but wasn't what I was looking for plus the lectures were a bit dry.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.586Z",
+      "updated_at": "2025-12-04T19:16:24.586Z",
+      "tags": [
+        3,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 140,
+    "fields": {
+      "title": "MGT 851 - Strategic Market Measurement",
+      "body": "Prof Sudhir is kind and the content (e.g., segmentation, clustering) is useful\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00c6but lectures were dry and the assignments were very long.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.584Z",
+      "updated_at": "2025-12-04T19:16:24.584Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 139,
+    "fields": {
+      "title": "MGT 851 - Strategic Market Measurement",
+      "body": "Lectures can be a bit dry and the homework load (at least in fall 2023 \u201a\u00e0\u00f6\u00ac\u00ae may have improved) was heavy, but I found the insights and takeaways to be top-tier. If you are interested in conceptually understanding more advanced statistical analysis (with much of the coding work using ChatGPT), highly recommend.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.582Z",
+      "updated_at": "2025-12-04T19:16:24.582Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 138,
+    "fields": {
+      "title": "MGT 851 - Strategic Market Measurement",
+      "body": "Didn't find the class too engaging personally, but the professor did a great job of incorporating ChatGPT and simplifying concepts. Maybe if you're interested in marketing strategies you might like it. Workload was okay and consisted of 6 ChatGPT-aided coding HW assignments.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.580Z",
+      "updated_at": "2025-12-04T19:16:24.580Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 137,
+    "fields": {
+      "title": "MGT 851 - Strategic Market Measurement",
+      "body": "Prof Sudhir is kind and the content (e.g., segmentation, clustering) is useful\u201a\u00e0\u00f6\u221a\u00dcbut lectures were dry and the assignments were very long.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.578Z",
+      "updated_at": "2025-12-04T19:16:24.578Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 136,
+    "fields": {
+      "title": "MGT 527 - Strategic Management of Nonprofit Organizations",
+      "body": "Prof. Judy is great and I enjoyed each session, but didn't feel like I left with many tangible takeaways.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.576Z",
+      "updated_at": "2025-12-04T19:16:24.576Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 135,
+    "fields": {
+      "title": "MGT 527 - Strategic Management of Nonprofit Organizations",
+      "body": "Many non-SOM graduate students, which is fun, but also felt like we had to go slower because we had to introduce basic business school concepts like supply and demand. I would personally still take it, since I plan on going into nonprofit/foundation work after, but I don't know that I'd recommend it otherwise.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.574Z",
+      "updated_at": "2025-12-04T19:16:24.574Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 134,
+    "fields": {
+      "title": "MGT 623 - Strategic Leadership Across Sectors",
+      "body": "Strategic Leadership Across Sectors - Jeffrey A. Sonnenfeld (SOM)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.572Z",
+      "updated_at": "2025-12-04T19:16:24.572Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 133,
+    "fields": {
+      "title": "Strategic Environmental Communications",
+      "body": "Delves into the social, psychological, and cultural reasons why people do or do not believe in climate change, and how to effectively communicate with people across the spectrum of beliefs. More than that, it teaches you about strategy, how to build campaigns (objectives, goals, tactics, evaluation), and how to be an effective communicator in all things, not just environmental issues.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.570Z",
+      "updated_at": "2025-12-04T19:16:24.571Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 132,
+    "fields": {
+      "title": "Strategic Communication: Delivering Effective Presentations",
+      "body": "I truly believe this made me a significantly better public speaker. It was uncomfortable in the moment, because you have to learn by doing, but really effective and I am glad I did it.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.569Z",
+      "updated_at": "2025-12-04T19:16:24.569Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 131,
+    "fields": {
+      "title": "MGT 646 - Start-up Founder Practicum",
+      "body": "YMMV - I think a lot of my peers love it but I was hoping to have more time in class to build our projects. A lot of really great speakers though, and awesome catered food. Very self-driven.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.567Z",
+      "updated_at": "2025-12-04T19:16:24.567Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 130,
+    "fields": {
+      "title": "Social Innovator Starter",
+      "body": "Another great class with Prof. Chahine. Marsh Hall is beautiful, and the small class size (<20) is great for deeper discussions. Each week covers one of 10 steps in launching a social venture. Also, a cool mix of SOM, Jackson, and Public Health students.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.566Z",
+      "updated_at": "2025-12-04T19:16:24.566Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 129,
+    "fields": {
+      "title": "Rollups, Consolidations, and Programmatic Acquisitions",
+      "body": "Still highly recommend, but perhaps not quite as much as ETA or LSME. Very relevant for me since I am planning to pursue ETA. However, the course didn\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a5t see quite as varied as the above two.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.564Z",
+      "updated_at": "2025-12-04T19:16:24.564Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 128,
+    "fields": {
+      "title": "Rollups, Consolidations, and Programmatic Acquisitions",
+      "body": "Similar to above. Still highly recommend, but perhaps not quite as much as the top two. Very relevant for me since I am planning to pursue ETA. However, the course didn't see quite as varied as the above two.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.563Z",
+      "updated_at": "2025-12-04T19:16:24.563Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 127,
+    "fields": {
+      "title": "MGT 683 - Renewable Energy Project Finance",
+      "body": "One of the jewels of Yale. Course is medium to heavy, but if you take it during second year, you will find it much easier. Prepare for weekly HWs and additional recitation sessions to cover all material.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.561Z",
+      "updated_at": "2025-12-04T19:16:24.561Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 126,
+    "fields": {
+      "title": "MGT 683 - Renewable Energy Project Finance",
+      "body": "Probably one of the best financial modeling classes you can take, and it's not even an SOM class. High workload but you'll get very good at Excel and learn really interesting things about renewable energy. Dan Gross is a fantastic professor and whatever you do, DO NOT MISS the lecture (near the end of course, unrecorded) where he talks about his past stories of literally making $1B for a previous company. My mind was blown at how crazy smart he was. (If you don't get in at first, attend the first few classes anyways, people tend to drop out after assignment 1)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.560Z",
+      "updated_at": "2025-12-04T19:16:24.560Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 125,
+    "fields": {
+      "title": "MGT 631 - Public Health Entrepreneurship",
+      "body": "One of my favorite classes and professors. Each class is case-based, and protagonists often join classes. I loved the inclusion of cases from different contexts (e.g., LMICs).",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.558Z",
+      "updated_at": "2025-12-04T19:16:24.558Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 124,
+    "fields": {
+      "title": "MGT 631 - Public Health Entrepreneurship",
+      "body": "Prof Chahine is AMAZING, kind, and her class is focused on innovation and social impact in the health sector. You basically do a case study each class based on an existing start up, then she brings a rep from that start up in for class to talk through the problems with you. (low amount of work)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.556Z",
+      "updated_at": "2025-12-04T19:16:24.556Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 123,
+    "fields": {
+      "title": "MGT 561 - Product Management",
+      "body": "I think the course, while potentially useful in real world application, was a slog to get through. The material was super cursory, and the coursework did not demand sufficient participation.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.555Z",
+      "updated_at": "2025-12-04T19:16:24.555Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 122,
+    "fields": {
+      "title": "MGT 561 - Product Management",
+      "body": "The professor has a quirky personality and his presentation skills are a bit rough, but if you look past that, the coursework is really good and he has a really helpful nature. He also invites a bunch of PMs from big tech companies for guest lectures which is an added bonus in my opinion.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.553Z",
+      "updated_at": "2025-12-04T19:16:24.553Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 121,
+    "fields": {
+      "title": "MGT 561 - Product Management",
+      "body": "Course provides preliminary understanding of the product management. It would be helpful if you are planning to recruit for PM roles",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.552Z",
+      "updated_at": "2025-12-04T19:16:24.552Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 120,
+    "fields": {
+      "title": "MGT 561 - Product Management",
+      "body": "The class seemed to be an extension of the Customer Core class, with the additions of understanding feature prioritization and development (as part of identifying customer segments and needs), A/B testing, conjoint analysis, etc. Most of the individual coursework is manageable but there is a team project through most of the semester which is dependent on the people on your team. The sessions can feel slightly disorganized sometimes, as Alex tries to go through 100+ slides in 80 minutes. I do think Alex takes feedback really well and makes adjustments throughout the semester as he sees fit. If you are planning to recruit for Tech and Product Management, I do think the concepts around customer segments and feature prioritization are really helpful to learn about - I applied some of it during my internship this past summer.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.550Z",
+      "updated_at": "2025-12-04T19:16:24.550Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 119,
+    "fields": {
+      "title": "MGT 561 - Product Management",
+      "body": "For many tech people, this seems like a must-do course. Unfortunately, it is a weakness in SOM's offerings. It is an important course that is taught in a very difficult to follow manner. Not necessarily the professors fault, he just has a very specific affect and does not have a strong grasp of managing a classroom. The slides and materials are valuable, but the lectures can be redundant and occasionally painful to sit through.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.548Z",
+      "updated_at": "2025-12-04T19:16:24.548Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 118,
+    "fields": {
+      "title": "MGT 561 - Product Management",
+      "body": "You need to adjust to Alex's teaching style but he's endearing and iterates based on feedback. Slides are packed with content. Good intro to PM if you're patient, and I still learned a lot.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.547Z",
+      "updated_at": "2025-12-04T19:16:24.547Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 117,
+    "fields": {
+      "title": "MGT 561 - Product Management",
+      "body": "If you're going to be a PM or going to be working with product teams (maybe as a VC), this class is a must-take. There are things which could be improved but Alex really cares about the class and I'm sure he is going to improve it further. The slides are dense with lots of useful material and is a good intro into what PMs do. >> | Heavy load (team-dependent).",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.545Z",
+      "updated_at": "2025-12-04T19:16:24.545Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 116,
+    "fields": {
+      "title": "MGT 561 - Product Management",
+      "body": "Not listed in the Substack is that I didn't take the Product Management class with Alex Burnap because I (and many others) don't find it practical. IMO you're better off just reading Cracking the PM Interview and Cracking the PM Career, building out projects in AI classes, vibe-coding (join #coding-with-kyle), and/or working for a startup part time.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.543Z",
+      "updated_at": "2025-12-04T19:16:24.543Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 115,
+    "fields": {
+      "title": "MGT 847 - Private Equity: Leveraged Buyouts",
+      "body": "Another great PE class with great guest speakers and interesting cases. If I had to choose, I'd go with MGT 846, but this class can stand its own. Good class. >> | Light load.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.541Z",
+      "updated_at": "2025-12-04T19:16:24.541Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 114,
+    "fields": {
+      "title": "MGT 847 - Private Equity: Leveraged Buyouts",
+      "body": "Scratched my PE itch (coming from a non-finance background going into ETA). Great engaging professor.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.540Z",
+      "updated_at": "2025-12-04T19:16:24.540Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 113,
+    "fields": {
+      "title": "MGT 847 - Private Equity: Leveraged Buyouts",
+      "body": "Great course from a previous PE practitioner. Provides off-the-cuff insights into PE and is both engaging and practical.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.538Z",
+      "updated_at": "2025-12-04T19:16:24.538Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 112,
+    "fields": {
+      "title": "MGT 555 - Pricing Strategy",
+      "body": "Lectures can be a bit slow, but recommend the course because I think it has valuable insights. He has a strict attendance and technology policy which some may not like but I appreciated it, and he is very upfront about it and even encourages people to drop the class in the beginning if they don\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a5t like it.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.536Z",
+      "updated_at": "2025-12-04T19:16:24.536Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 111,
+    "fields": {
+      "title": "MGT 555 - Pricing Strategy",
+      "body": "First weeks were interesting, but content gets dry. Biggest pain is the strict lateness/absence policy (0.5 absence for late, etc.). He requires AASL proof for sick days, which led to numerous emails. Workload is mostly group-based; final project is large but manageable if started early.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.534Z",
+      "updated_at": "2025-12-04T19:16:24.534Z",
+      "tags": [
+        3,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 110,
+    "fields": {
+      "title": "MGT 555 - Pricing Strategy",
+      "body": "Lectures can be a bit slow, but recommend the course because I think it has valuable insights. He has a strict attendance and technology policy which some may not like but I appreciated it, and he is very upfront about it and even encourages people to drop the class in the beginning if they don't like it.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.533Z",
+      "updated_at": "2025-12-04T19:16:24.533Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 109,
+    "fields": {
+      "title": "MGT 540 - Personal Finance",
+      "body": "I didn't like the class; homeworks are strange. There are quizzes every class and HWs every week. I regret taking it and envy those who left right after the quiz.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.531Z",
+      "updated_at": "2025-12-04T19:16:24.531Z",
+      "tags": [
+        3,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 108,
+    "fields": {
+      "title": "Patterns in Entrepreneurship",
+      "body": "Another great class with A.J.\u201a\u00e0\u00f6\u221a\u00dccase-based and takes a really balanced view (lifestyle, risk, $$) of different entrepreneurial paths. Recommend for anyone considering entrepreneurship at some point.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.529Z",
+      "updated_at": "2025-12-04T19:16:24.530Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 107,
+    "fields": {
+      "title": "Patterns in Entrepreneurship",
+      "body": "AJ's classes are a must-take if you're serious about actually learning at SOM. It has been one of the highlights of my time at SOM. The knowledge gained from the cases, the insights from in-class discussions, and the opportunity to actually hear from the case protagonists during the class -- after a lengthy and sometimes heated discussion -- has been nothing less than astounding. >> | Heavy load.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.528Z",
+      "updated_at": "2025-12-04T19:16:24.528Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 106,
+    "fields": {
+      "title": "Oxford GNW",
+      "body": "Oxford was beautiful and being on campus was cool. But the material was extremely dry and overlapped a lot with Prof. Nathan's MMD section.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.526Z",
+      "updated_at": "2025-12-04T19:16:24.526Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 105,
+    "fields": {
+      "title": "MGT 887 - Negotiations",
+      "body": "I felt like the half credit core course was too short and wanted to learn more, but we basically already covered 80% of the class in core. Adv negotiations is better for the 1:1 coaching.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.524Z",
+      "updated_at": "2025-12-04T19:16:24.524Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 104,
+    "fields": {
+      "title": "MGT 887 - Negotiations",
+      "body": "What happens when you lean into information asymmetry and don't split the pie. Watch Nobel winning economic-models crumble in front of a pinky swear and the grim-triggers face of against the tit-for-tats to burn the world to the ground. This is the psych perspective vs. the core's game theory. (Bidding tip: also a good add-drop pick.)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.523Z",
+      "updated_at": "2025-12-04T19:16:24.523Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 103,
+    "fields": {
+      "title": "Nature, AI, and Performance",
+      "body": "Nature, AI, and Performance - Matthew Suttor (Theater)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.521Z",
+      "updated_at": "2025-12-04T19:16:24.521Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 102,
+    "fields": {
+      "title": "MGT 668 - Narratives in Health Media",
+      "body": "Taught by a journalist, doctor, and former editor of The Atlantic. This is more of a journalism class and I believe that he made me a better writer. I will say that the 3 hour sessions were often difficult for me to get through... though I think this might be a me problem.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.519Z",
+      "updated_at": "2025-12-04T19:16:24.519Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 101,
+    "fields": {
+      "title": "Narrative Spiritual Care",
+      "body": "My favorite class at all of Yale. It teaches you a form of care that focuses on stories. The stories people tell about themselves, the stories they hear about themselves, and the way they tell their stories. How can we tell our stories in a way that makes us stronger? I think this made me grow as a human and helped me become a better team member, manager, leader. Cannot recommend enough.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.517Z",
+      "updated_at": "2025-12-04T19:16:24.517Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 100,
+    "fields": {
+      "title": "Modern Philanthropy",
+      "body": "Good introduction to philanthropy, its history, its different forms, and current issues... but the 3 hour sessions were often difficult for me to get through. I would personally still take it, since I plan on going into nonprofit/foundation work after, but I don't know that I'd recommend it otherwise.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.515Z",
+      "updated_at": "2025-12-04T19:16:24.515Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 99,
+    "fields": {
+      "title": "MGT 538 - Mastering Influence & Persuasion",
+      "body": "This class is quite different from all the classes I've taken. I would take this class if you're looking for a fun, refreshing class focused around influencing others -- a much needed managerial trait -- and also doing some introspection. Although I felt that the number of challenges was a bit excessive. >> | Light/Medium load.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.514Z",
+      "updated_at": "2025-12-04T19:16:24.514Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 98,
+    "fields": {
+      "title": "MGT 538 - Mastering Influence & Persuasion",
+      "body": "Not much to add beyond what's already been said\u201a\u00e0\u00f6\u221a\u00dcfelt fluffy and had waaay too many activities due each day.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.512Z",
+      "updated_at": "2025-12-04T19:16:24.512Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 97,
+    "fields": {
+      "title": "MGT 526 - Market Failures and Economic Policy in Developing Countries",
+      "body": "Very engaging professor with some good examples and discussion of how markets can fail in developing countries, though sometimes class can seem to get a bit derailed because he'll take time to engage with pretty much every question rather than pushing forward with the teaching. First part of the class is very Solow model focused but then there is a big transition to examples. Relatively easy lift as well.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.510Z",
+      "updated_at": "2025-12-04T19:16:24.510Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 96,
+    "fields": {
+      "title": "MGT 815 - Managerial Controls",
+      "body": "Totally unexpected sleeper hit. Taught me how to reframe business accounting in different ways. Really interesting.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.508Z",
+      "updated_at": "2025-12-04T19:16:24.508Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 95,
+    "fields": {
+      "title": "MGT 656 - Management of Software Development",
+      "body": "If you are interested in software and technology, this course would be helpful. You will get to experience how development and scrum teams generally work. Also you will get exposure to various programming languages like html, css, javascript etc.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.506Z",
+      "updated_at": "2025-12-04T19:16:24.506Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 94,
+    "fields": {
+      "title": "MGT 656 - Management of Software Development",
+      "body": "Management of Software Development - Kyle Jensen (SOM)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.504Z",
+      "updated_at": "2025-12-04T19:16:24.504Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 93,
+    "fields": {
+      "title": "MGT 674 - Leading Small and Medium Enterprises",
+      "body": "Definitely my favorite class at SOM. Honestly, this is what Executive should have been. Every session is case-based, and protagonists often join via Zoom. There's a lot of pre-work, but I loved practically applying core concepts.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.501Z",
+      "updated_at": "2025-12-04T19:16:24.501Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 92,
+    "fields": {
+      "title": "MGT 674 - Leading Small and Medium Enterprises",
+      "body": "Similar to above.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.499Z",
+      "updated_at": "2025-12-04T19:16:24.499Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 91,
+    "fields": {
+      "title": "Large language models: technology and applications",
+      "body": "Mixed feelings on this because I actually do not appreciate Kyle Jensen\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a5s teaching style \u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a8 he is clearly smart and knowledgeable but is unstructured and expectations were not clear. However, really cool to learn more about how LLMs work and also useful to get exposure to agentic AI. I recommend this class regardless of coding background but if you like me don\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a5t have this background, just be warned that many are coming to the class with such a background.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.497Z",
+      "updated_at": "2025-12-04T19:16:24.497Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 90,
+    "fields": {
+      "title": "MGT 802 - Large language models: technology and applications",
+      "body": "You need have some beforehand experience with python coding, derivatives and vectors, and basics knowledge of neural networks. Otherwise, course may be overwhelming.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.494Z",
+      "updated_at": "2025-12-04T19:16:24.495Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 89,
+    "fields": {
+      "title": "MGT 802 - Large Language Models",
+      "body": "A little tough if you have no coding experience but really worth learning given AI these days. I appreciated learning how to build multi-agent tools.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.492Z",
+      "updated_at": "2025-12-04T19:16:24.492Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 88,
+    "fields": {
+      "title": "Large Language Models",
+      "body": "Large Language Models - Kyle Jensen & K. Sudhir (SOM)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.490Z",
+      "updated_at": "2025-12-04T19:16:24.490Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 87,
+    "fields": {
+      "title": "Large Language Models",
+      "body": "Mixed feelings on this because I actually do not appreciate Kyle Jensen's teaching style \u201a\u00e0\u00f6\u00ac\u00ae he is clearly smart and knowledgeable but is unstructured and expectations were not clear. However, really cool to learn more about how LLMs work and also useful to get exposure to agentic AI. I recommend this class regardless of coding background but if you like me don't have this background, just be warned that many are coming to the class with such a background.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.487Z",
+      "updated_at": "2025-12-04T19:16:24.487Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 86,
+    "fields": {
+      "title": "MGT 544 - Investment Management",
+      "body": "One of my favorite courses, treat it like Investor 2.0. Medium to easy load and Paul gives you as much from this course as you are willing to take.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.485Z",
+      "updated_at": "2025-12-04T19:16:24.485Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 85,
+    "fields": {
+      "title": "MGT 846 - Introduction to Private Equity",
+      "body": "Engaging professor with fun stories and some good insider views on PE. Also, a relatively easy class. However, it felt like a lot of the lectures were too high level \u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a8 not really sure what learning I am walking away with. Also felt that there wasn\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a5t much guidance on the team project and so was glad I had already taken PE: Leveraged Buyouts (though on the other hand maybe this class would have felt more insightful if I hadn\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a5t).",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.483Z",
+      "updated_at": "2025-12-04T19:16:24.483Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 84,
+    "fields": {
+      "title": "MGT 846 - Introduction to Private Equity",
+      "body": "Another course I really enjoyed. Medium load; try to find a team in advance so the project is more pleasant. Required textbook is appreciated. Classes are fun and engaging, recommended even if you don't plan to go into finance.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.481Z",
+      "updated_at": "2025-12-04T19:16:24.481Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 83,
+    "fields": {
+      "title": "MGT 846 - Introduction to Private Equity",
+      "body": "Another highlight class for me at SOM. First, Bob is a great professor -- super knowledgeable, with killer practitioner experience, has great stories, actually cares to get to know you and generally pretty unfiltered (in a good way!). Absolutely recommended even if you're not going into PE/VC >> | On the lighter side (team-dependent).",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.479Z",
+      "updated_at": "2025-12-04T19:16:24.479Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 82,
+    "fields": {
+      "title": "MGT 846 - Introduction to Private Equity",
+      "body": "Engaging professor with fun stories and some good insider views on PE. Also, a relatively easy class. However, it felt like a lot of the lectures were too high level \u201a\u00e0\u00f6\u00ac\u00ae not really sure what learning I am walking away with. Also felt that there wasn't much guidance on the team project and so was glad I had already taken PE: Leveraged Buyouts (though on the other hand maybe this class would have felt more insightful if I hadn't).",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.477Z",
+      "updated_at": "2025-12-04T19:16:24.477Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 81,
+    "fields": {
+      "title": "Introduction to Pastoral Theology and Care",
+      "body": "I recognize that this sounds quite religious, but let me tell you, I am not religious and I got a lot out of this course. It is about the care of souls - for others', but also for your own. It taught me how to be a better listener and a more compassionate leader. TLDR I am obsessed with Mary Moschella in the Divinity School and you should take any class that she offers.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.474Z",
+      "updated_at": "2025-12-04T19:16:24.475Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 80,
+    "fields": {
+      "title": "Intro to Psychology",
+      "body": "Fun undergrad class with an amazing professor. Probably not useful if you've taken psych before, but enjoyable if you haven't.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.473Z",
+      "updated_at": "2025-12-04T19:16:24.473Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 79,
+    "fields": {
+      "title": "Intro to AI",
+      "body": "Intro to AI - William Casey King (Jackson)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.471Z",
+      "updated_at": "2025-12-04T19:16:24.471Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 78,
+    "fields": {
+      "title": "MGT 531 - Interpersonal Dynamics",
+      "body": "The famous 'touchy feely' course developed at Stanford GSB. One of the most stretching experiences I've had at SOM; big push out of the comfort zone, very dependent on facilitators + lab members. High point cost = everyone is bought in. Don't do SOM without doing this but it is a heavy emotional + mind-space lift. (Bidding tip: worth the points, or try your luck by showing up on day 1 and requesting a seat)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.468Z",
+      "updated_at": "2025-12-04T19:16:24.469Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 77,
+    "fields": {
+      "title": "MGT 531 - Interpersonal Dynamics",
+      "body": "Great class (actually just the labs), I learned so much from this course. Honestly, one of the rare offerings that cannot be learned from a book or online course.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.465Z",
+      "updated_at": "2025-12-04T19:16:24.465Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 76,
+    "fields": {
+      "title": "MGT 531 - Interpersonal Dynamics",
+      "body": "Interpersonal Dynamics - David Tate (SOM)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.458Z",
+      "updated_at": "2025-12-04T19:16:24.458Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 75,
+    "fields": {
+      "title": "MGT 531 - Interpersonal Dynamics",
+      "body": "Heavy in the moment but worth doing. Makes you a better communicator, team member, manager, friend, family member, human. Makes you understand how to navigate difficult conversations more gracefully, thoughtfully, and effectively. If you're asking yourself whether you should take it, you should take it.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.455Z",
+      "updated_at": "2025-12-04T19:16:24.455Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 74,
+    "fields": {
+      "title": "International Law",
+      "body": "I begged and pleaded with Oona to get into this class because 1) she is famous in int. law and 2) I wanted to do a YLS course before graduating. I really liked the course and found it slightly ironic that I was taking it during this administration. Lots of reading on legal cases, treaties, conventions, scholarly articles/commentary, and NGO reports. You must do the readings. No AI allowed; no laptops unless tied to accommodations; iPads are fine. Assignments: 4 discussion posts and either a heavy final paper or open book written exam. (Final pending.)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.452Z",
+      "updated_at": "2025-12-04T19:16:24.452Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 73,
+    "fields": {
+      "title": "MGT 823 - Insurance and Finance for the Poor",
+      "body": "Economics + data course using R to analyze insurance/finance in emerging markets. Robert is great, interesting, and flexible with deadlines. AI assistance is allowed for R assignments.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.448Z",
+      "updated_at": "2025-12-04T19:16:24.448Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 72,
+    "fields": {
+      "title": "Inequality and Social Mobility",
+      "body": "More economics and a bit of a crash course on America. Small class size made it easier to get to know everyone. Barbara flags when you need to lead class discussion. Assignments are easy, especially if you're comfortable writing papers.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.446Z",
+      "updated_at": "2025-12-04T19:16:24.446Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 71,
+    "fields": {
+      "title": "MGT 826 - Inclusive Economic Development Lab: City Studio",
+      "body": "The workload is huge but it's a fascinating class. Similar to YCCI, you work with a client throughout the semester and present a final deliverable at the end. Very hands-on and very interesting.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.444Z",
+      "updated_at": "2025-12-04T19:16:24.444Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 70,
+    "fields": {
+      "title": "MGT 826 - Inclusive Economic Development Lab: City Studio",
+      "body": "Inclusive Economic Development Lab: Special Topics - Kate Cooney (SOM)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.442Z",
+      "updated_at": "2025-12-04T19:16:24.442Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 69,
+    "fields": {
+      "title": "MGT 801 - Impact Measurement in the Social Sector",
+      "body": "Love Raphael, great energy and enthusiasm, was a good introduction for me as I'm coming from for-profit (finance and startup) and want to go into the social sector.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.440Z",
+      "updated_at": "2025-12-04T19:16:24.440Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 68,
+    "fields": {
+      "title": "IE Spain",
+      "body": "I liked it, can't give more information. Easy load, interesting company visits, tasty restaurants, good hotels.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.438Z",
+      "updated_at": "2025-12-04T19:16:24.438Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 67,
+    "fields": {
+      "title": "IE Costa Rica",
+      "body": "I really enjoyed it and learned a lot, but I'm putting it here b/c I'm sure most IEs are fun. But I will say that getting to live in a beautiful beach resort for a week was amazing.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.435Z",
+      "updated_at": "2025-12-04T19:16:24.435Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 66,
+    "fields": {
+      "title": "IE \u201a\u00e0\u00f6\u00ac\u00ae Costa Rica",
+      "body": "Great professor with great mix of company visits and more tourist activities and a bit of downtime. Academic highlight for me was going to Costa Rica's Central Bank. Non-academic highlight probably the catamaran trip with some swimming/snorkeling.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.433Z",
+      "updated_at": "2025-12-04T19:16:24.433Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 65,
+    "fields": {
+      "title": "Human Capital Strategy",
+      "body": "3-hour sessions with lots of filler activities - not too useful as the course didn't really build on Workforce as expected.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.432Z",
+      "updated_at": "2025-12-04T19:16:24.432Z",
+      "tags": [
+        3,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 64,
+    "fields": {
+      "title": "MGT 855 - How to Design and Run Business Experiments",
+      "body": "Prof Shane Fredrickson will do his best to remind you that even though you are exceedingly competent, trust but verify your own opinions and those of others. Honestly changed my views on real marketing and sales, as well as how to take on big data, AI, and managing hallucinations with oddly awesome AI estimations that seem unbelievable.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.429Z",
+      "updated_at": "2025-12-04T19:16:24.429Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 63,
+    "fields": {
+      "title": "MGT 855 - How to Design and Run Business Experiments",
+      "body": "Shane comes off as offputting at first but he grew on me and is one of the best profs I've had at SOM. The course is quant heavy so a firm understanding of the stuff covered in intro to stats and probability is essential. He covers material that's relevant for folks who think they might need to run surveys or other experiments in future roles in addition to the more qualitative stuff, e.g. around framing (think Nathan's portion of MMD), in a way that provides more colour and utility. The course is STEM eligible making it a great way to get STEM credits for international students. I 10/10 don't regret choosing it. Only caveat is that Shane is disoragnized (and proud of it) so be on his case about making sure he releases announcements as per the syllabus.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.427Z",
+      "updated_at": "2025-12-04T19:16:24.427Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 62,
+    "fields": {
+      "title": "MGT 883 - Housing Markets",
+      "body": "Dry lectures; way less practical than I had hoped for.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.425Z",
+      "updated_at": "2025-12-04T19:16:24.425Z",
+      "tags": [
+        3,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 61,
+    "fields": {
+      "title": "MGT 879 - Healthcare Operations",
+      "body": "Interesting topics and cases, but the pace felt super slow. Also overlapped with core Ops for half the course.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.423Z",
+      "updated_at": "2025-12-04T19:16:24.424Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 60,
+    "fields": {
+      "title": "GSE India",
+      "body": "Experience depends on the group and social enterprise pairing. Travel to Bhubaneswar was memorable; lectures at IIMB and SOM varied. Heavy workload: weekly individual reflections, numerous team deliverables, weekly meetings with the client. Asha is flexible. No laptops in lectures unless you have accommodations. MAM warning: only 5 GSA days, so expect ~$900+ out-of-pocket costs.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.422Z",
+      "updated_at": "2025-12-04T19:16:24.422Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 59,
+    "fields": {
+      "title": "MGT 600 - GNW: INCAE, Aljuela,Costa Rica",
+      "body": "Got lucky with my group, but overall amazing experience. Sessions were varied and thoughtful\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00c6felt like a full immersion in a way you wouldn\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a5t get just traveling as a tourist.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.420Z",
+      "updated_at": "2025-12-04T19:16:24.420Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 58,
+    "fields": {
+      "title": "MGT 600 - GNW: FGV: Brazil: Sustainable Leadership",
+      "body": "One of the top experiences of my life (and I don't say this lightly). A fully immersive experience where you get to sleep on a hammock in a boat for 5 days going down the Amazon river, swim in the river, meet local communities, hike in the old growth Amazon, eat local cuisine, and learn how the government and community are protecting the rainforest. It feels like summer camp. Keep in mind that there is an additional program fee (roughly $1400 I think) but it covers everything for that week. (Sorry for inflating the bidding points on this lol, it went for 20 points Fall 2024)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.418Z",
+      "updated_at": "2025-12-04T19:16:24.418Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 57,
+    "fields": {
+      "title": "GNW Turkey",
+      "body": "I am a nerd so I chose my international program based on the content... this is the wrong approach. As much as I wish it weren't, it really is just about going somewhere nice for your break, so optimize for a destination that intrigues you. I really disliked this course, but I still LOVED my GNW experience. Partly because I went with a friend, and because having an extra week to explore the destination was amazing. Happy to share my recommendations for how best to schedule your trip if you end up doing this course. Istanbul is incredible.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.416Z",
+      "updated_at": "2025-12-04T19:16:24.416Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 56,
+    "fields": {
+      "title": "MGT 636 - Global Leadership: Personal & Interpersonal Effectiveness",
+      "body": "MAM requirement. Be prepared to talk about your feelings a lot. I'm not sure of its purpose; I doubt I'll use most of it at work. Possibly open to other grad students but maybe not MBAs.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.415Z",
+      "updated_at": "2025-12-04T19:16:24.415Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 55,
+    "fields": {
+      "title": "MGT 890 - Global Financial Crisis",
+      "body": "Really interesting course about GFC, lots of writing, but you can use AI for it without penalty and get a grade above Pass, so load is easy to medium. Caveat: lectures are online, in class you only discuss submitted questions.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.413Z",
+      "updated_at": "2025-12-04T19:16:24.413Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 54,
+    "fields": {
+      "title": "MGT 890 - Global Financial Crisis",
+      "body": "I loved this class! Metrick is such a great professor and very engaging. Everyone had interesting questions. Structure: watch an online lecture and do a short quiz prior to class; in-class time focuses on key concepts and Q&A. Weekly memos (Chat ok) and a larger paper. Note most of the course lives on Coursera, and Geithner lectures depend on class questions.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.411Z",
+      "updated_at": "2025-12-04T19:16:24.411Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 53,
+    "fields": {
+      "title": "MGT 890 - Global Financial Crisis",
+      "body": "Professor Metrick is great -- engaging, really knows his subject deeply and loves debating. Great class to learn about: traditional banking system, the FED, some macro-economics, shadow-banking/investment banks, crisis drivers, and the inherent moral hazard that the regulators face when dealing with systemic crises. Unfortunately, Metrick is not a fan of Bitcoin but I guess we'll see how it goes for the USD -- there is no stopping of the money-printing train imo: Empires die when their internal structures -- economic, military, and political -- become unsustainable. For the Roman Empire, the excessive\u00ac\u00a8\u00ac\u00ae\u201a\u00c4\u00f6\u221a\u00d1\u201a\u00c4\u2020**debasement of currency**, the\u00ac\u00a8\u00ac\u00ae\u201a\u00c4\u00f6\u221a\u00d1\u201a\u00c4\u2020**uncontrolled government spending**\u00ac\u00a8\u00ac\u00ae\u201a\u00c4\u00f6\u221a\u00d1\u201a\u00c4\u2020on military and public programs, and the\u00ac\u00a8\u00ac\u00ae\u201a\u00c4\u00f6\u221a\u00d1\u201a\u00c4\u2020**loss of trust**\u00ac\u00a8\u00ac\u00ae\u201a\u00c4\u00f6\u221a\u00d1\u201a\u00c4\u2020in the state's ability to manage its affairs led to its downfall. This pattern can be seen in other empires as well, where\u00ac\u00a8\u00ac\u00ae\u201a\u00c4\u00f6\u221a\u00d1\u201a\u00c4\u2020**inflation**,\u00ac\u00a8\u00ac\u00ae\u201a\u00c4\u00f6\u221a\u00d1\u201a\u00c4\u2020**devaluation of money**, and\u00ac\u00a8\u00ac\u00ae\u201a\u00c4\u00f6\u221a\u00d1\u201a\u00c4\u2020**excessive government spending**\u00ac\u00a8\u00ac\u00ae\u201a\u00c4\u00f6\u221a\u00d1\u201a\u00c4\u2020act as precursors to collapse when they are not reined in.\u00ac\u00a8\u00ac\u00ae\u201a\u00c4\u00f6\u221a\u00d1\u201a\u00c4\u2020**Sounds familiar? >> | Heavy load.**",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.410Z",
+      "updated_at": "2025-12-04T19:16:24.410Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 52,
+    "fields": {
+      "title": "MGT 575 - Generative AI and Social Media",
+      "body": "Prof Tauhid makes class super fun. Great guest speakers. Even though attendance wasn\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a5t strict, I learned a lot through the HWs and final project (built an app with no prior coding knowledge using AI tools).",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.408Z",
+      "updated_at": "2025-12-04T19:16:24.408Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 51,
+    "fields": {
+      "title": "MGT 575 - Generative AI and Social Media",
+      "body": "this is a great class to learn some beginner python but it focuses mostly on Generative AI. Throughout the class you use AI to help you code, learn how to scrape data sets, and also create new materials. One of my favorite tech classes I have taken at SOM!",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.406Z",
+      "updated_at": "2025-12-04T19:16:24.406Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 50,
+    "fields": {
+      "title": "MGT 575 - Generative AI and Social Media",
+      "body": "The class is fun and complementary to Product Management. I had taken a python class so I was familiar with the language which helped with projects. Assignments can be done using ChatGPT/Claude. Classes are recorded. Next year the final assignment will be creating iOS apps.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.405Z",
+      "updated_at": "2025-12-04T19:16:24.405Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 49,
+    "fields": {
+      "title": "MGT 575 - Generative AI and Social Media",
+      "body": "Generative AI and Social Media - Tauhid Zaman (SOM)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.403Z",
+      "updated_at": "2025-12-04T19:16:24.403Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 48,
+    "fields": {
+      "title": "MGT 575 - Generative AI and Social Media",
+      "body": "Prof Tauhid makes class super fun. Great guest speakers. Even though attendance wasn't strict, I learned a lot through the HWs and final project (built an app with no prior coding knowledge using AI tools).",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.401Z",
+      "updated_at": "2025-12-04T19:16:24.401Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 47,
+    "fields": {
+      "title": "MGT 575 - Generative AI and Social Media",
+      "body": "Tauhid (Z-listo) teaches this material in the same way that he teaches probability. I don't learn particularly well from his lecture style, but I still really enjoyed this class. A lot of vibe coding, entertaining lectures, moderate lift, and a couple of truly brilliant guest speakers. I did walk away from the class being able to build a pretty well-functioning app, despite not having coding experience. Gave me a lot of confidence in my ability to build.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.399Z",
+      "updated_at": "2025-12-04T19:16:24.399Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 46,
+    "fields": {
+      "title": "MGT 936 - Fixed Income Strategies",
+      "body": "This one went away from me, I have zero experience in python, so couldn't do anything and really quant heavy course. On a good side, ChatGPT is allowed, so you will not get an F if you do something.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.398Z",
+      "updated_at": "2025-12-04T19:16:24.398Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 45,
+    "fields": {
+      "title": "MGT 805 - Fixed Income Securities",
+      "body": "Great class to learn bond and derivative markets and how to respond to challenges as a finance manager. Next year will be three parts of the course, should be comprehensive. Load varies with your background.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.396Z",
+      "updated_at": "2025-12-04T19:16:24.396Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 44,
+    "fields": {
+      "title": "MGT 812 - Financial Statement Analysis",
+      "body": "Easy class, funny stories from the professor, who admits he both earns and loses money on markets.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.395Z",
+      "updated_at": "2025-12-04T19:16:24.395Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 43,
+    "fields": {
+      "title": "MGT 871 - Financial Reporting",
+      "body": "Literally sequel to accounting in core. You cover the second part of the text book. Classes are interesting and load is medium to easy.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.393Z",
+      "updated_at": "2025-12-04T19:16:24.393Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 42,
+    "fields": {
+      "title": "Everyday Leadership",
+      "body": "If you want to grow the soft skills that you will need at as a leader (listening, coaching, giving feedback, \u201a\u00c4\u00f6\u221a\u00d1\u00ac\u2202) it is a great opportunity to practice them, and to learn to learn form experience.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.391Z",
+      "updated_at": "2025-12-04T19:16:24.391Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 41,
+    "fields": {
+      "title": "Everyday Leadership",
+      "body": "IPD part 2 and way less work. You can continue to set goals and experiments to push yourself. You get to hear more of Heidi's perspectives and pontifications (which I love). Also fun because it's cross-listed with the Law School and you can make friends!",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.389Z",
+      "updated_at": "2025-12-04T19:16:24.389Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 40,
+    "fields": {
+      "title": "MGT 629 - Ethical Choices in Public Leadership",
+      "body": "Unbelievably brilliant course. Makes you truly question your ethical limits, and create consistency in decision-making along your values. I have grown through this class, and also have enjoyed being surrounded by deeply engaged colleagues.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.388Z",
+      "updated_at": "2025-12-04T19:16:24.388Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 39,
+    "fields": {
+      "title": "MGT 671 - Entrepreneurship through Acquisition",
+      "body": "Favorite class at SOM. Workload is somewhat heavy as you need to read and prep for every class and there is both a mid-term and final that both seem to always take significant amounts of time. But A.J. is very engaging and class dynamics are great. And for me, the topic of ETA was super exciting as it opened my eyes to a new possible career route (which I am now pursuing).",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.386Z",
+      "updated_at": "2025-12-04T19:16:24.386Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 38,
+    "fields": {
+      "title": "MGT 671 - Entrepreneurship through Acquisition",
+      "body": "AJ's classes are a masterclass in how to teach. I took it even though I have zero interest in ETA and I am so glad that I did. An alumni told me that no matter what class you take with AJ, you will learn takeaways that you can bring to any sector you go into after, and I agree with this.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.384Z",
+      "updated_at": "2025-12-04T19:16:24.384Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 37,
+    "fields": {
+      "title": "MGT 897 - Entrepreneurial Finance",
+      "body": "Medium load. I would recommend taking 2 out of 3 since topics are common and you listen to the same stories twice or thrice. PE/VC is most quant, Finance and Society is zero quant, but nothing harder than DCF/multiples.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.382Z",
+      "updated_at": "2025-12-04T19:16:24.382Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 36,
+    "fields": {
+      "title": "MGT 859 - Emerging Trends in Digital Advertising",
+      "body": "Super cool BCG Brooklyn partner who teaches this as her passion project. I can see how this class might be too niche if you're not into marketing. Her guest speakers are awesome.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.381Z",
+      "updated_at": "2025-12-04T19:16:24.381Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 35,
+    "fields": {
+      "title": "MGT 960 - Economic Analysis of High-Tech Industries",
+      "body": "Ted is great, and so is Logan. Great class to learn about the underlying economic principles and frameworks of tech industries, including competitive dynamics, switching costs, network effects, and how these factors lead to the emergence of market leaders. >> | Light load.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.379Z",
+      "updated_at": "2025-12-04T19:16:24.379Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 34,
+    "fields": {
+      "title": "Disinformation in the Age of AI",
+      "body": "Disinformation in the Age of AI - Beth Goldberg and Ziad Reslan (Jackson)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.378Z",
+      "updated_at": "2025-12-04T19:16:24.378Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 33,
+    "fields": {
+      "title": "MGT 857 - Digital Strategy",
+      "body": "Vineet structures his lectures very well - he has a clear agenda and is also able to incorporate a lot of class discussions, which I really appreciated. Some of the cases felt outdated (e.g. Dropbox, Zillow, American Well, New York Times Paywall), but there are still a lot of interesting learnings from them. Coursework seemed fairly manageable, including a team project that wasn't too much work (included a group case assignment as well as a deck for a company of our choice which we didn't have to present).",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.376Z",
+      "updated_at": "2025-12-04T19:16:24.376Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 32,
+    "fields": {
+      "title": "MGT 857 - Digital Strategy",
+      "body": "If you want to learn about platform strategy, disruptors, complementors, digital transformation it\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a5s a great class (with a lot of cases to prepare!) (just so you know, AI is off-chart)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.374Z",
+      "updated_at": "2025-12-04T19:16:24.374Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 31,
+    "fields": {
+      "title": "MGT 857 - Digital Strategy",
+      "body": "Honestly this class wasn't as exciting as either of the ones above, but i thought it gave interesting frameworks and brought up important points for companies that have a digital component to their business. Prof. Kumar is also very kind, approachable, and knowledgable. (medium amount of work)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.373Z",
+      "updated_at": "2025-12-04T19:16:24.373Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 30,
+    "fields": {
+      "title": "MGT 858 - Database Systems",
+      "body": "My biggest gripe with the course is that it should be reworked to be more LLM-proof. I think the work was interesting, but because of the ease of using code assistants, not much of the skill remained after the course.\n \n Additionally, the course was tremendously inflexible in its work requirements, specifically with many rigid due dates that didn't allow for any other work interruptions.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.371Z",
+      "updated_at": "2025-12-04T19:16:24.371Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 29,
+    "fields": {
+      "title": "MGT 858 - Database Systems",
+      "body": "Database Systems - Kyle Jensen (SOM)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.369Z",
+      "updated_at": "2025-12-04T19:16:24.369Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 28,
+    "fields": {
+      "title": "MGT 819 - Data Science",
+      "body": "Great opportunity to learn R. However, the course should run through more applications on business operations.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.367Z",
+      "updated_at": "2025-12-04T19:16:24.367Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 27,
+    "fields": {
+      "title": "MGT 510 - Data Analysis and Causal Inference",
+      "body": "Not the most engaging class, but helpful if you expect to work with large datasets or regressions.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.366Z",
+      "updated_at": "2025-12-04T19:16:24.366Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 26,
+    "fields": {
+      "title": "MGT 650 - Customer Insights and Applications",
+      "body": "Excellent project work with real name brands if you enjoy consumer behaviour/psych. Very team-dependent (the 'one person army' strategy absolutely does not work here). Great if you've done some marketing (enjoyed applying concepts from Customer/Marketing Strategy/MIP). NOT for r\u201a\u00c4\u00f6\u221a\u2020\u221a\u2202\u00ac\u00a8\u00ac\u00a9sum\u201a\u00c4\u00f6\u221a\u2020\u221a\u2202\u00ac\u00a8\u00ac\u00a9 padding OR a light/medium workload OR people with experience in client-facing consulting roles.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.364Z",
+      "updated_at": "2025-12-04T19:16:24.364Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 25,
+    "fields": {
+      "title": "CS50",
+      "body": "CS50 (CS - _Note: Formerly offered, RIP_)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.363Z",
+      "updated_at": "2025-12-04T19:16:24.363Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 24,
+    "fields": {
+      "title": "MGT 800 - Crisis Management in Tech",
+      "body": "I think this course has taught be a really interesting person, but they are not a uber effective professor. They are a phenomenal industry mind, but we're spending most of our times going through pretty easy cases and don't have the seasoned teaching hand at the front of the room.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.361Z",
+      "updated_at": "2025-12-04T19:16:24.361Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 23,
+    "fields": {
+      "title": "MGT 800 - Crisis Management in Tech",
+      "body": "Very engaging, case studies that are comprised of videos and news articles rather than dry HBS/Yale cases. Great speakers, very engaging lecturer, and very practical skill building for those who expect to be in senior leadership for tech companies.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.359Z",
+      "updated_at": "2025-12-04T19:16:24.359Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 22,
+    "fields": {
+      "title": "MGT 800 - Crisis Management in Tech",
+      "body": "The ex-CIO of IBM teaches this class and it covers recent cases of crises in companies and how best to respond to them. I think the material is interesting and the takeaways are very tangible. Example cases included Boeing, Cambridge Analytica, Theranos, etc. Prof. Gaurini is also a great public speaker and knows how to engage an audience + moderate a discussion. (medium amount of work)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.357Z",
+      "updated_at": "2025-12-04T19:16:24.358Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 21,
+    "fields": {
+      "title": "Costa Rica IE",
+      "body": "Got lucky with my group, but overall amazing experience. Sessions were varied and thoughtful\u201a\u00e0\u00f6\u221a\u00dcfelt like a full immersion in a way you wouldn't get just traveling as a tourist.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.356Z",
+      "updated_at": "2025-12-04T19:16:24.356Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 20,
+    "fields": {
+      "title": "MGT 541 - Corporate Finance",
+      "body": "Recommend the class for someone interested in finance and new to the area, but don\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a5t necessarily recommend if you already have familiarity. With an accounting background and business/economics undergrad, I didn\u201a\u00c4\u00f6\u221a\u00d1\u221a\u00a5t feel like I learned too much new.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.354Z",
+      "updated_at": "2025-12-04T19:16:24.354Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 19,
+    "fields": {
+      "title": "MGT 541 - Corporate Finance",
+      "body": "Prof Kelly is great and the material is definitely useful, but the 3-hour lecture format made it tough to stay engaged. Good option if you want something full semester and low-lift though.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.352Z",
+      "updated_at": "2025-12-04T19:16:24.352Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 18,
+    "fields": {
+      "title": "MGT 541 - Corporate Finance",
+      "body": "I hated Accounting and Sourcing and Managing Funds in the core. Corporate finance covers a lot of the same topics, but I'm ACTUALLY learning the material this go round. Heather Tookes is a fantastic instructor. Described as an \"Eat your vegetables\" course. Helpful for me as someone who knows nothing about finance.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.351Z",
+      "updated_at": "2025-12-04T19:16:24.351Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 17,
+    "fields": {
+      "title": "MGT 541 - Corporate Finance",
+      "body": "Recommend the class for someone interested in finance and new to the area, but don't necessarily recommend if you already have familiarity. With an accounting background and business/economics undergrad, I didn't feel like I learned too much new.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.349Z",
+      "updated_at": "2025-12-04T19:16:24.349Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 16,
+    "fields": {
+      "title": "MGT 541 - Corporate Finance",
+      "body": "Kelly is great. I was anyway going to take a Corporate Finance class at SOM, but her guest lecture in The Executive -- about brown/green firms and their cost of capital convinced me to take her CF class because I love contrarian ideas that challenge the status quo/safe consensus views. Kelly tries to do that with other topics as well throughout the class. >> | Light/Medium load.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.347Z",
+      "updated_at": "2025-12-04T19:16:24.347Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 15,
+    "fields": {
+      "title": "MGT 541 - Corporate Finance",
+      "body": "Great class that covers major corporate finance topics. Professor Shue is awesome. She is an engaging instructor and covers interesting real world events. The work load is very light. If I remember correctly, there was 3 group HW assignments for the semester and the TA covered the HW before it was due.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.346Z",
+      "updated_at": "2025-12-04T19:16:24.346Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 14,
+    "fields": {
+      "title": "MGT 541 - Corporate Finance",
+      "body": "I know others enjoyed it but I expected something different. Might be useful for those working in public M&A who need to do a lot of valuations. Really this was more my fault than the class quality, but I lost interest halfway through.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.344Z",
+      "updated_at": "2025-12-04T19:16:24.344Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 13,
+    "fields": {
+      "title": "MGT 558 - Consumer Behavior",
+      "body": "Somewhat of a continuation of customer. Very engaging professor and low lift.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.342Z",
+      "updated_at": "2025-12-04T19:16:24.342Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 12,
+    "fields": {
+      "title": "MGT 558 - Consumer Behavior",
+      "body": "Initially took as a time filler, but really enjoyed it. Load is easy, and even as someone who isn't a writer the homework was fun.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.340Z",
+      "updated_at": "2025-12-04T19:16:24.341Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 11,
+    "fields": {
+      "title": "MGT 525 - Competitive Strategy",
+      "body": "Lectures dragged on and at times wished we would move on at a faster pace. That said, learned some frameworks and gained understanding that I still remember, plus heard some interesting stories about the history of various companies. From what I gather, the Spring version of this (not with Marciano) may be preferred (and I think is also much more quantitative).",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.338Z",
+      "updated_at": "2025-12-04T19:16:24.338Z",
+      "tags": [
+        4,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 10,
+    "fields": {
+      "title": "MGT 885 - Commercial Real Estate Investing",
+      "body": "I came away with a few insights, but feel like it didn't really live up to the potential of what it could have been. Somewhat dry lectures that at times seemed too basic. That said, it was an easy class so don't necessarily regret taking it.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.336Z",
+      "updated_at": "2025-12-04T19:16:24.336Z",
+      "tags": [
+        3,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 9,
+    "fields": {
+      "title": "MGT 885 - Commercial Real Estate Investing",
+      "body": "Very informative class but the content was so dry. Hard to take as a Spring 2 class because I was just not motivated.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.334Z",
+      "updated_at": "2025-12-04T19:16:24.334Z",
+      "tags": [
+        3,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 8,
+    "fields": {
+      "title": "MGT 532 - Business Ethics",
+      "body": "Great primer on stakeholder capitalism + real-world ethical dilemmas. For 1Y MBAs, this compliments The Executive (MGT 430) really well. Super participative (devils and devil's advocates enjoy this) and @james.neville is TA this year, so the Beth Anne/James combo is (Bidding tip: nice to grab in add-drop, subject to availability)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.332Z",
+      "updated_at": "2025-12-04T19:16:24.332Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 7,
+    "fields": {
+      "title": "MGT 532 - Business Ethics",
+      "body": "I had low expectations but I really enjoyed it. Many different professors teach this class so experiences will be different, but I had Beth Anne Helgason and despite this being her first class she did a great job with engaging content. It was interesting digging into what my ethics were and what I stood for.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.331Z",
+      "updated_at": "2025-12-04T19:16:24.331Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 6,
+    "fields": {
+      "title": "MGT 866 - Build a Metaverse Strategy",
+      "body": "(MGT 421) Innovator's cool cousin with a metaverse lens. Similar frameworks (+ red/blue ocean), final project is building a metaverse perspective for an established company. Not technical, great speakers over Zoom, Brett is awesome. (Bidding tip: worth the points for 1YDs; MBAs can scoop in add-drop if you really want it, subject to availability)",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.329Z",
+      "updated_at": "2025-12-04T19:16:24.329Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 5,
+    "fields": {
+      "title": "MGT 556 - Big Data & Customer Analytics",
+      "body": "The lectures are dry, but I definitely have comfortability with various tools (regressions in particular) that I struggled with previously. I'm not walking away from this as a true data analyst... but I think I can manage one now, and not sound like a total idiot. Not right for everyone, and I wouldn't have chosen it again if I had a choice.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.327Z",
+      "updated_at": "2025-12-04T19:16:24.327Z",
+      "tags": [
+        3,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 4,
+    "fields": {
+      "title": "America's Governors (Jackson)",
+      "body": "Taught by former Governor Chris Christie... this is the type of class you GO to a school like Yale for. Small class with 1-1 time in a room with Chris Christie for two hours a week. Amazing. He peels back the curtain on so much of the way that politicking actually works. He also brings in current and former Governors. I'm not sure if it will be offered again next fall but if it is... take it.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.325Z",
+      "updated_at": "2025-12-04T19:16:24.325Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 3,
+    "fields": {
+      "title": "MGT 896 - America Future Role in the Global Economy",
+      "body": "Engaging class where a bunch of interesting speakers come in (virtually). Really interesting discussions about geopolitical topics. There is a decent amount of work though with weekly readings and weekly reflection paper and then also a final project. Enjoyable class though and does qualify for leadership requirement.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.323Z",
+      "updated_at": "2025-12-04T19:16:24.323Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 2,
+    "fields": {
+      "title": "MGT 809 - Advanced Business Analytics",
+      "body": "Probably my least favorite class at SOM. Material was dry, sessions were boring. Would've dropped if I didn't need it for the STEM requirement.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.320Z",
+      "updated_at": "2025-12-04T19:16:24.320Z",
+      "tags": [
+        3,
+        1
+      ]
+    }
+  },
+  {
+    "model": "posting.post",
+    "pk": 1,
+    "fields": {
+      "title": "MGT 809 - Advanced Business Analytics",
+      "body": "I really enjoyed linear programming in MMD and wanted to learn more. Overall though, it was very cursory and I didn't learn/do enough to start framing problems for linear programming. 2nd half taught us how to code in R, but I think prof should have stuck with Excel the whole way. Those who knew how to code found those lectures to be really slow, and those who didn't know how to code were confused. The quarter class is too short to be teaching people how to code; should focus more on actual LP skillset.",
+      "author": 1,
+      "is_anonymous": true,
+      "is_flagged": false,
+      "is_hidden": false,
+      "ai_flagged": false,
+      "ai_severity_score": null,
+      "ai_categories": null,
+      "show_crisis_resources": false,
+      "created_at": "2025-12-04T19:16:24.312Z",
+      "updated_at": "2025-12-04T19:16:24.312Z",
+      "tags": [
+        1,
+        2
+      ]
+    }
+  }
+]
