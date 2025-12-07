@@ -144,17 +144,28 @@
         </div>
     </div>
 
-    <!-- Tag Filter Row -->
-    {% if tags %}
-    <div class="tag-filter-row">
-        <a href="{% url 'posting:home' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}{% if sort and sort != 'recent' %}{% if search_query %}&{% else %}?{% endif %}sort={{ sort }}{% endif %}"
-            class="tag-link {% if not active_tag %}active{% endif %}">All</a>
-        {% for tag in tags %}
-        <a href="{% url 'posting:home' %}?tag={{ tag.slug }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if sort and sort != 'recent' %}&sort={{ sort }}{% endif %}"
-            class="tag-link {% if active_tag == tag.slug %}active{% endif %}">#{{ tag.name }}</a>
-        {% endfor %}
+    <!-- Tag Filter Dropdown -->
+    <div class="tag-dropdown-wrapper">
+        <button class="tag-dropdown-trigger" id="tag-dropdown-trigger"
+            data-active-tag="{{ active_tag|default:'' }}"
+            data-search-query="{{ search_query|default:'' }}"
+            data-sort="{{ sort|default:'recent' }}">
+            <span class="trigger-label">Filter by tag:</span>
+            <span class="trigger-value">{% if active_tag %}#{{ active_tag }}{% else %}All{% endif %}</span>
+            <svg class="trigger-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </button>
+        <div class="tag-dropdown-menu" id="tag-dropdown-menu" style="display: none;">
+            <div class="tag-search-wrapper">
+                <input type="text" class="tag-search-input" id="tag-search-input" placeholder="Search tags...">
+            </div>
+            <div class="tag-categories-list" id="tag-categories-list">
+                <!-- Populated by JS -->
+                <div class="tag-loading">Loading tags...</div>
+            </div>
+        </div>
     </div>
-    {% endif %}
 
     {% if posts %}
     {% for post in posts %}

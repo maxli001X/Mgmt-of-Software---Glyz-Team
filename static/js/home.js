@@ -877,6 +877,158 @@ if (window._homeJsInitialized) {
     }
 
 
+    // ================== Tag Filter Dropdown ==================
+    function initTagFilterDropdown() {
+        const trigger = document.getElementById('tag-dropdown-trigger');
+        const menu = document.getElementById('tag-dropdown-menu');
+        const searchInput = document.getElementById('tag-search-input');
+        const categoriesList = document.getElementById('tag-categories-list');
+
+        if (!trigger || !menu) return;
+
+        const wrapper = trigger.closest('.tag-dropdown-wrapper');
+        const activeTag = trigger.dataset.activeTag || '';
+        const searchQuery = trigger.dataset.searchQuery || '';
+        const sort = trigger.dataset.sort || 'recent';
+
+        let categoriesData = null;
+        let isLoading = false;
+
+        // Build URL with current params
+        function buildTagUrl(tagSlug) {
+            let url = '/?';
+            const params = [];
+            if (tagSlug) params.push(`tag=${encodeURIComponent(tagSlug)}`);
+            if (searchQuery) params.push(`q=${encodeURIComponent(searchQuery)}`);
+            if (sort && sort !== 'recent') params.push(`sort=${encodeURIComponent(sort)}`);
+            return url + params.join('&');
+        }
+
+        // Render categories
+        function renderCategories(filter = '') {
+            if (!categoriesData) return;
+
+            const filterLower = filter.toLowerCase();
+            let html = '';
+
+            // Add "All" option
+            const allActive = !activeTag ? 'active' : '';
+            if (!filter || 'all'.includes(filterLower)) {
+                html += `<a href="${buildTagUrl('')}" class="tag-item ${allActive}">
+                    <span class="tag-item-name">All Tags</span>
+                </a>`;
+            }
+
+            let hasResults = !filter || 'all'.includes(filterLower);
+
+            categoriesData.categories.forEach(category => {
+                const filteredTags = category.tags.filter(tag =>
+                    tag.name.toLowerCase().includes(filterLower)
+                );
+
+                if (filteredTags.length > 0) {
+                    hasResults = true;
+                    html += `<div class="tag-category">
+                        <div class="tag-category-header">${category.name}</div>
+                        <div class="tag-category-items">`;
+
+                    filteredTags.forEach(tag => {
+                        const isActive = activeTag === tag.slug ? 'active' : '';
+                        html += `<a href="${buildTagUrl(tag.slug)}" class="tag-item ${isActive}">
+                            <span class="tag-item-name">#${tag.name}</span>
+                            <span class="tag-item-count">${tag.count}</span>
+                        </a>`;
+                    });
+
+                    html += '</div></div>';
+                }
+            });
+
+            if (!hasResults) {
+                html = '<div class="tag-no-results">No tags found</div>';
+            }
+
+            // Add clear filter if active
+            if (activeTag) {
+                html += `<a href="${buildTagUrl('')}" class="tag-clear-filter">Clear filter</a>`;
+            }
+
+            categoriesList.innerHTML = html;
+        }
+
+        // Fetch categories from API
+        async function fetchCategories() {
+            if (categoriesData || isLoading) return;
+
+            isLoading = true;
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+
+            try {
+                const response = await fetch('/api/tag-categories/', {
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (response.ok) {
+                    categoriesData = await response.json();
+                    renderCategories(searchInput.value);
+                }
+            } catch (error) {
+                console.error('Failed to fetch tag categories:', error);
+                categoriesList.innerHTML = '<div class="tag-no-results">Failed to load tags</div>';
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Toggle dropdown
+        function toggleDropdown() {
+            const isOpen = menu.style.display !== 'none';
+            if (isOpen) {
+                closeDropdown();
+            } else {
+                openDropdown();
+            }
+        }
+
+        function openDropdown() {
+            menu.style.display = 'block';
+            wrapper.classList.add('open');
+            fetchCategories();
+            searchInput.focus();
+        }
+
+        function closeDropdown() {
+            menu.style.display = 'none';
+            wrapper.classList.remove('open');
+        }
+
+        // Event listeners
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown();
+        });
+
+        searchInput.addEventListener('input', () => {
+            renderCategories(searchInput.value);
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDropdown();
+            }
+        });
+
+        // Close on click outside
+        document.addEventListener('click', (e) => {
+            if (!wrapper.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         initVoteButtonHandlers(); // Initialize delegated vote handler
         initDropdowns();
@@ -890,6 +1042,7 @@ if (window._homeJsInitialized) {
         initAutoScroll();
         initSearchHighlight();
         initPostFormLoading(); // Loading indicator for post submission
+        initTagFilterDropdown(); // Tag filter dropdown with search
 
         // AI Tag Suggestions needs URL from template
         const suggestTagsUrl = document.querySelector('[data-suggest-tags-url]')?.dataset.suggestTagsUrl;
