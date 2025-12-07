@@ -63,8 +63,8 @@ class AITagCategorizer:
         if not tag_names:
             return {}
 
-        # Create a cache key based on sorted tag names
-        sorted_tags = sorted(tag_names)
+        # Create a cache key based on sorted tag names (case-insensitive)
+        sorted_tags = sorted([t.lower() for t in tag_names])
         cache_key = f"{TAG_CATEGORIES_CACHE_KEY}:{hash(tuple(sorted_tags))}"
 
         # Check cache first
@@ -79,16 +79,38 @@ class AITagCategorizer:
             try:
                 categories = self._call_ai(tag_names)
                 if categories:
+                    # Normalize: ensure returned tags match original casing
+                    categories = self._normalize_tag_casing(categories, tag_names)
                     cache.set(cache_key, categories, TAG_CATEGORIES_CACHE_TIMEOUT)
                     return categories
             except Exception as e:
                 logger.error(f"AI tag categorization failed: {e}")
 
-        # Fallback to simple keyword matching
-        return self._fallback_categorize(tag_names)
+        # Fallback to simple keyword matching (also cache this)
+        fallback = self._fallback_categorize(tag_names)
+        cache.set(cache_key, fallback, TAG_CATEGORIES_CACHE_TIMEOUT)
+        return fallback
+
+    def _normalize_tag_casing(self, categories: dict[str, list[str]], original_tags: list[str]) -> dict[str, list[str]]:
+        """Ensure AI-returned tags match original casing."""
+        # Build case-insensitive lookup
+        tag_lookup = {t.lower(): t for t in original_tags}
+
+        normalized = {}
+        for cat_name, tags in categories.items():
+            normalized_tags = []
+            for tag in tags:
+                # Find original casing
+                original = tag_lookup.get(tag.lower())
+                if original:
+                    normalized_tags.append(original)
+            if normalized_tags:
+                normalized[cat_name] = normalized_tags
+
+        return normalized
 
     def _call_ai(self, tag_names: list[str]) -> dict[str, list[str]]:
-        """Call OpenAI to categorize tags."""
+        """Call OpenAI to categorize tags with timeout."""
         prompt = f"""You are helping organize tags for a university campus forum.
 Given these tags, group them into 3-6 logical categories.
 
@@ -111,7 +133,8 @@ Respond with ONLY valid JSON in this exact format:
                 {"role": "user", "content": prompt}
             ],
             temperature=0.3,  # Low temperature for consistent categorization
-            max_tokens=500
+            max_tokens=1000,  # Enough for ~100 tags
+            timeout=10.0  # 10 second timeout
         )
 
         content = response.choices[0].message.content.strip()
