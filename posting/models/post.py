@@ -97,6 +97,11 @@ class Post(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["is_flagged", "-created_at"]),
+            models.Index(fields=["is_flagged", "-ai_severity_score", "-created_at"]),
+            models.Index(fields=["ai_flagged"]),
+        ]
 
     def __str__(self) -> str:
         return self.title

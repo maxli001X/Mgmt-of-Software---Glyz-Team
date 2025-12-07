@@ -27,6 +27,9 @@ class Vote(models.Model):
 
     class Meta:
         unique_together = ("post", "voter")
+        indexes = [
+            models.Index(fields=["post", "vote_type"]),
+        ]
 
     def __str__(self):
         return f"{self.voter.username} {self.vote_type.lower()}d {self.post.title}"
