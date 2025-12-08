@@ -123,47 +123,9 @@ Our A/B test uses session-based variant assignment:
 - Analytics tracked: timestamp, variant, event_type, session_key, IP, user_agent
 
 ### Traffic Data Analysis
+We can access https://glyz-team-tlug.onrender.com/admin/ as admin to track AB Test results and other relevant data. We can also monitor posts and profile settings.
 
-Since we did not use the paid version of Render, we couldn't access all the traffic data needed to complete our analysis. But we did develop the framework below to conduct such analysis to prove our capability of doing so. Thus, once we get access to the data from the paid version of Render, we will be able to execute the following steps to develop the traffic data analysis.
-
-To retrieve production analytics, run the following query:
-
-```python
-# Connect to production database and run:
-from analytics.models import ABTestLog
-from django.db.models import Count
-
-# Get view counts per variant
-views = ABTestLog.objects.filter(event_type='view').values('variant').annotate(count=Count('id'))
-
-# Get click counts per variant
-clicks = ABTestLog.objects.filter(event_type='click').values('variant').annotate(count=Count('id'))
-
-# Calculate CTR for each variant
-for v in ['A', 'B']:
-    view_count = ABTestLog.objects.filter(event_type='view', variant=v).count()
-    click_count = ABTestLog.objects.filter(event_type='click', variant=v).count()
-    ctr = (click_count / view_count * 100) if view_count > 0 else 0
-    print(f'Variant {v}: {view_count} views, {click_count} clicks, CTR: {ctr:.2f}%')
-```
-
-### Results
-
-| Metric | Variant A ("kudos") | Variant B ("thanks") |
-|--------|---------------------|----------------------|
-| Total Views | [Query Production] | [Query Production] |
-| Total Clicks | [Query Production] | [Query Production] |
-| Click-Through Rate | [Calculate] | [Calculate] |
-
-### Conclusion
-
-**Preferred Variant:** [To be determined from production analytics]
-
-Based on the click-through rate analysis, the bot traffic showed a preference for:
-- **If CTR(A) > CTR(B):** Variant A ("kudos") is preferred
-- **If CTR(B) > CTR(A):** Variant B ("thanks") is preferred
-
-*Note: Run the analytics query on production database to determine the actual preferred variant.*
+Based on the results from Django administration, the result of the AB Test is variant B
 
 ---
 
