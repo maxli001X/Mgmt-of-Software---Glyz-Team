@@ -124,6 +124,8 @@ Our A/B test uses session-based variant assignment:
 
 ### Traffic Data Analysis
 
+Since we did not use the paid version of Render, we couldn't access all the traffic data needed to complete our analysis. But we did develop the framework below to conduct such analysis to prove our capability of doing so. Thus, once we get access to the data from the paid version of Render, we will be able to execute the following steps to develop the traffic data analysis.
+
 To retrieve production analytics, run the following query:
 
 ```python
